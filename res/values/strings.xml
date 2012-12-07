@@ -4,5 +4,10 @@
     <string name="menu_settings">Settings</string>
     <string name="AboutTitle">About this app</string>
     
+    <string name="ConfirmTitle">Create / update files</string>
+    <string name="btnNoInstall">Cancel</string>
+	<string name="btnYesNoReboot">Create files \n Don\'t reboot \n</string>
+	<string name="btnYesAndReboot">Create files \n And reboot \n</string>
+    
 
 </resources>

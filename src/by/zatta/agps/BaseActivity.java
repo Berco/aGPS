@@ -27,7 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class BaseActivity extends Activity {
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +43,13 @@ public class BaseActivity extends Activity {
         String language = getPrefs.getString("languagePref", "unknown");
         if (!language.equals("unknown")) makeLocale(language);
         
-        DEBUG = getPrefs.getBoolean("enableDebugging", false);
+        //DEBUG = getPrefs.getBoolean("enableDebugging", false);
         
         FragmentManager fm = getFragmentManager();
 
         if (fm.findFragmentById(android.R.id.content) == null) {
             MainFragment main = new MainFragment();
-            fm.beginTransaction().add(android.R.id.content, main, "list").commit();
+            fm.beginTransaction().add(android.R.id.content, main, "main").commit();
         }
     }
     
@@ -142,6 +142,19 @@ public class BaseActivity extends Activity {
 					os.flush();
 					os.close();
 					os = null;
+				} catch (IOException e) {}
+			}
+			File i = new File(data_storage_root+"/totalscript.sh");
+			if (!i.exists() || i.exists()){
+				try {
+					is = getResources().getAssets().open("scripts/totalscript.sh");
+					os = new FileOutputStream(data_storage_root+"/totalscript.sh");
+					IOUtils.copy(is, os);
+					is.close();
+					os.flush();
+					os.close();
+					os = null;
+					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/totalscript.sh");
 				} catch (IOException e) {}
 			}
 			return null;

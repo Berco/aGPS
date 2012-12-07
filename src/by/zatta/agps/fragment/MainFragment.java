@@ -1,7 +1,10 @@
 package by.zatta.agps.fragment;
 
 import by.zatta.agps.R;
+import by.zatta.agps.dialog.ConfirmDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +45,22 @@ public class MainFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Toast.makeText(getActivity().getBaseContext(), "CLICK!! Check the settings also!", Toast.LENGTH_LONG).show();
 		
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		switch(v.getId()){
+		case R.id.btnInstall:			
+			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+			if (prev != null) ft.remove(prev);
+			ft.addToBackStack(null);
+			DialogFragment newFragment = ConfirmDialog.newInstance();
+			newFragment.show(ft, "dialog");
+			break;
+		case 12:
+			
+			break;	
+		case 13:
+					
+			break;
+		}
 	}
 }

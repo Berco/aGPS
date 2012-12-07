@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:padding="4dip"
+    android:gravity="center_horizontal"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:fadeScrollbars="false"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical" >
+    
+    	<TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical|center_horizontal"
+			style="@style/text_h1"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="10dip"
+            android:gravity="top|center_horizontal"
+            android:visibility="visible"   
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            
+    	
+    	
+    	<LinearLayout
+        	android:id="@+id/llFilesForDialog"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:orientation="vertical" >
+    	</LinearLayout>
+	
+    	
+	    
+    </LinearLayout>
+    </ScrollView>
+
+    
+
+	<LinearLayout
+	    android:orientation="vertical" 		
+    	android:layout_width="match_parent" 
+    	android:layout_height="wrap_content"
+	    android:divider="?android:attr/dividerHorizontal"
+	    android:showDividers="middle" >
+
+		<View
+		    android:layout_width="wrap_content"
+		    android:layout_height="3dp" />
+        
+	    <LinearLayout
+		    style="?android:attr/buttonBarStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+
+		    <Button
+		        android:id="@+id/btnNoInstall"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/btnNoInstall" />
+		    
+		    <Button
+		        android:id="@+id/btnYesNoReboot"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/btnYesNoReboot" />
+
+		    <Button
+		        android:id="@+id/btnYesAndReboot"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/btnYesAndReboot" />
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
