@@ -1,9 +1,12 @@
 package by.zatta.agps.dialog;
 
+import java.util.ArrayList;
+
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +21,20 @@ public class ConfirmDialog extends DialogFragment
 	private Button NO;
 	private Button YESANDREBOOT;
 	private Button YESNOREBOOT;
+	private String choises;
 	
-    public static ConfirmDialog newInstance() {
+    public static ConfirmDialog newInstance(String choises) {
         ConfirmDialog f = new ConfirmDialog();
+        Bundle args = new Bundle();
+        args.putString("choises", choises);
+        f.setArguments(args);
         return f;
     }
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        choises = getArguments().getString("choises");
         setStyle(DialogFragment.STYLE_NORMAL, 0);
         setRetainInstance(false);
     }
@@ -49,8 +57,8 @@ public class ConfirmDialog extends DialogFragment
         NO.setOnClickListener(this); 
         	
 		tvTB.setTextColor(getResources().getColor(R.color.red));
-		tvTB.setText("Just a temporarily confirmation text \n \n In this area we will make all choises like \n \n" +
-				"what version we want to install, ssl or no-ssl etc");
+		tvTB.setText("Just a temporarily confirmation text \n \n" +
+				"what version we want to install, ssl or no-ssl etc like \n \n" + choises);
 		
 		return v;
     }

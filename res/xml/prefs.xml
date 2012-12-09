@@ -13,6 +13,9 @@
 	    android:title="Donate by Paypal"
 		android:summary="to the gps specialist, Crypted"
 		android:key="donatePayPalCrypted">
+		<intent
+        	android:action="android.intent.action.VIEW"
+        	android:data="http://forum.xda-developers.com/donatetome.php?u=700051"/>
 	</PreferenceScreen>
 	
 	<PreferenceScreen 
