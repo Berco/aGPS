@@ -72,7 +72,8 @@ public class MainFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.cbUseNtpDerek:
 			Toast.makeText(getActivity().getBaseContext(), "PRO version only", Toast.LENGTH_LONG).show();
-			NTP.setChecked(false);
+			// this will be a way to make this option payed.
+			//NTP.setChecked(false);
 			break;	
 		case 13:
 					

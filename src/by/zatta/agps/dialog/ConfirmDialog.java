@@ -1,12 +1,17 @@
 package by.zatta.agps.dialog;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
+import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +70,7 @@ public class ConfirmDialog extends DialogFragment
 	
 	@Override
 	public void onClick(View v) {
-		
+		create_conf();
 		switch (v.getId()){
 		case R.id.btnNoInstall:
 			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
@@ -86,6 +91,47 @@ public class ConfirmDialog extends DialogFragment
 			break;
 		}
 		dismiss();
+	}
+
+	private void create_conf() {
+		int a;
+		String interPos;
+		if (choises.contains("no_ntp")) a = R.array.standard_ntp; else a = R.array.special_ntp; 
+		String[] ntp_array = getActivity().getBaseContext().getResources().getStringArray(a);
+		if (choises.contains("no_ssl")) a = R.array.no_ssl; else a = R.array.use_ssl; 
+		String[] ssl_array = getActivity().getBaseContext().getResources().getStringArray(a);
+		if (choises.contains("no_alt")) interPos = "INTERMEDIATE_POS=1"; else interPos = "INTERMEDIATE_POS=0";  
+		
+		try
+	    {
+	    	File conf = new File(getActivity().getBaseContext().getFilesDir()+"/gps.conf");
+	        conf.delete();
+	        FileWriter w = new FileWriter(conf, true);
+	    	
+	        for (String ntp : ntp_array){
+	        	w.append(ntp+'\n');
+	        }
+	        for (String ssl : ssl_array){
+	        	w.append(ssl+'\n');
+	        }
+	        w.append(interPos+'\n');
+	        
+	        InputStream is = getResources().getAssets().open("fix_base/gps-base.conf");
+            InputStreamReader ir = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(ir);
+
+            String line;
+            while ((line = br.readLine())!= null ) {
+                w.append(line + '\n');
+            }
+
+            is.close();
+	                	        
+	        w.flush();
+	        w.close();
+	        if (BaseActivity.DEBUG)
+	        	System.out.println("Wrote file:" + conf.getName() );
+	    }catch(IOException e){}
 	}
 
 	

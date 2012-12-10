@@ -107,31 +107,7 @@ public class BaseActivity extends Activity {
 			
 			InputStream is= null;
 			OutputStream os = null;
-			
-			File f = new File(data_storage_root+"/gps-V31.conf");
-			if (!f.exists() || f.exists()){
-				try {
-					is = getResources().getAssets().open("fix_base/gps-V31.conf");
-					os = new FileOutputStream(data_storage_root+"/gps-V31.conf");
-					IOUtils.copy(is, os);
-					is.close();
-					os.flush();
-					os.close();
-					os = null;
-				} catch (IOException e) {}
-			}
-			File g = new File(data_storage_root+"/gps-V31-nossl.conf");
-			if (!g.exists() || g.exists()){
-				try {
-					is = getResources().getAssets().open("fix_base/gps-V31-nossl.conf");
-					os = new FileOutputStream(data_storage_root+"/gps-V31-nossl.conf");
-					IOUtils.copy(is, os);
-					is.close();
-					os.flush();
-					os.close();
-					os = null;
-				} catch (IOException e) {}
-			}
+						
 			File h = new File(data_storage_root+"/SuplRootCert");
 			if (!h.exists() || h.exists()){
 				try {
