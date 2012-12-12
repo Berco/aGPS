@@ -71,6 +71,8 @@ public class ConfirmDialog extends DialogFragment
 	@Override
 	public void onClick(View v) {
 		create_conf();
+		String do_ssl;
+		if (choises.contains("no_ssl")) do_ssl="no_ssl"; else do_ssl="ssl"; 
 		switch (v.getId()){
 		case R.id.btnNoInstall:
 			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
@@ -78,14 +80,14 @@ public class ConfirmDialog extends DialogFragment
 		case R.id.btnYesAndReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing and Rebooting", Toast.LENGTH_LONG).show();
 			try {				
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot");
+				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot " + do_ssl);
 			} catch (Exception e) {	}
 				
 			break;
 		case R.id.btnYesNoReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing without Rebooting", Toast.LENGTH_LONG).show();
 			try {
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot");
+				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot " + do_ssl);
 			} catch (Exception e) {	}
 			
 			break;

@@ -5,12 +5,15 @@ install()
 {	
 	#mounting /system as rw
 	mount | grep "/system" | awk '{system("mount -o rw,remount -t "$3" "$1" "$2"")}'
-
-	#busybox cat /data/data/by.zatta.datafix/files/move_cache.txt > /data/local/datafix/move_cache.txt
-	#busybox chmod 740 /data/local/datafix/move_cache.txt
 	
-	#busybox cat /data/data/by.zatta.datafix/files/skip_apps.txt > /data/local/datafix/skip_apps.txt
-	#busybox chmod 740 /data/local/datafix/skip_apps.txt
+	busybox rm /system/etc/gps.conf
+	busybox cat /data/data/by.zatta.agps/files/gps.conf > /system/etc/gps.conf
+	busybox chmod 644 /system/etc/gps.conf
+	
+	if [ $2 = ssl ]; then
+		busybox cat /data/data/by.zatta.agps/files/SuplRootCert > /system/etc/SuplRootCert
+		busybox chmod 644 /system/etc/SuplRootCert
+	fi
 	
 	#mounting /system as ro
 	mount | grep "/system" | awk '{system("mount -o ro,remount -t "$3" "$1" "$2"")}'
@@ -31,7 +34,7 @@ backup()
 for i
 do
   case "$i" in
-	install) install $2;;
+	install) install $2 $3;;
 	backup) backup;;
   esac
 done
