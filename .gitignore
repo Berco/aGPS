@@ -1,6 +1,12 @@
 bin
 gen
 libs
+
+src/by/zatta/agps/billing
+src/com/android/vending/billing
+res/drawable-xhdpi
+res/layout/billing_activity_layout.xml
+
 .classpath
 .project
 default.properties

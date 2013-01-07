@@ -1,0 +1,39 @@
+world_pool|world_name|europe_pool|europe_name|oceania_pool|oceania_name|north-america_pool|north-america_name|south-america_pool|south-america_name|asia_pool|asia_name|africa_pool|africa_name
+pool.ntp.org|General|europe.pool.ntp.org|Europe|oceania.pool.ntp.org|Oceania|north-america.pool.ntp.org|North America|south-america.pool.ntp.org|South America|asia.pool.ntp.org|Asia|africa.pool.ntp|Africa
+ntp.derekgordon.com|Derek Gordon|at.pool.ntp.org|Austria|au.pool.ntp.org|Australia|ca.pool.ntp.org|Canada|br.pool.ntp.org|Brazil|ph.pool.ntp.org|Philippines|tz.pool.ntp.org|Tanzania
+{null}|{null}|ch.pool.ntp.org|Switzerland|nz.pool.ntp.org|New Zealand|us.pool.ntp.org|United States|cl.pool.ntp.org|Chile|my.pool.ntp.org|Malaysia|za.pool.ntp.org|South Africa
+{null}|{null}|de.pool.ntp.org|Germany|nc.pool.ntp.org|New Caledonia|mx.pool.ntp.org|Mexico|ar.pool.ntp.org|Argentina|tr.pool.ntp.org|Turkey|ao.pool.ntp.org|Angola
+{null}|{null}|dk.pool.ntp.org|Denmark|{null}|{null}|gt.pool.ntp.org|Guatemala|ve.pool.ntp.org|Venezuela|sg.pool.ntp.org|Singapore|mg.pool.ntp.org|Madagascar
+{null}|{null}|es.pool.ntp.org|Spain|{null}|{null}|pa.pool.ntp.org|Panama|{null}|{null}|in.pool.ntp.org|India|ug.pool.ntp.org|Uganda
+{null}|{null}|fr.pool.ntp.org|France|{null}|{null}|bs.pool.ntp.org|Bahamas|{null}|{null}|hk.pool.ntp.org|Hong Kong|{null}|{null}
+{null}|{null}|it.pool.ntp.org|Italy|{null}|{null}|cr.pool.ntp.org|Costa Rica|{null}|{null}|ae.pool.ntp.org|United Arab Emirates|{null}|{null}
+{null}|{null}|lu.pool.ntp.org|Luxembourg|{null}|{null}|sv.pool.ntp.org|El Salvador|{null}|{null}|jp.pool.ntp.org|Japan|{null}|{null}
+{null}|{null}|nl.pool.ntp.org|Netherlands|{null}|{null}|{null}|{null}|{null}|{null}|bd.pool.ntp.org|Bangladesh|{null}|{null}
+{null}|{null}|no.pool.ntp.org|Norway|{null}|{null}|{null}|{null}|{null}|{null}|il.pool.ntp.org|Israel|{null}|{null}
+{null}|{null}|pl.pool.ntp.org|Poland|{null}|{null}|{null}|{null}|{null}|{null}|kr.pool.ntp.org|Korea|{null}|{null}
+{null}|{null}|se.pool.ntp.org|Sweden|{null}|{null}|{null}|{null}|{null}|{null}|th.pool.ntp.org|Thailand|{null}|{null}
+{null}|{null}|si.pool.ntp.org|Slovenia|{null}|{null}|{null}|{null}|{null}|{null}|ir.pool.ntp.org|Iran|{null}|{null}
+{null}|{null}|uk.pool.ntp.org|United Kingdom|{null}|{null}|{null}|{null}|{null}|{null}|tw.pool.ntp.org|Taiwan|{null}|{null}
+{null}|{null}|fi.pool.ntp.org|Finland|{null}|{null}|{null}|{null}|{null}|{null}|cn.pool.ntp.org|China|{null}|{null}
+{null}|{null}|ie.pool.ntp.org|Federation|{null}|{null}|{null}|{null}|{null}|{null}|id.pool.ntp.org|Indonesia|{null}|{null}
+{null}|{null}|ru.pool.ntp.org|Russian |{null}|{null}|{null}|{null}|{null}|{null}|vn.pool.ntp.org|Vietnam|{null}|{null}
+{null}|{null}|be.pool.ntp.org|Belgium|{null}|{null}|{null}|{null}|{null}|{null}|pk.pool.ntp.org|Pakistan|{null}|{null}
+{null}|{null}|pt.pool.ntp.org|Portugal|{null}|{null}|{null}|{null}|{null}|{null}|om.pool.ntp.org|Oman|{null}|{null}
+{null}|{null}|gr.pool.ntp.org|Greece|{null}|{null}|{null}|{null}|{null}|{null}|uz.pool.ntp.org|Uzbekistan|{null}|{null}
+{null}|{null}|hu.pool.ntp.org|Hungary|{null}|{null}|{null}|{null}|{null}|{null}|lk.pool.ntp.org|Sri Lanka|{null}|{null}
+{null}|{null}|bg.pool.ntp.org|Bulgaria|{null}|{null}|{null}|{null}|{null}|{null}|kg.pool.ntp.org|Kyrgyzstan|{null}|{null}
+{null}|{null}|ro.pool.ntp.org|Romania|{null}|{null}|{null}|{null}|{null}|{null}|kh.pool.ntp.org|Cambodia|{null}|{null}
+{null}|{null}|cz.pool.ntp.org|Czech Replublic|{null}|{null}|{null}|{null}|{null}|{null}|qa.pool.ntp.org|Qatar|{null}|{null}
+{null}|{null}|yu.pool.ntp.org|Yugoslavia|{null}|{null}|{null}|{null}|{null}|{null}|sa.pool.ntp.org|Saudi Arabia|{null}|{null}
+{null}|{null}|ee.pool.ntp.org|Estonia|{null}|{null}|{null}|{null}|{null}|{null}|iq.pool.ntp.org|Iraq|{null}|{null}
+{null}|{null}|by.pool.ntp.org|Belarus|{null}|{null}|{null}|{null}|{null}|{null}|kz.pool.ntp.org|Kazakhstan|{null}|{null}
+{null}|{null}|sk.pool.ntp.org|Slovakia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|ua.pool.ntp.org|Ukraine|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|lt.pool.ntp.org|Lithuania|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|mk.pool.ntp.org|Macedonia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|md.pool.ntp.org|Moldova|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|lv.pool.ntp.org|Latvia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|hr.pool.ntp.org|Croatia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|rs.pool.ntp.org|Republic of Serbia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|ba.pool.ntp.org|Bosnia and Herzegovina|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+{null}|{null}|am.pool.ntp.org|Armenia|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}

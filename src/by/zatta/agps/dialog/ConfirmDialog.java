@@ -28,11 +28,8 @@ public class ConfirmDialog extends DialogFragment
 	private Button YESNOREBOOT;
 	private String choises;
 	
-    public static ConfirmDialog newInstance(String choises) {
+    public static ConfirmDialog newInstance() {
         ConfirmDialog f = new ConfirmDialog();
-        Bundle args = new Bundle();
-        args.putString("choises", choises);
-        f.setArguments(args);
         return f;
     }
     

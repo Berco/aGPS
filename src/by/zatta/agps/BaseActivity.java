@@ -9,13 +9,16 @@ import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 
+import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
+import by.zatta.agps.billing.BillingActivity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -28,6 +31,7 @@ import android.view.MenuItem;
 
 public class BaseActivity extends Activity {
 	public static boolean DEBUG = true;
+	private int mStars;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class BaseActivity extends Activity {
         new PlantFiles().execute();
                
         SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		
+        mStars = getPrefs.getInt("valueBugTrack", 1);
         String language = getPrefs.getString("languagePref", "unknown");
         if (!language.equals("unknown")) makeLocale(language);
         
@@ -57,6 +61,10 @@ public class BaseActivity extends Activity {
 	public boolean onCreateOptionsMenu(android.view.Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater blowUp = getMenuInflater();
+		MenuItem item = menu.add("Star");
+		item.setTitle("star");
+		item.setIcon(mStars > 0 ? R.drawable.star : R.drawable.star_empty);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		blowUp.inflate(R.menu.leftclick_optionchooser, menu);
 		return true;
 	}
@@ -83,19 +91,35 @@ public class BaseActivity extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		Fragment pref = getFragmentManager().findFragmentByTag("prefs");
-		if (pref == null){
-			ft.replace(android.R.id.content, new PrefFragment(), "prefs");
-			ft.addToBackStack(null);
-			ft.commit();		
-		}else{
-			ft.remove(getFragmentManager().findFragmentByTag("prefs"));
-			ft.commit();
-			fm.popBackStack();
-		}
+		if (item.getTitle().equals("star")){
+    		Intent i = new Intent(BaseActivity.this, BillingActivity.class);
+			startActivityForResult(i,14);	
+    	}else{
+    		FragmentManager fm = getFragmentManager();
+    		FragmentTransaction ft = fm.beginTransaction();
+    		Fragment pref = getFragmentManager().findFragmentByTag("prefs");
+    		if (pref == null){
+    			ft.replace(android.R.id.content, new PrefFragment(), "prefs");
+    			ft.addToBackStack(null);
+    			ft.commit();		
+    		}else{
+    			ft.remove(getFragmentManager().findFragmentByTag("prefs"));
+    			ft.commit();
+    			fm.popBackStack();
+    		}
+    	}
 		return false;
+	}
+    
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK){
+			Bundle basket = data.getExtras();
+			int s = basket.getInt("answer");
+			mStars = s;
+			invalidateOptionsMenu();
+		}
 	}
     
     private class PlantFiles extends AsyncTask<Void, Void, Void> {
