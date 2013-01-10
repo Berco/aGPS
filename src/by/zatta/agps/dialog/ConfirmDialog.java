@@ -6,12 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +30,23 @@ public class ConfirmDialog extends DialogFragment
 	private Button NO;
 	private Button YESANDREBOOT;
 	private Button YESNOREBOOT;
-	private String choises;
+	private List<String> items;
 	
-    public static ConfirmDialog newInstance() {
+	public static ConfirmDialog newInstance(List<String> apps) {
         ConfirmDialog f = new ConfirmDialog();
+        
+        Bundle args = new Bundle();
+        args.putStringArrayList("lijst",  (ArrayList<String>) apps);
+        f.setArguments(args);
+        
         return f;
     }
+	
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        choises = getArguments().getString("choises");
+        items = getArguments().getStringArrayList("lijst");
         setStyle(DialogFragment.STYLE_NORMAL, 0);
         setRetainInstance(false);
     }
@@ -57,19 +67,67 @@ public class ConfirmDialog extends DialogFragment
         YESANDREBOOT.setOnClickListener(this); 
         YESNOREBOOT.setOnClickListener(this);
         NO.setOnClickListener(this); 
-        	
-		tvTB.setTextColor(getResources().getColor(R.color.red));
-		tvTB.setText("Just a temporarily confirmation text \n \n" +
-				"what version we want to install, ssl or no-ssl etc like \n \n" + choises);
+        
+        setUI(canNTP(), wantNTP());
 		
 		return v;
+    }
+    
+    /* Donator - no ntp - text is donated, why not use the DG server
+     * Donator - ntp - text is donator, thanks for donating
+     * Free - no ntp - text is why not donate and use DG servers
+     * Free - ntp text is sorry, you have to be a donator to use these servers
+     */
+    
+    private boolean canNTP(){
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        int stars = sp.getInt("valueBugTrack", 1);
+        boolean prem = sp.getBoolean("doBugTrack", false);
+        if (stars > 1 || prem) return true;
+        return false;
+    }
+    
+    private boolean wantNTP(){
+    	if (items.get(0).contains("derekgordon")) return true;
+    	return false;
+    }
+    
+    private void setUI(boolean can, boolean want){
+    	String text = null;    	
+    	if (can && want) {
+    		text  = "Thanks for supporting us! Enjoy your GPS!";
+    		tvTB.setTextColor(getResources().getColor(R.color.green));
+    	}
+    	if (can && !want) {
+    		text  = "Thanks for supporting us! You forgot to select Derek Gordon's server!";
+    		YESANDREBOOT.setVisibility(View.GONE);
+    		YESNOREBOOT.setVisibility(View.GONE);
+    		tvTB.setTextColor(getResources().getColor(R.color.green));
+    	}
+    	if (!can && !want) {
+    		text  = "You can use the standard NTP servers but why not donate and get acces to the " +
+    				"best of the best ntp server, maintained by Derek Gordon? For more information, please " +
+    				"read the \"about\" (check the settings for this app)";
+    		tvTB.setTextColor(getResources().getColor(R.color.ICS_blue));
+    	}
+    	
+    	if (!can && want) {
+    		text  = "No donator, sorry, you can not use the top notch DG server. Please " +
+    				"read the about. Donate to get acces or feel free to use one of the local " +
+    				"ntp servers and the standard google xtra.bin servers.";
+    		YESANDREBOOT.setVisibility(View.GONE);
+    		YESNOREBOOT.setVisibility(View.GONE);
+    		tvTB.setTextColor(getResources().getColor(R.color.red));
+    	}
+    	
+    	
+		tvTB.setText(text);
     }
 	
 	@Override
 	public void onClick(View v) {
-		create_conf();
-		String do_ssl;
-		if (choises.contains("no_ssl")) do_ssl="no_ssl"; else do_ssl="ssl"; 
+		String mSSL = create_conf();
+		
 		switch (v.getId()){
 		case R.id.btnNoInstall:
 			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
@@ -77,14 +135,14 @@ public class ConfirmDialog extends DialogFragment
 		case R.id.btnYesAndReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing and Rebooting", Toast.LENGTH_LONG).show();
 			try {				
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot " + do_ssl);
+				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot " + mSSL);
 			} catch (Exception e) {	}
 				
 			break;
 		case R.id.btnYesNoReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing without Rebooting", Toast.LENGTH_LONG).show();
 			try {
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot " + do_ssl);
+				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot " + mSSL);
 			} catch (Exception e) {	}
 			
 			break;
@@ -92,29 +150,14 @@ public class ConfirmDialog extends DialogFragment
 		dismiss();
 	}
 
-	private void create_conf() {
-		int a;
-		String interPos;
-		if (choises.contains("no_ntp")) a = R.array.standard_ntp; else a = R.array.special_ntp; 
-		String[] ntp_array = getActivity().getBaseContext().getResources().getStringArray(a);
-		if (choises.contains("no_ssl")) a = R.array.no_ssl; else a = R.array.use_ssl; 
-		String[] ssl_array = getActivity().getBaseContext().getResources().getStringArray(a);
-		if (choises.contains("no_alt")) interPos = "INTERMEDIATE_POS=1"; else interPos = "INTERMEDIATE_POS=0";  
-		
+	private String create_conf() {
+		String mSSL = "no_ssl";
 		try
 	    {
 	    	File conf = new File(getActivity().getBaseContext().getFilesDir()+"/gps.conf");
 	        conf.delete();
 	        FileWriter w = new FileWriter(conf, true);
 	    	
-	        for (String ntp : ntp_array){
-	        	w.append(ntp+'\n');
-	        }
-	        for (String ssl : ssl_array){
-	        	w.append(ssl+'\n');
-	        }
-	        w.append(interPos+'\n');
-	        
 	        InputStream is = getResources().getAssets().open("fix_base/gps-base.conf");
             InputStreamReader ir = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(ir);
@@ -123,14 +166,18 @@ public class ConfirmDialog extends DialogFragment
             while ((line = br.readLine())!= null ) {
                 w.append(line + '\n');
             }
-
             is.close();
+            for (String item : items) {
+            	w.append(item + '\n');
+            	if (item.contains("SUPL_TLS_CERT")) mSSL = "ssl";
+            }
 	                	        
 	        w.flush();
 	        w.close();
 	        if (BaseActivity.DEBUG)
 	        	System.out.println("Wrote file:" + conf.getName() );
 	    }catch(IOException e){}
+		return mSSL;
 	}
 
 	

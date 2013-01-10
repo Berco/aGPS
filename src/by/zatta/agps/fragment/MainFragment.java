@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
 	private Spinner mSpRegion;
 	private Spinner mSpPool;
 	private Spinner mSpProfile;
+	private ScrollView mScrollView;
 	DatabaseHelper myDbHelper;
 	
 	@Override
@@ -59,6 +61,8 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
 		mSpPool.setOnItemSelectedListener(this);
 		mSpProfile = (Spinner)v.findViewById(R.id.spProfile);
 		mSpProfile.setOnItemSelectedListener(this);
+		mScrollView = (ScrollView)v.findViewById(R.id.scrollView1);
+		mScrollView.setOnClickListener(this);
 		myDbHelper = new DatabaseHelper(getActivity().getBaseContext());
 		try { 
 			myDbHelper.createDataBase();
@@ -77,18 +81,19 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		switch(v.getId()){
 		case R.id.btnInstall:
-			addFormField(mSpPool.getSelectedItem().toString(), false);
-//			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-//			if (prev != null) ft.remove(prev);
-//			ft.addToBackStack(null);
-//			DialogFragment newFragment = ConfirmDialog.newInstance();
-//			newFragment.show(ft, "dialog");
+			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+			if (prev != null) ft.remove(prev);
+			ft.addToBackStack(null);
+			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase());
+			newFragment.show(ft, "dialog");
 			break;
-		case 13:		
+		case R.id.scrollView1:
+			Toast.makeText(getActivity().getBaseContext(), "scroll!!", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}
 	
+
 	public void fillPoolSpinner(String region){
 		String array[] = { region };        
         List<String> labels = new ArrayList<String>();
