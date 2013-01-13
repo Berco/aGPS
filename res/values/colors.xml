@@ -5,6 +5,7 @@
     <color name="red">#ff0000</color>
     <color name="shadow_dark_up">#80000000</color>
     <color name="ICS_blue">#33b5e5</color>
+    <color name="light_grey">#A4A4A4</color>
     <!-- 
     <color name="glare_top">#40ffffff</color>
     <color name="glare_bottom">#30000000</color>

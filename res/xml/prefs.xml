@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:key="agps_preferences">
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:key="agps_preferences">
 
-	<Preference
-		android:title="About this app"
-		android:summary="all you need to know"
-		android:key="about_app_key">
-	</Preference>
-		
-	<Preference 
-	    android:title="Visit XDA"
-		android:summary="view the app discussion"
-		android:key="get_cm_key">
-    	<intent
-        	android:action="android.intent.action.VIEW"
-        	android:data="http://forum.xda-developers.com/showthread.php?t=1777444"/>
-	</Preference>
-        
+		<PreferenceScreen
+				android:title="More information"
+				android:summary="find out about the app and patch"
+				android:key="screen_preference">
+				<Preference
+						android:title="About this app"
+						android:summary="all you need to know"
+						android:key="about_app_key" />
+
+
+				<Preference
+						android:title="Visit derekgordon.com"
+						android:summary="in depth information about the patch"
+						android:key="vist_dg">
+						<intent
+								android:action="android.intent.action.VIEW"
+								android:data="http://derekgordon.com/android-how-tos/a-gps-worldwide-patch" />
+				</Preference>
+
+				<Preference
+						android:title="Visit XDA"
+						android:summary="device threads for the old patch"
+						android:key="visit_xda">
+						<intent
+								android:action="android.intent.action.VIEW"
+								android:data="http://forum.xda-developers.com/sitesearch.php?q=%22aGPS%20Patch%22%2B%22GET%20BACK%22" />
+				</Preference>
+		</PreferenceScreen>
+
 </PreferenceScreen>

@@ -12,9 +12,11 @@ import java.util.List;
 import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
+import by.zatta.agps.model.ConfItem;
 import android.app.DialogFragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +32,13 @@ public class ConfirmDialog extends DialogFragment
 	private Button NO;
 	private Button YESANDREBOOT;
 	private Button YESNOREBOOT;
-	private List<String> items;
+	private List<ConfItem> items;
 	
-	public static ConfirmDialog newInstance(List<String> apps) {
+	public static ConfirmDialog newInstance(List<ConfItem> list) {
         ConfirmDialog f = new ConfirmDialog();
         
         Bundle args = new Bundle();
-        args.putStringArrayList("lijst",  (ArrayList<String>) apps);
+        args.putParcelableArrayList("lijst", (ArrayList<? extends Parcelable>) list);
         f.setArguments(args);
         
         return f;
@@ -46,7 +48,7 @@ public class ConfirmDialog extends DialogFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        items = getArguments().getStringArrayList("lijst");
+        items = getArguments().getParcelableArrayList("lijst");
         setStyle(DialogFragment.STYLE_NORMAL, 0);
         setRetainInstance(false);
     }
@@ -88,7 +90,7 @@ public class ConfirmDialog extends DialogFragment
     }
     
     private boolean wantNTP(){
-    	if (items.get(0).contains("derekgordon")) return true;
+    	if (items.get(0).toString().contains("derekgordon")) return true;
     	return false;
     }
     
@@ -167,9 +169,9 @@ public class ConfirmDialog extends DialogFragment
                 w.append(line + '\n');
             }
             is.close();
-            for (String item : items) {
-            	w.append(item + '\n');
-            	if (item.contains("SUPL_TLS_CERT")) mSSL = "ssl";
+            for (ConfItem item : items) {
+            	w.append(item.toString() + '\n');
+            	if (item.toString().contains("SUPL_TLS_CERT")) mSSL = "ssl";
             }
 	                	        
 	        w.flush();

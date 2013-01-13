@@ -6,8 +6,10 @@ import java.util.List;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,64 +18,70 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ScrollView;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.DatabaseHelper;
 import by.zatta.agps.dialog.ConfirmDialog;
+import by.zatta.agps.model.ConfItem;
+import by.zatta.agps.model.ConfItemListAdapter;
+import by.zatta.agps.BaseActivity;
 
-public class MainFragment extends Fragment implements OnClickListener, OnItemSelectedListener {
+public class MainFragment extends ListFragment implements OnClickListener, OnItemSelectedListener {
 	
 	private Button INSTALL;
-	private LinearLayout mLinLayFlashView;
+	//private LinearLayout mLinLayFlashView;
 	private Cursor c=null;
 	private Spinner mSpRegion;
 	private Spinner mSpPool;
 	private Spinner mSpProfile;
-	private ScrollView mScrollView;
 	DatabaseHelper myDbHelper;
+	private ListView mList;
+	private ConfItemListAdapter mConfAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.mainfragment_layout, container, false);
 		INSTALL = (Button)v.findViewById(R.id.btnInstall);
 		INSTALL.setOnClickListener(this);
-		mLinLayFlashView = (LinearLayout)v.findViewById(R.id.llShowConf);
+		//mLinLayFlashView = (LinearLayout)v.findViewById(R.id.llShowConf);
 		mSpRegion = (Spinner)v.findViewById(R.id.spRegion);
 		mSpRegion.setOnItemSelectedListener(this);
 		mSpPool = (Spinner)v.findViewById(R.id.spPool);
 		mSpPool.setOnItemSelectedListener(this);
 		mSpProfile = (Spinner)v.findViewById(R.id.spProfile);
 		mSpProfile.setOnItemSelectedListener(this);
-		mScrollView = (ScrollView)v.findViewById(R.id.scrollView1);
-		mScrollView.setOnClickListener(this);
 		myDbHelper = new DatabaseHelper(getActivity().getBaseContext());
 		try { 
 			myDbHelper.createDataBase();
         	myDbHelper.openDataBase();
         }catch(Exception e){ }
+		return v;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		mList = (ListView) getListView();
+		registerForContextMenu(mList);
+		setHasOptionsMenu(true);
+		if ( mConfAdapter == null){
+			mConfAdapter = new ConfItemListAdapter(getActivity());
+			setListAdapter(mConfAdapter);
+		}
 		fillRegionSpinner();
-		fillPoolSpinner("europe_name");
+		fillPoolSpinner("world_name");
 		fillProfileSpinner();
 		getItemsFromDatabase();
-		
-		return v;
+
 	}
 
 	@Override
@@ -91,6 +99,14 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
 			Toast.makeText(getActivity().getBaseContext(), "scroll!!", Toast.LENGTH_SHORT).show();
 			break;
 		}
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		if (BaseActivity.DEBUG)
+		Log.i("BaseActivity", "Item clicked: " + id);
+		ConfItem item = (ConfItem) getListAdapter().getItem(position);
+		Toast.makeText(getActivity().getBaseContext(), item.toString(), Toast.LENGTH_SHORT).show();
 	}
 	
 
@@ -143,23 +159,24 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
 	
 	
 	
-	public List<String> getItemsFromDatabase(){
-		mLinLayFlashView.removeAllViews();           
-        addFormField("gps.conf:", true);
-        List<String>confItems = getFromProfileSpinner();
-        for (String agps : getAgpsFromDatabase()){
+	public List<ConfItem> getItemsFromDatabase(){
+		//mLinLayFlashView.removeAllViews();           
+        //addFormField("gps.conf:", true);
+        List<ConfItem>confItems = getFromProfileSpinner();
+        for (ConfItem agps : getAgpsFromDatabase()){
         	confItems.add(0, agps);
         }
         confItems.add(0, getFromPoolSpinner());
         
         for (int i = 0; i < confItems.size(); i++){
-        	addFormField(confItems.get(i), false);
+        	//addFormField(confItems.get(i).toString(), false);
         }
+        mConfAdapter.setData(confItems);
         return confItems;
 	}
 	
-	private List<String> getAgpsFromDatabase(){
-		List<String>agpsItems = new ArrayList<String>();
+	private List<ConfItem> getAgpsFromDatabase(){
+		List<ConfItem> ntpItems = new ArrayList<ConfItem>();
 		String agpsType =  "GOOGLE";
 		if (mSpPool.getSelectedItem().toString().toLowerCase().contains("derek"))
 			agpsType = "DEREK";
@@ -168,58 +185,58 @@ public class MainFragment extends Fragment implements OnClickListener, OnItemSel
         if(c.moveToPosition(1)) {
         	do {
         		if (!c.getString(0).equals("{null}") && !c.getString(1).equals("{null}"))
-        		agpsItems.add(c.getString(0) + "=" + c.getString(1));
+        			ntpItems.add(new ConfItem(c.getString(0), c.getString(1)));
         	} while (c.moveToNext());
         }
-		return agpsItems;
+		return ntpItems;
 	}
 	
-	private String getFromPoolSpinner(){
-		String fromPoolSpinner = "NTP_SERVER=";
+	private ConfItem getFromPoolSpinner(){
+		ConfItem item = new ConfItem("NTP_SERVER", null);
 		String nowInPoolSpinner = mSpPool.getSelectedItem().toString();  
         c=myDbHelper.query("pools", null, null, null, null,null, null);
         if(c.moveToFirst()) {
         		do {        		        		
             		for (int i = 1; i < c.getColumnCount(); i++){
             			if (c.getString(i).equals(nowInPoolSpinner))
-            				fromPoolSpinner = fromPoolSpinner + c.getString(i-1);
+            				item.setSetting(c.getString(i-1));
                 		}
             	} while (c.moveToNext());
         }
-		return fromPoolSpinner;
+        return item;
 	}
 	
-	private List<String> getFromProfileSpinner(){
-		List<String> profileList = new ArrayList<String>();
+	private List<ConfItem> getFromProfileSpinner(){
+		List<ConfItem> itemsList = new ArrayList<ConfItem>();
 		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "");
 		String array[] = { "ITEMS", profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
         if(c.moveToPosition(2)) {
         	do {
         		if (!c.getString(0).equals("{null}") && !c.getString(1).equals("{null}"))
-        		profileList.add(c.getString(0) + "=" + c.getString(1));
+        			itemsList.add(new ConfItem(c.getString(0), c.getString(1)));
         	} while (c.moveToNext());
         }		
-		return profileList;
+		return itemsList;
 	}
 	
-	private void addFormField(String label, Boolean isLabel) {
-		TextView tvLabel = new TextView(getActivity().getBaseContext());
-		tvLabel.setLayoutParams(getDefaultParams(isLabel));
-		tvLabel.setText(label);
-		tvLabel.setHorizontallyScrolling(false);
-		mLinLayFlashView.addView(tvLabel);	
-	}
-
-	private LayoutParams getDefaultParams(boolean isLabel) {
-		LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-		if (isLabel) {
-			params.topMargin = 10;
-		}else
-			params.leftMargin = 10;
-		return params;
-	}
+//	private void addFormField(String label, Boolean isLabel) {
+//		TextView tvLabel = new TextView(getActivity().getBaseContext());
+//		tvLabel.setLayoutParams(getDefaultParams(isLabel));
+//		tvLabel.setText(label);
+//		tvLabel.setHorizontallyScrolling(false);
+//		mLinLayFlashView.addView(tvLabel);	
+//	}
+//
+//	private LayoutParams getDefaultParams(boolean isLabel) {
+//		LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+//				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+//		if (isLabel) {
+//			params.topMargin = 10;
+//		}else
+//			params.leftMargin = 10;
+//		return params;
+//	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,

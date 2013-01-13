@@ -15,35 +15,4 @@
 		<item>fr</item>
 	</string-array>
 	
-	<string-array name="special_ntp">
-		<item>NTP_SERVER=ntp.derekgordon.com</item>
-		<item>AGPS=http://derekgordon.com/gps-files/bin/xtra.bin</item>
-		<item>XTRA_SERVER_1=http://derekgordon.com/gps-files/bin/xtra.bin</item>
-		<item>XTRA_SERVER_2=http://xtra3.gpsonextra.net/xtra.bin</item>
-		<item>XTRA_SERVER_3=http://xtra2.gpsonextra.net/xtra.bin</item>
-	</string-array>
-	
-	<string-array name="standard_ntp">
-		<item>NTP_SERVER=1.pool.ntp.org</item>
-		<item>NTP_SERVER=0.europe.pool.ntp.org</item>
-		<item>NTP_SERVER=1.asia.pool.ntp.org</item>
-		<item>NTP_SERVER=2.north-america.pool.ntp.org</item>
-		<item>AGPS=http://xtra3.gpsonextra.net/xtra.bin</item>
-		<item>XTRA_SERVER_1=http://xtra3.gpsonextra.net/xtra.bin</item>
-		<item>XTRA_SERVER_2=http://xtra2.gpsonextra.net/xtra.bin</item>
-		<item>XTRA_SERVER_3=http://xtra4.gpsonextra.net/xtra.bin</item>
-	</string-array>
-	
-	<string-array name="use_ssl">
-	    <item>SUPL_SECURE_PORT=7275</item>
-		<item>SUPL_TLS_HOST=FQDN</item>
-		<item>SUPL_TLS_CERT=/etc/SuplRootCert</item>
-	</string-array>
-	
-	<!-- ugly workaround not to get nulpointer exceptions -->
-	<string-array name="no_ssl">
-	    <item>#SUPL_SECURE_PORT=7275</item>
-		<item>#SUPL_TLS_HOST=FQDN</item>
-		<item>#SUPL_TLS_CERT=/etc/SuplRootCert</item>
-	</string-array>
 </resources>

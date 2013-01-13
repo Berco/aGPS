@@ -41,6 +41,7 @@
 						android:layout_height="wrap_content"
 						 />
 
+		<!-- OLD LIST
 		<ScrollView
 				android:id="@+id/scrollView1"
 				android:fadeScrollbars="false"
@@ -53,7 +54,18 @@
 						android:layout_height="wrap_content"
 						android:orientation="vertical" />
 		</ScrollView>
+		-->
 
+		<ListView
+		    android:id="@android:id/list"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:drawSelectorOnTop="false"
+        	android:fastScrollEnabled="true"
+        	android:divider="@color/white"
+        	android:paddingLeft="5dp"
+		    android:layout_weight="1" >
+		</ListView>
 
 		<LinearLayout
 				android:orientation="vertical"
