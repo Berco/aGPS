@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     
     public void createDataBase() throws IOException{
     		File f = new File(DB_PATH);
-    		if (!f.exists()){
+    		if (f.exists() || !f.exists()){
     			this.getReadableDatabase();
     			copyDataBase();
     		}

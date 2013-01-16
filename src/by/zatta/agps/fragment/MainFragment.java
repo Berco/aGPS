@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.DatabaseHelper;
+import by.zatta.agps.dialog.ChangeItemDialog;
 import by.zatta.agps.dialog.ConfirmDialog;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.model.ConfItemListAdapter;
@@ -31,7 +32,6 @@ import by.zatta.agps.BaseActivity;
 public class MainFragment extends ListFragment implements OnClickListener, OnItemSelectedListener {
 	
 	private Button INSTALL;
-	//private LinearLayout mLinLayFlashView;
 	private Cursor c=null;
 	private Spinner mSpRegion;
 	private Spinner mSpPool;
@@ -52,7 +52,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		View v = inflater.inflate(R.layout.mainfragment_layout, container, false);
 		INSTALL = (Button)v.findViewById(R.id.btnInstall);
 		INSTALL.setOnClickListener(this);
-		//mLinLayFlashView = (LinearLayout)v.findViewById(R.id.llShowConf);
 		mSpRegion = (Spinner)v.findViewById(R.id.spRegion);
 		mSpRegion.setOnItemSelectedListener(this);
 		mSpPool = (Spinner)v.findViewById(R.id.spPool);
@@ -106,7 +105,17 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		if (BaseActivity.DEBUG)
 		Log.i("BaseActivity", "Item clicked: " + id);
 		ConfItem item = (ConfItem) getListAdapter().getItem(position);
-		Toast.makeText(getActivity().getBaseContext(), item.toString(), Toast.LENGTH_SHORT).show();
+		if (id > 4){
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+			if (prev != null) ft.remove(prev);
+			ft.addToBackStack(null);
+			DialogFragment newFragment = ChangeItemDialog.newInstance(getItemGroup(item));
+			newFragment.show(ft, "dialog");
+		} else {
+			Toast.makeText(getActivity().getBaseContext(), item.toString(), Toast.LENGTH_SHORT).show();
+		}
+			
 	}
 	
 
@@ -130,7 +139,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         List<String> labels = new ArrayList<String>();
         c=myDbHelper.query("items", null, null, null, null,null, null);       
         if (c.moveToFirst()) {
-        	for (int i = 2; i < c.getColumnCount(); i++){
+        	for (int i = 4; i < c.getColumnCount(); i++){
         		labels.add(c.getString(i));
         		}
         }
@@ -157,21 +166,32 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         mSpRegion.setAdapter(dataAdapter);
 	}
 	
+	public List<ConfItem> getItemGroup(ConfItem item){
+		List<ConfItem> sectionItems = new ArrayList<ConfItem>();
+		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "").replace(" ", "");
+		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
+		c=myDbHelper.query("items", array, null, null, null,null, null);
+        if(c.moveToPosition(1)) {
+        	do {
+        		if (!c.getString(0).equals("{null}") && 
+        			!c.getString(4).equals("{null}") &&
+        			c.getString(1).equals(item.getSection()))
+        			sectionItems.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+        	} while (c.moveToNext());
+        }		
+		return sectionItems;
+	}
 	
 	
 	public List<ConfItem> getItemsFromDatabase(){
-		//mLinLayFlashView.removeAllViews();           
-        //addFormField("gps.conf:", true);
         List<ConfItem>confItems = getFromProfileSpinner();
-        for (ConfItem agps : getAgpsFromDatabase()){
+        for (ConfItem agps : getAgpsFromDatabase())
         	confItems.add(0, agps);
-        }
+        
         confItems.add(0, getFromPoolSpinner());
         
-        for (int i = 0; i < confItems.size(); i++){
-        	//addFormField(confItems.get(i).toString(), false);
-        }
-        mConfAdapter.setData(confItems);
+        for (int i = 0; i < confItems.size(); i++)
+        	mConfAdapter.setData(confItems);
         return confItems;
 	}
 	
@@ -185,14 +205,14 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         if(c.moveToPosition(1)) {
         	do {
         		if (!c.getString(0).equals("{null}") && !c.getString(1).equals("{null}"))
-        			ntpItems.add(new ConfItem(c.getString(0), c.getString(1)));
+        			ntpItems.add(new ConfItem(c.getString(0),null,null,null, c.getString(1)));
         	} while (c.moveToNext());
         }
 		return ntpItems;
 	}
 	
 	private ConfItem getFromPoolSpinner(){
-		ConfItem item = new ConfItem("NTP_SERVER", null);
+		ConfItem item = new ConfItem("NTP_SERVER", null, null,null,null);
 		String nowInPoolSpinner = mSpPool.getSelectedItem().toString();  
         c=myDbHelper.query("pools", null, null, null, null,null, null);
         if(c.moveToFirst()) {
@@ -208,36 +228,18 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	
 	private List<ConfItem> getFromProfileSpinner(){
 		List<ConfItem> itemsList = new ArrayList<ConfItem>();
-		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "");
-		String array[] = { "ITEMS", profile }; 
+		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "").replace(" ", "");
+		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
-        if(c.moveToPosition(2)) {
+        if(c.moveToPosition(1)) {
         	do {
-        		if (!c.getString(0).equals("{null}") && !c.getString(1).equals("{null}"))
-        			itemsList.add(new ConfItem(c.getString(0), c.getString(1)));
+        		if (!c.getString(0).equals("{null}") && !c.getString(4).equals("{null}"))
+        			itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
         	} while (c.moveToNext());
         }		
 		return itemsList;
 	}
 	
-//	private void addFormField(String label, Boolean isLabel) {
-//		TextView tvLabel = new TextView(getActivity().getBaseContext());
-//		tvLabel.setLayoutParams(getDefaultParams(isLabel));
-//		tvLabel.setText(label);
-//		tvLabel.setHorizontallyScrolling(false);
-//		mLinLayFlashView.addView(tvLabel);	
-//	}
-//
-//	private LayoutParams getDefaultParams(boolean isLabel) {
-//		LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-//				android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-//		if (isLabel) {
-//			params.topMargin = 10;
-//		}else
-//			params.leftMargin = 10;
-//		return params;
-//	}
-
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long arg3) {

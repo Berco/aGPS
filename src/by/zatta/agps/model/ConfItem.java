@@ -5,29 +5,34 @@ import android.os.Parcelable;
 
 public class ConfItem implements Parcelable{    
     private String mLabel;
+    private String mSection;
+    private String mType;
+    private String mDiscription;
     private String mSetting;
     
-    public ConfItem(String label, String setting) {
+    public ConfItem(String label, String section, String type, String discription, String setting) {
     	mLabel = label;
+    	mSection = section;
+    	mType = type;
+    	mDiscription = discription;
     	mSetting = setting;
     }
     
-    public void setLabel(String label){
-    	mLabel = label;
-    }
+    public void setLabel(String label){ mLabel = label; }
+    public String getLabel(){ return mLabel; }
     
-    public String getLabel(){
-    	return mLabel;
-    }
-    
-    public void setSetting(String setting){
-    	mSetting = setting;
-    }
-    
-    public String getSetting(){
-    	return mSetting;
-    }
+    public void setSection(String group){ mSection = group; }
+    public String getSection(){ return mSection; }
 
+    public void setType(String type){ mType = type; }
+    public String getType(){ return mType; }
+    
+    public void setDiscription(String discription){ mDiscription = discription; }
+    public String getDiscription(){ return mDiscription; }    
+    
+    public void setSetting(String setting){ mSetting = setting; }
+    public String getSetting(){ return mSetting; }
+    
     @Override public String toString() {
         return mLabel + "=" + mSetting;
     }
@@ -48,11 +53,17 @@ public class ConfItem implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(mLabel);
+		dest.writeString(mSection);
+		dest.writeString(mType);
+		dest.writeString(mDiscription);
 		dest.writeString(mSetting);
 	}
 
 	private void readFromParcel(Parcel in) {
 		mLabel = in.readString();
+		mSection = in.readString();
+		mType = in.readString();
+		mDiscription = in.readString();
  		mSetting = in.readString();
 	}
      
