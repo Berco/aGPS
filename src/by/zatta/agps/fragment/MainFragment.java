@@ -9,7 +9,6 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +26,6 @@ import by.zatta.agps.dialog.ChangeItemDialog;
 import by.zatta.agps.dialog.ConfirmDialog;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.model.ConfItemListAdapter;
-import by.zatta.agps.BaseActivity;
 
 public class MainFragment extends ListFragment implements OnClickListener, OnItemSelectedListener {
 	
@@ -102,8 +100,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		if (BaseActivity.DEBUG)
-		Log.i("BaseActivity", "Item clicked: " + id);
 		ConfItem item = (ConfItem) getListAdapter().getItem(position);
 		if (id > 4){
 			FragmentTransaction ft = getFragmentManager().beginTransaction();

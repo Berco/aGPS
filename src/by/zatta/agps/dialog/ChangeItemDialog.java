@@ -3,6 +3,7 @@ package by.zatta.agps.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.model.ConfItem;
 import android.app.DialogFragment;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,14 +31,13 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	private LinearLayout mLinLay;
 	private Button mBtnCancel;
 	private Button mBtnApply;
+	private int viewCount = 2013;
 	
 	public static ChangeItemDialog newInstance(List<ConfItem> list) {
-        ChangeItemDialog f = new ChangeItemDialog();
-        
+        ChangeItemDialog f = new ChangeItemDialog();   
         Bundle args = new Bundle();
         args.putParcelableArrayList("lijst", (ArrayList<? extends Parcelable>) list);
         f.setArguments(args);
-        
         return f;
     }
 	
@@ -66,6 +67,14 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
         	createRelText(item);
         }
         
+        if (BaseActivity.DEBUG){
+			String controle=null;
+			for (ConfItem item : items){
+	        	if (controle != null) controle = controle+item.getSetting();
+	        	else controle = item.getSetting();
+	        }
+	        Log.i("ConfDialog", controle + "changed");
+		}
         return v;
     }
 		
@@ -97,7 +106,9 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 			ed.setTextColor(Color.BLACK);
 			if (type.equals("integer")) ed.setInputType(InputType.TYPE_CLASS_NUMBER);
 			if (type.equals("text")) ed.setInputType(InputType.TYPE_CLASS_TEXT);
-			ed.setHint(item.getSetting());
+			ed.setText(item.getSetting());
+			ed.setId(viewCount);
+			viewCount++;
 			return ed;
 		}else{
 			Switch sw = new Switch(getActivity().getBaseContext());
@@ -106,6 +117,8 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	        sw.setTextOn("True");
 	        sw.setTextOff("False");
 	        if (item.getSetting().equals("TRUE")) sw.setChecked(true);
+	        sw.setId(viewCount);
+			viewCount++;
 	        return sw;
 		}
 	}
@@ -114,11 +127,49 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 		case R.id.btnCancelChange:
+			Log.i("ConfDialog", "BtnCancel");
 			break;
 		case R.id.btnDoChange:
-			Toast.makeText(getActivity().getBaseContext(), "To be implemented", Toast.LENGTH_LONG).show();
+			if (somethingChanged()){
+				/*TODO passing the modified items list back to mainfragment.
+				* and process it there to be put into the items list there.
+				*/
+				Toast.makeText(getActivity().getBaseContext(), "To be implemented", Toast.LENGTH_LONG).show();	
+			}
 			break;
 		}
 		dismiss();		
+	}
+	
+	private boolean somethingChanged(){
+		boolean changes = false;
+		for (int i = 0; i < items.size(); i++){
+			View v = mLinLay.findViewById(2013+i);
+			if (v instanceof EditText){
+				EditText et = (EditText) v;
+				if (!items.get(i).getSetting().equals(et.getText().toString())){
+					items.get(i).setSetting(et.getText().toString());
+					changes = true;
+				}
+			}else{
+				Switch sw = (Switch) v;
+				String checkString = "";
+				if (sw.isChecked()) checkString = "TRUE";
+				else checkString = "FALSE";
+				if (!items.get(i).getSetting().equals(checkString)){
+					items.get(i).setSetting(checkString);
+					changes = true;
+				}
+			}
+		}
+		if (BaseActivity.DEBUG){
+			String controle=null;
+			for (ConfItem item : items){
+	        	if (controle != null) controle = controle+item.getSetting();
+	        	else controle = item.getSetting();
+	        }
+	        Log.i("ConfDialog", controle + " " + changes);
+		}
+		return changes;
 	}
 }

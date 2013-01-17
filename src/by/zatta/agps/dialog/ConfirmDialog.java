@@ -102,8 +102,6 @@ public class ConfirmDialog extends DialogFragment
     	}
     	if (can && !want) {
     		text  = "Thanks for supporting us! You forgot to select Derek Gordon's server!";
-    		YESANDREBOOT.setVisibility(View.GONE);
-    		YESNOREBOOT.setVisibility(View.GONE);
     		tvTB.setTextColor(getResources().getColor(R.color.green));
     	}
     	if (!can && !want) {
