@@ -6,6 +6,7 @@ import java.util.List;
 import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.model.ConfItem;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,10 +24,10 @@ import android.widget.Switch;
 import android.widget.TableLayout.LayoutParams;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	
+	OnChangedListListener changedListListener;
 	private List<ConfItem> items;
 	private LinearLayout mLinLay;
 	private Button mBtnCancel;
@@ -40,6 +41,16 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
         f.setArguments(args);
         return f;
     }
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            changedListListener = (OnChangedListListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnSortListener");
+        }
+    }	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,10 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 		}
         return v;
     }
+	
+	public interface OnChangedListListener{
+		public void onChangedListListener(List<ConfItem> items);
+	}
 		
 	private void createRelText(ConfItem item){
 		View aV = getAppropriateView(item);
@@ -127,15 +142,10 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 		case R.id.btnCancelChange:
-			Log.i("ConfDialog", "BtnCancel");
 			break;
 		case R.id.btnDoChange:
-			if (somethingChanged()){
-				/*TODO passing the modified items list back to mainfragment.
-				* and process it there to be put into the items list there.
-				*/
-				Toast.makeText(getActivity().getBaseContext(), "To be implemented", Toast.LENGTH_LONG).show();	
-			}
+			if (somethingChanged())
+				changedListListener.onChangedListListener(items);
 			break;
 		}
 		dismiss();		

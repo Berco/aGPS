@@ -5,14 +5,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
+import by.zatta.agps.dialog.ChangeItemDialog.OnChangedListListener;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
+import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.billing.BillingActivity;
 import android.app.Activity;
 import android.app.Fragment;
@@ -29,7 +32,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements OnChangedListListener{
 	public static boolean DEBUG = true;
 	private int mStars;
 	
@@ -56,6 +59,13 @@ public class BaseActivity extends Activity {
             fm.beginTransaction().add(android.R.id.content, main, "main").commit();
         }
     }
+    
+    @Override
+	public void onChangedListListener(List<ConfItem> items) {
+		Fragment list = getFragmentManager().findFragmentByTag("main");
+    	((MainFragment) list).resortList(items);
+		
+	}
     
     @Override
 	public boolean onCreateOptionsMenu(android.view.Menu menu) {

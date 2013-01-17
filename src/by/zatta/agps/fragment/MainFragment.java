@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.DatabaseHelper;
 import by.zatta.agps.dialog.ChangeItemDialog;
@@ -259,4 +261,23 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		}		
 	}
 	@Override public void onNothingSelected(AdapterView<?>arg0){}
+
+	public void resortList(List<ConfItem> changedItems) {
+		/* TODO receiving a list of changed items here.
+		 * need to iterate though the existing list and update it.
+		 * maybe also save it somewhere and add an item to the
+		 * profile spinner.
+		 * Maybe an extra table in the database but that will be updated everytime
+		 * we update the app so we need also another way of backing that up. 
+		 * */
+		if (BaseActivity.DEBUG){
+			String controle=null;
+			for (ConfItem item : changedItems){
+	        	if (controle != null) controle = controle+item.getSetting();
+	        	else controle = item.getSetting();
+	        }
+	        Log.i("MainFragment", controle + " was changed");
+		}
+	Toast.makeText(getActivity().getBaseContext(), "received a list", Toast.LENGTH_LONG).show();
+	}
 }
