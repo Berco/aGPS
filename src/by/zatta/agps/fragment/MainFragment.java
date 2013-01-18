@@ -76,6 +76,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			mConfAdapter = new ConfItemListAdapter(getActivity());
 			setListAdapter(mConfAdapter);
 		}
+		myDbHelper.doesCustomProfileExist();  //TODO remove this line when the database has the custom column hardcoded
 		fillRegionSpinner();
 		fillPoolSpinner("world_name");
 		fillProfileSpinner();
@@ -113,7 +114,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		} else {
 			Toast.makeText(getActivity().getBaseContext(), item.toString(), Toast.LENGTH_SHORT).show();
 		}
-			
 	}
 	
 
@@ -138,10 +138,10 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         c=myDbHelper.query("items", null, null, null, null,null, null);       
         if (c.moveToFirst()) {
         	for (int i = 4; i < c.getColumnCount(); i++){
-        		labels.add(c.getString(i));
+        		if (!c.getString(i).equals("{null}")) labels.add(c.getString(i));
         		}
         }
-        c.close();        
+        c.close(); 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpProfile.setAdapter(dataAdapter);
@@ -158,7 +158,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         		labels.add(c.getString(i));
         		}
         }
-        c.close();        
+        c.close();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpRegion.setAdapter(dataAdapter);
@@ -176,7 +176,8 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         			c.getString(1).equals(item.getSection()))
         			sectionItems.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
         	} while (c.moveToNext());
-        }		
+        }
+        c.close();
 		return sectionItems;
 	}
 	
@@ -187,9 +188,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         	confItems.add(0, agps);
         
         confItems.add(0, getFromPoolSpinner());
-        
-        for (int i = 0; i < confItems.size(); i++)
-        	mConfAdapter.setData(confItems);
+       	mConfAdapter.setData(confItems);
         return confItems;
 	}
 	
@@ -206,6 +205,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         			ntpItems.add(new ConfItem(c.getString(0),null,null,null, c.getString(1)));
         	} while (c.moveToNext());
         }
+        c.close();
 		return ntpItems;
 	}
 	
@@ -221,20 +221,23 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
                 		}
             	} while (c.moveToNext());
         }
+        c.close();
         return item;
 	}
 	
 	private List<ConfItem> getFromProfileSpinner(){
 		List<ConfItem> itemsList = new ArrayList<ConfItem>();
 		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "").replace(" ", "");
+		
 		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
-        if(c.moveToPosition(1)) {
-        	do {
-        		if (!c.getString(0).equals("{null}") && !c.getString(4).equals("{null}"))
-        			itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
-        	} while (c.moveToNext());
-        }		
+		if(c.moveToPosition(1)) {
+			do {
+				if (!c.getString(0).equals("{null}") && !c.getString(4).equals("{null}"))
+					itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+			} while (c.moveToNext());
+		}
+		c.close();
 		return itemsList;
 	}
 	
@@ -263,13 +266,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	@Override public void onNothingSelected(AdapterView<?>arg0){}
 
 	public void resortList(List<ConfItem> changedItems) {
-		/* TODO receiving a list of changed items here.
-		 * need to iterate though the existing list and update it.
-		 * maybe also save it somewhere and add an item to the
-		 * profile spinner.
-		 * Maybe an extra table in the database but that will be updated everytime
-		 * we update the app so we need also another way of backing that up. 
-		 * */
 		if (BaseActivity.DEBUG){
 			String controle=null;
 			for (ConfItem item : changedItems){
@@ -278,6 +274,15 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	        }
 	        Log.i("MainFragment", controle + " was changed");
 		}
-	Toast.makeText(getActivity().getBaseContext(), "received a list", Toast.LENGTH_LONG).show();
+		myDbHelper.updateItemCustomItem("ITEMS", "Custom");
+		for (ConfItem item : getItemsFromDatabase())
+			myDbHelper.updateItemCustomItem(item.getLabel(), item.getSetting());
+		for (ConfItem item: changedItems)
+			myDbHelper.updateItemCustomItem(item.getLabel(), item.getSetting());
+		
+		fillProfileSpinner();
+		mSpProfile.setSelection(3);
+	
+	Toast.makeText(getActivity().getBaseContext(), "Updated custom profile", Toast.LENGTH_LONG).show();
 	}
 }

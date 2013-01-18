@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     String DB_PATH =null;
@@ -39,6 +40,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     
     
     public void createDataBase() throws IOException{
+    		// TODO need to create a backup and restore procedure for
+    		// the table CUSTOM
     		File f = new File(DB_PATH);
     		if (f.exists() || !f.exists()){
     			this.getReadableDatabase();
@@ -67,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
  
     public void openDataBase() throws SQLException{
         String myPath = DB_PATH + DB_NAME;
-    	myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+    	myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
  
     @Override
@@ -87,4 +90,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		return myDataBase.query(table, columns, selection, null, null, null, null);
 		
 	}
+	
+	public boolean doesCustomProfileExist(){
+		//TODO remove this method and hard code the empty column
+		//CUSTOM at the end of the database
+		try { 
+			myDataBase.execSQL("ALTER TABLE items ADD CUSTOM text");
+			myDataBase.execSQL("UPDATE items SET CUSTOM='{null}'" );
+			return false;
+		} catch (SQLException e) {
+			Log.i("DbHelper", "CUSTOM already exists");
+			return true;
+		}
+	}
+	
+	public void updateItemCustomItem(String label, String setting){
+		myDataBase.execSQL("UPDATE items SET CUSTOM='"+setting+"' WHERE ITEMS='"+label+"'");
+		
+	}
+	
 }
