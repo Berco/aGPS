@@ -120,7 +120,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			for (int i = 0; i < sectionItems.size(); i++){
 				db.execSQL("UPDATE items SET CUSTOM='"+sectionItems.get(i).getSetting()+"' WHERE ITEMS='"+sectionItems.get(i).getLabel()+"'");
 			}
-			db.execSQL("UPDATE items SET CUSTOM='"+"VODAFONE NL"+"' WHERE ITEMS='"+"CURRENT_CARRIER"+"'");
+			// testing line:
+			//db.execSQL("UPDATE items SET CUSTOM='"+"VODAFONE NL"+"' WHERE ITEMS='"+"CURRENT_CARRIER"+"'");
 		}catch (Exception e){
 			Log.i("database", "upgrade old=" + Integer.toString(oldVersion)+"->" + "new="+Integer.toString(newVersion)+" failed." );
 		}
