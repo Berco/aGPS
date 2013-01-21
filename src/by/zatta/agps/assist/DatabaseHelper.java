@@ -18,13 +18,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private SQLiteDatabase myDataBase; 
     private final Context myContext;
  
-    public DatabaseHelper(Context context) {
-    	super(context, DB_NAME, null, 1);
+    public DatabaseHelper(Context context, int appCode) {
+    	super(context, DB_NAME, null, appCode);
+    	Log.i("Constructing", "databaseHelper");
         this.myContext = context;
         DB_PATH="/data/data/"+context.getPackageName()+"/"+"databases/";
-    }	
-    
-    
+    }
+        
     /**
      * The database used here is filled with information from:
      * http://support.ntp.org/bin/view/Servers/NTPPoolServers
@@ -40,17 +40,33 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     
     
     public void createDataBase() throws IOException{
-    		// TODO need to create a backup and restore procedure for
-    		// the table CUSTOM
-    		File f = new File(DB_PATH);
-    		if (f.exists() || !f.exists()){
-    			this.getReadableDatabase();
-    			copyDataBase();
-    		}
+    	
+        if(databaseExists()){
+            // By calling this method here onUpgrade will be called on a
+            // writable database, but only if the version number has been increased
+        	// after first creatin the version is 0, second launch the version is
+        	// three. This time the oncreate is called but not the onupgrade.
+        	Log.i("Database existed", "getWritebleDatabase top be called");
+            this.getWritableDatabase();
+        }else{
+            //By calling this method an empty database will be created into the                     default system path
+            //of the application so we will be able to overwrite that database with our database.
+        	Log.i("Database did not exist", "getReadableDatabase top be called");
+        	this.getReadableDatabase();
+        	copyDataBase();
+        }
+    }
+    
+    private boolean databaseExists(){
+    	File f = new File(DB_PATH+DB_NAME);
+		if (f.exists()) return true; 
+		else return false;
+		
     }
 
     private void copyDataBase() throws IOException{
-     	try {
+    	Log.i("copyDataBase", "startCopy");
+    	try {
 			InputStream myInput = myContext.getResources().getAssets().open("fix_base/"+DB_NAME);
 			String outFileName = DB_PATH + DB_NAME;
 			OutputStream myOutput = new FileOutputStream(outFileName);
@@ -65,43 +81,68 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		} catch (Exception e) {
 			throw new Error ("troubles copying");
 		}
+    	Log.i("copyDataBase", "finishedCopy");
  
     }
  
     public void openDataBase() throws SQLException{
         String myPath = DB_PATH + DB_NAME;
+        Log.i("opening database", "start opening");
     	myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+    	Log.i("opened database version",Integer.toString(myDataBase.getVersion()));
     }
  
     @Override
 	public synchronized void close() {
+    	Log.i("onclose", "closing");
     	    if(myDataBase != null)
     		    myDataBase.close();
     	    super.close();
 	}
      
 	@Override
-	public void onCreate(SQLiteDatabase db) {	}
+	public void onCreate(SQLiteDatabase db) {
+		Log.i("onCreate", "creating");
+	}
  
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {	}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.i("onUpdrade", "old= " + Integer.toString(oldVersion)+ " new= "+Integer.toString(newVersion) );
+	}
 
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.i("onDowndrade", "old= " + Integer.toString(oldVersion)+ " new= "+Integer.toString(newVersion) );
+	}
+	
 	public Cursor query(String table,String[] columns, String selection,String[] selectionArgs,String groupBy,String having,String orderBy){
 		return myDataBase.query(table, columns, selection, null, null, null, null);
 		
 	}
 	
-	public boolean doesCustomProfileExist(){
-		//TODO remove this method and hard code the empty column
-		//CUSTOM at the end of the database
-		try { 
-			myDataBase.execSQL("ALTER TABLE items ADD CUSTOM text");
-			myDataBase.execSQL("UPDATE items SET CUSTOM='{null}'" );
-			return false;
-		} catch (SQLException e) {
-			Log.i("DbHelper", "CUSTOM already exists");
-			return true;
-		}
+//	public Cursor columnNames(String tableName){
+//		Cursor cursor = myDataBase.rawQuery("SELECT * FROM " + tableName + " LIMIT 1", null);
+//		String[] colNames = cursor.getColumnNames();
+//		for (String string : colNames)
+//			Log.i("DatabaseHelper", string);
+//		return cursor;
+//	}
+	
+	public Cursor getRegions(){
+		return myDataBase.rawQuery("SELECT DISTINCT CONTINENT FROM pools", null);
+		
+	}
+	
+	public Cursor getCountries(String continent){
+		return myDataBase.rawQuery("SELECT * FROM pools WHERE CONTINENT='"+continent+"'", null);
+	}
+	
+	public String getPoolfromSpinner(String country){
+		Cursor  c = myDataBase.rawQuery("SELECT * FROM pools WHERE COUNTRY='"+country+"'", null);
+		c.moveToFirst();
+		Log.i("getFromPoolspinner database version",Integer.toString(myDataBase.getVersion()));
+		return c.getString(1);
+		
 	}
 	
 	public void updateItemCustomItem(String label, String setting){
