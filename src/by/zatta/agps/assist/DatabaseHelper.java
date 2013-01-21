@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import by.zatta.agps.model.ConfItem;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -65,7 +69,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     private void copyDataBase() throws IOException{
-    	Log.i("copyDataBase", "startCopy");
     	try {
 			InputStream myInput = myContext.getResources().getAssets().open("fix_base/"+DB_NAME);
 			String outFileName = DB_PATH + DB_NAME;
@@ -80,9 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			myInput.close();
 		} catch (Exception e) {
 			throw new Error ("troubles copying");
-		}
-    	Log.i("copyDataBase", "finishedCopy");
- 
+		} 
     }
  
     public void openDataBase() throws SQLException{
@@ -101,33 +102,38 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	}
      
 	@Override
-	public void onCreate(SQLiteDatabase db) {
-		Log.i("onCreate", "creating");
-	}
+	public void onCreate(SQLiteDatabase db) {	}
  
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i("onUpdrade", "old= " + Integer.toString(oldVersion)+ " new= "+Integer.toString(newVersion) );
+		try{
+			List<ConfItem> sectionItems = new ArrayList<ConfItem>();
+			Cursor c = db.query("items", new String[]{"ITEMS", "CUSTOM"}, null, null, null, null, null);
+			if(c.moveToPosition(0)) {
+				do {
+					sectionItems.add(new ConfItem(c.getString(0), null, null, null, c.getString(1)));
+				} while (c.moveToNext());
+			}
+			c.close();        
+			try { copyDataBase(); } catch (IOException e) { }
+        
+			for (int i = 0; i < sectionItems.size(); i++){
+				db.execSQL("UPDATE items SET CUSTOM='"+sectionItems.get(i).getSetting()+"' WHERE ITEMS='"+sectionItems.get(i).getLabel()+"'");
+			}
+			db.execSQL("UPDATE items SET CUSTOM='"+"VODAFONE NL"+"' WHERE ITEMS='"+"CURRENT_CARRIER"+"'");
+		}catch (Exception e){
+			Log.i("database", "upgrade old=" + Integer.toString(oldVersion)+"->" + "new="+Integer.toString(newVersion)+" failed." );
+		}
 	}
-
+	
 	@Override
-	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i("onDowndrade", "old= " + Integer.toString(oldVersion)+ " new= "+Integer.toString(newVersion) );
-	}
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
 	
 	public Cursor query(String table,String[] columns, String selection,String[] selectionArgs,String groupBy,String having,String orderBy){
 		return myDataBase.query(table, columns, selection, null, null, null, null);
 		
 	}
-	
-//	public Cursor columnNames(String tableName){
-//		Cursor cursor = myDataBase.rawQuery("SELECT * FROM " + tableName + " LIMIT 1", null);
-//		String[] colNames = cursor.getColumnNames();
-//		for (String string : colNames)
-//			Log.i("DatabaseHelper", string);
-//		return cursor;
-//	}
-	
+
 	public Cursor getRegions(){
 		return myDataBase.rawQuery("SELECT DISTINCT CONTINENT FROM pools", null);
 		
@@ -140,7 +146,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	public String getPoolfromSpinner(String country){
 		Cursor  c = myDataBase.rawQuery("SELECT * FROM pools WHERE COUNTRY='"+country+"'", null);
 		c.moveToFirst();
-		Log.i("getFromPoolspinner database version",Integer.toString(myDataBase.getVersion()));
 		return c.getString(1);
 		
 	}
