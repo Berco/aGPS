@@ -103,7 +103,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 			if (prev != null) ft.remove(prev);
 			ft.addToBackStack(null);
-			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase());
+			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase(), true);
 			newFragment.show(ft, "dialog");
 			break;
 		case R.id.scrollView1:

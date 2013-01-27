@@ -5,6 +5,13 @@
     <string name="AboutTitle">About this app</string>
     
     <string name="ConfirmTitle">Create / update files</string>
+    <string name="DonateTitle">Donate</string>
+    <string name="CommonUser">Common user</string>
+    <string name="StarredUser">Starred user</string>
+    <string name="PremiumUser">Premium user</string>
+    <string name="Waiting">Waiting time: \u0020</string>
+    <string name="seconds">\u0020 seconds</string>
+    
     <string name="btnNoInstall">Cancel</string>
 	<string name="btnYesNoReboot">Create files \n Don\'t reboot \n</string>
 	<string name="btnYesAndReboot">Create files \n And reboot \n</string>

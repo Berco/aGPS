@@ -9,46 +9,75 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.zatta.agps.BaseActivity;
-import by.zatta.agps.R;
-import by.zatta.agps.assist.ShellProvider;
-import by.zatta.agps.model.ConfItem;
+import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import by.zatta.agps.BaseActivity;
+import by.zatta.agps.R;
+import by.zatta.agps.assist.ShellProvider;
+import by.zatta.agps.model.ConfItem;
 
 public class ConfirmDialog extends DialogFragment 
 	implements View.OnClickListener {
 	
+	static final String TAG = "ConfirmDialog";
 	private TextView tvTB;
 	private Button NO;
 	private Button YESANDREBOOT;
 	private Button YESNOREBOOT;
+	private TextView headerAppName;
+	private TextView headerUserName;
+	private ImageView starCounter;
+	private ImageView buyStars;
+	private ImageView buyPremium;
+	private final int SCREEN_BILLING=1;
+	private final int SCREEN_CONFIRM=2;
+	private LinearLayout parent;
 	private List<ConfItem> items;
+	private CountDownTimer timer;
+	private Boolean isForConfirmation;
 	
-	public static ConfirmDialog newInstance(List<ConfItem> list) {
+	OnDonateListener donateListener;
+	
+	public static ConfirmDialog newInstance(List<ConfItem> list, Boolean forConfirmation) {
         ConfirmDialog f = new ConfirmDialog();
         
         Bundle args = new Bundle();
         args.putParcelableArrayList("lijst", (ArrayList<? extends Parcelable>) list);
+        args.putBoolean("confirmation", forConfirmation);
         f.setArguments(args);
         
         return f;
     }
-	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            donateListener = (OnDonateListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnDonateListener");
+        }
+    }
+	public interface OnDonateListener{
+		public void onDonateListener(String sku);
+	}
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         items = getArguments().getParcelableArrayList("lijst");
+        isForConfirmation = getArguments().getBoolean("confirmation", false);
         setStyle(DialogFragment.STYLE_NORMAL, 0);
         setRetainInstance(false);
     }
@@ -58,10 +87,20 @@ public class ConfirmDialog extends DialogFragment
             Bundle savedInstanceState) {
     	
     	getDialog().setTitle(getString(R.string.ConfirmTitle));
-        View v = inflater.inflate(R.layout.confirm_dialog, container, false);
+        
+    	View v = inflater.inflate(R.layout.confirm_dialog, container, false);
+        parent = (LinearLayout) v.findViewById(R.id.parentViewConfirmDialog);
+        
+        headerAppName = (TextView) v.findViewById(R.id.headerAppName);
+        headerUserName = (TextView) v.findViewById(R.id.headerUserName);
+        starCounter = (ImageView) v.findViewById(R.id.ivStars);
+        
+    	buyStars = (ImageView) v.findViewById(R.id.ivBuyStars);
+    	buyPremium = (ImageView) v.findViewById(R.id.ivBuyPremium);
+    	buyStars.setOnClickListener(this);
+    	buyPremium.setOnClickListener(this);
         
         tvTB = (TextView) v.findViewById(R.id.text);;
-        
         NO = (Button)v.findViewById(R.id.btnNoInstall);
         YESANDREBOOT = (Button) v.findViewById(R.id.btnYesAndReboot);
         YESNOREBOOT = (Button) v.findViewById(R.id.btnYesNoReboot);
@@ -70,22 +109,63 @@ public class ConfirmDialog extends DialogFragment
         YESNOREBOOT.setOnClickListener(this);
         NO.setOnClickListener(this); 
         
-        setUI(canNTP(), wantNTP());
-		
+    	if (isForConfirmation)
+    		try { showTimer(seconds() * 1000); } catch (NumberFormatException e) { }
+    	else{
+    		getDialog().setTitle(getString(R.string.DonateTitle));
+    		setScreen(SCREEN_BILLING);
+    	}
+    		
+    		
+    		
 		return v;
     }
     
-    /* Donator - no ntp - text is donated, why not use the DG server
+	@Override
+	public void onDestroyView() {
+		Log.d(TAG, "destroyed");
+		if (timer != null) timer.cancel();
+		super.onDestroyView();
+	}
+	
+	/* Donator - no ntp - text is donated, why not use the DG server
      * Donator - ntp - text is donator, thanks for donating
      * Free - no ntp - text is why not donate and use DG servers
      * Free - ntp text is sorry, you have to be a donator to use these servers
      */
-    
+    private void setScreen(int SCREEN){
+    	if (BaseActivity.mStars >= 0) {
+    		headerAppName.setTextColor(getResources().getColor(R.color.star_yellow));
+    		headerUserName.setTextColor(getResources().getColor(R.color.star_yellow));
+    		headerUserName.setText(getString(R.string.StarredUser));
+    	}
+		if (BaseActivity.isPremium){
+			headerAppName.setTextColor(getResources().getColor(R.color.premium_purple));
+    		headerUserName.setTextColor(getResources().getColor(R.color.premium_purple));
+    		headerUserName.setText(getString(R.string.PremiumUser));
+			buyPremium.setVisibility(View.GONE);
+			
+		}
+		if (BaseActivity.mStars == 1) starCounter.setImageResource(R.drawable.star1);
+		if (BaseActivity.mStars == 2) starCounter.setImageResource(R.drawable.star2);
+		if (BaseActivity.mStars == 3) starCounter.setImageResource(R.drawable.star3);
+		
+    	switch (SCREEN){
+    	
+		case SCREEN_BILLING:
+			parent.findViewById(R.id.screen_billing).setVisibility(View.VISIBLE);
+			parent.findViewById(R.id.screen_confirm).setVisibility(View.GONE);
+			parent.findViewById(R.id.screen_buttons).setVisibility(View.GONE);
+			break;
+			
+		case SCREEN_CONFIRM:
+			parent.findViewById(R.id.screen_billing).setVisibility(View.GONE);
+			parent.findViewById(R.id.screen_confirm).setVisibility(View.VISIBLE);
+			parent.findViewById(R.id.screen_buttons).setVisibility(View.VISIBLE);
+    	}
+    }
     private boolean canNTP(){
-    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-        int stars = sp.getInt("valueBugTrack", 1);
-        boolean prem = sp.getBoolean("doBugTrack", false);
-        if (stars > 1 || prem) return true;
+    	if (BaseActivity.mStars > 2 || BaseActivity.isPremium) return true;
         return false;
     }
     
@@ -94,8 +174,42 @@ public class ConfirmDialog extends DialogFragment
     	return false;
     }
     
+    private int seconds(){
+    	int seconds = 20;
+    	if (BaseActivity.mStars == 1) seconds = 11;
+    	if (BaseActivity.mStars == 2) seconds = 6;
+    	if (BaseActivity.mStars == 3 || BaseActivity.isPremium) seconds = 0;
+    	return seconds;
+    }
+    
+    private void showTimer(int countdownMillis) {
+    	
+    	  if(timer != null) timer.cancel();
+    	  if (countdownMillis != 0){
+    		  setScreen(SCREEN_BILLING);
+    		  timer = new CountDownTimer(countdownMillis, 1000) {
+    			  @Override
+    			  public void onTick(long millisUntilFinished) {
+    				  getDialog().setTitle(getString(R.string.Waiting)+(millisUntilFinished / 1000)+getString(R.string.seconds));
+    			  }
+    			  @Override
+    			  public void onFinish() {
+    				  getDialog().setTitle(getString(R.string.ConfirmTitle));
+    				  setScreen(SCREEN_CONFIRM);
+    				  setUI(canNTP(), wantNTP());;
+    			  }
+    		  }.start();
+    	  }
+    	  else {
+    		  setScreen(SCREEN_CONFIRM);
+    		  setUI(canNTP(), wantNTP());
+    	  }
+    	}
+    
     private void setUI(boolean can, boolean want){
-    	String text = null;    	
+    	String text = null;
+		YESANDREBOOT.setVisibility(View.VISIBLE);
+		YESNOREBOOT.setVisibility(View.VISIBLE);
     	if (can && want) {
     		text  = "Thanks for supporting us! Enjoy your GPS!";
     		tvTB.setTextColor(getResources().getColor(R.color.green));
@@ -115,26 +229,33 @@ public class ConfirmDialog extends DialogFragment
     		text  = "No donator, sorry, you can not use the top notch DG server. Please " +
     				"read the about. Donate to get acces or feel free to use one of the local " +
     				"ntp servers and the standard google xtra.bin servers.";
-    		YESANDREBOOT.setVisibility(View.GONE);
-    		YESNOREBOOT.setVisibility(View.GONE);
     		tvTB.setTextColor(getResources().getColor(R.color.red));
     	}
-    	
-    	
 		tvTB.setText(text);
     }
 	
 	@Override
 	public void onClick(View v) {
-		String mSSL = create_conf();
 		
 		switch (v.getId()){
 		case R.id.btnNoInstall:
 			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
 			break;
+		case (R.id.ivBuyPremium):
+			donateListener.onDonateListener(BaseActivity.SKU_PREMIUM);
+			return;
+		case (R.id.ivBuyStars):
+			int s = BaseActivity.mStars;
+			String sku = BaseActivity.SKU_EXTRA;
+			if (s == 2) sku = BaseActivity.SKU_STAR_THREE;
+			if (s == 1) sku = BaseActivity.SKU_STAR_TWO;
+			if (s == 0) sku = BaseActivity.SKU_STAR_ONE;
+			donateListener.onDonateListener(sku);
+			return;
 		case R.id.btnYesAndReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing and Rebooting", Toast.LENGTH_LONG).show();
-			try {				
+			try {		
+				String mSSL = create_conf();
 				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot " + mSSL);
 			} catch (Exception e) {	}
 				
@@ -142,6 +263,7 @@ public class ConfirmDialog extends DialogFragment
 		case R.id.btnYesNoReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing without Rebooting", Toast.LENGTH_LONG).show();
 			try {
+				String mSSL = create_conf();
 				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot " + mSSL);
 			} catch (Exception e) {	}
 			
@@ -179,8 +301,6 @@ public class ConfirmDialog extends DialogFragment
 	    }catch(IOException e){}
 		return mSSL;
 	}
-
-	
 	
 }
 

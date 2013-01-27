@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,16 +13,21 @@ import org.apache.commons.io.IOUtils;
 
 import by.zatta.agps.R;
 import by.zatta.agps.assist.ShellProvider;
+import by.zatta.agps.dialog.ConfirmDialog;
 import by.zatta.agps.dialog.ChangeItemDialog.OnChangedListListener;
+import by.zatta.agps.dialog.ConfirmDialog.OnDonateListener;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
 import by.zatta.agps.model.ConfItem;
-import by.zatta.agps.billing.BillingActivity;
+import by.zatta.agps.billing.IabHelper;
+import by.zatta.agps.billing.IabResult;
+import by.zatta.agps.billing.Inventory;
+import by.zatta.agps.billing.Purchase;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -29,12 +35,22 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class BaseActivity extends Activity implements OnChangedListListener{
+public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener{
+	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
-	private int mStars;
+	public static int mStars;
+	public static boolean isPremium;
+	IabHelper mHelper;
+	static final int RC_REQUEST = 10001;
+	public static final String SKU_PREMIUM = "premium";
+	public static final String SKU_EXTRA = "extra_donation_two";
+	public static final String SKU_STAR_ONE = "first_star";
+	public static final String SKU_STAR_TWO = "second_star";
+	public static final String SKU_STAR_THREE = "third_star";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +60,12 @@ public class BaseActivity extends Activity implements OnChangedListListener{
         
         ShellProvider.INSTANCE.isSuAvailable();
         new PlantFiles().execute();
+        mHelper = new IabHelper(this);
+        mHelper.enableDebugLogging(false);
+        Log.d(TAG, "Starting setup.");
+        mHelper.startSetup(setupListener);
                
         SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        mStars = getPrefs.getInt("valueBugTrack", 1);
         String language = getPrefs.getString("languagePref", "unknown");
         if (!language.equals("unknown")) makeLocale(language);
         
@@ -61,9 +80,21 @@ public class BaseActivity extends Activity implements OnChangedListListener{
     }
     
     @Override
+    public void onDestroy() {
+        if (mHelper != null) mHelper.dispose();
+        mHelper = null;
+        super.onDestroy();
+    }
+    
+    @Override
 	public void onChangedListListener(List<ConfItem> items) {
 		Fragment list = getFragmentManager().findFragmentByTag("main");
     	((MainFragment) list).resortList(items);
+		
+	}
+    @Override
+	public void onDonateListener(String sku) {
+    	mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener);
 		
 	}
     
@@ -101,12 +132,13 @@ public class BaseActivity extends Activity implements OnChangedListListener{
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getTitle().equals("star")){
-    		Intent i = new Intent(BaseActivity.this, BillingActivity.class);
-			startActivityForResult(i,14);	
+    	FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		if (item.getTitle().equals("star")){			
+    			DialogFragment newFragment = ConfirmDialog.newInstance(new ArrayList<ConfItem>(), false);
+    			newFragment.show(ft, "dialog");    		
     	}else{
-    		FragmentManager fm = getFragmentManager();
-    		FragmentTransaction ft = fm.beginTransaction();
+    		
     		Fragment pref = getFragmentManager().findFragmentByTag("prefs");
     		if (pref == null){
     			ft.replace(android.R.id.content, new PrefFragment(), "prefs");
@@ -120,17 +152,74 @@ public class BaseActivity extends Activity implements OnChangedListListener{
     	}
 		return false;
 	}
+
+    IabHelper.OnIabSetupFinishedListener setupListener = new IabHelper.OnIabSetupFinishedListener() {
+        public void onIabSetupFinished(IabResult result) {
+            Log.d(TAG, "Setup finished.");
+            if (!result.isSuccess()) return;
+            Log.d(TAG, "Setup successful. Querying inventory.");
+            mHelper.queryInventoryAsync(mGotInventoryListener);
+        }
+    };
     
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK){
-			Bundle basket = data.getExtras();
-			int s = basket.getInt("answer");
-			mStars = s;
-			invalidateOptionsMenu();
-		}
-	}
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            Log.d(TAG, "Query inventory finished.");
+            if (result.isFailure()) return;
+            Log.d(TAG, "Query inventory was successful.");
+
+            isPremium = inventory.hasPurchase(SKU_PREMIUM);
+            if (inventory.hasPurchase(SKU_STAR_ONE)) mStars=1;
+            if (inventory.hasPurchase(SKU_STAR_TWO)) mStars=2;
+            if (inventory.hasPurchase(SKU_STAR_THREE)) mStars=3;
+            if (isPremium) mStars=3;
+            
+            invalidateOptionsMenu();
+            Log.d(TAG, "User is " + (isPremium ? "PREMIUM" : "NOT PREMIUM") + " and has " + Integer.toString(mStars) + " stars.");
+
+            if (inventory.hasPurchase(SKU_EXTRA)) {
+                Log.d(TAG, "Still owning extra donation. consuming it");
+                mHelper.consumeAsync(inventory.getPurchase(SKU_EXTRA), mConsumeFinishedListener);
+                return;
+            }
+        }
+    };
+    
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+            if (result.isFailure()) return;
+            Log.d(TAG, "Purchase successful.");
+
+            if (purchase.getSku().equals(SKU_EXTRA))
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+            else if (purchase.getSku().equals(SKU_PREMIUM)) isPremium = true;
+            else if (purchase.getSku().equals(SKU_STAR_ONE)) mStars=1;
+            else if (purchase.getSku().equals(SKU_STAR_TWO)) mStars=2;
+            else if (purchase.getSku().equals(SKU_STAR_THREE)) mStars=3;
+            if (isPremium) mStars = 3;
+            
+            invalidateOptionsMenu();
+            Log.d(TAG, "Purchase conplete, purchased: " + purchase.getSku()); 
+        }
+    };
+    
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+            
+            //Only for extra donations
+            if (result.isSuccess()) {
+                Log.d(TAG, "Consumption successful. Provisioning.");
+            }
+            else {
+            	Log.d(TAG, "Consumption failed. Provisioning.");
+            }
+            
+            Log.d(TAG, "End consumption flow.");
+        }
+    };
+    
     
     private class PlantFiles extends AsyncTask<Void, Void, Void> {
     	
@@ -169,7 +258,6 @@ public class BaseActivity extends Activity implements OnChangedListListener{
 			}
 			return null;
 		}
-		
 		
 	}
 
