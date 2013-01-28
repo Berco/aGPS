@@ -12,13 +12,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:gravity="center_horizontal">
-				<!--
-				<ImageView
-						android:id="@+id/ivBillingHeader"
-						android:src="@drawable/datafix_common"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content" />
-				-->
+
 				<ImageView
 						android:id="@+id/ivBillingHeader"
 						android:src="@drawable/ic_launcher"
@@ -49,7 +43,7 @@
 
 
 		<LinearLayout
-				android:layout_width="fill_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:gravity="center"
 				android:id="@+id/screen_billing"
@@ -61,19 +55,75 @@
 						android:id="@+id/ivStars"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="40dp" />
+						android:layout_marginBottom="20dp" />
+
+				<RelativeLayout
+						android:id="@+id/rlBuyStars"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="20dp"
+						android:clickable="true"
+						android:background="@drawable/donate_button">
+						<TextView
+								android:id="@+id/tvBuyYour"
+								android:text="Buy your"
+								android:layout_alignParentTop="true"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:textColor="@color/star_yellow"
+								style="@style/text_h3" />
+						<TextView
+								android:id="@+id/tvNumberedStar"
+								android:text="First star"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginLeft="10dp"
+								android:layout_marginTop="10dp"
+								style="@style/text_h3"
+								android:textAppearance="?android:attr/textAppearanceMedium" />
+				</RelativeLayout>
+
+				<RelativeLayout
+						android:id="@+id/rlBuyPremium"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="20dp"
+						android:clickable="true"
+						android:background="@drawable/donate_button">
+						<TextView
+								android:id="@+id/tvBecomeA"
+								android:text="Become a"
+								android:layout_alignParentTop="true"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:textColor="@color/star_yellow"
+								style="@style/text_h3" />
+						<TextView
+								android:id="@+id/tvPremiumUser"
+								android:text="Premium user"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginLeft="10dp"
+								android:layout_marginTop="10dp"
+								style="@style/text_h3"
+								android:textAppearance="?android:attr/textAppearanceMedium" />
+				</RelativeLayout>
+
 				<ImageView
 						android:src="@drawable/buy_stars"
 						android:id="@+id/ivBuyStars"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="20dp" />
+						android:layout_marginBottom="20dp"
+						android:visibility="gone" />
+
 				<ImageView
 						android:src="@drawable/upgrade_app"
 						android:id="@+id/ivBuyPremium"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginBottom="20dp" />
+						android:layout_marginBottom="20dp"
+						android:visibility="gone" />
 		</LinearLayout>
 
 

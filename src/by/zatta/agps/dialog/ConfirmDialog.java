@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import by.zatta.agps.BaseActivity;
@@ -38,9 +39,11 @@ public class ConfirmDialog extends DialogFragment
 	private Button YESNOREBOOT;
 	private TextView headerAppName;
 	private TextView headerUserName;
+	private TextView buyNumberStars;
+	private TextView buyYour;
 	private ImageView starCounter;
-	private ImageView buyStars;
-	private ImageView buyPremium;
+	private RelativeLayout mBuyStars;
+	private RelativeLayout mBuyPremium;
 	private final int SCREEN_BILLING=1;
 	private final int SCREEN_CONFIRM=2;
 	private LinearLayout parent;
@@ -95,10 +98,12 @@ public class ConfirmDialog extends DialogFragment
         headerUserName = (TextView) v.findViewById(R.id.headerUserName);
         starCounter = (ImageView) v.findViewById(R.id.ivStars);
         
-    	buyStars = (ImageView) v.findViewById(R.id.ivBuyStars);
-    	buyPremium = (ImageView) v.findViewById(R.id.ivBuyPremium);
-    	buyStars.setOnClickListener(this);
-    	buyPremium.setOnClickListener(this);
+        buyYour = (TextView) v.findViewById(R.id.tvBuyYour);
+        buyNumberStars = (TextView) v.findViewById(R.id.tvNumberedStar);
+        mBuyPremium = (RelativeLayout) v.findViewById(R.id.rlBuyPremium);
+        mBuyStars = (RelativeLayout) v.findViewById(R.id.rlBuyStars);
+    	mBuyStars.setOnClickListener(this);
+    	mBuyPremium.setOnClickListener(this);
         
         tvTB = (TextView) v.findViewById(R.id.text);;
         NO = (Button)v.findViewById(R.id.btnNoInstall);
@@ -134,7 +139,7 @@ public class ConfirmDialog extends DialogFragment
      * Free - ntp text is sorry, you have to be a donator to use these servers
      */
     private void setScreen(int SCREEN){
-    	if (BaseActivity.mStars >= 0) {
+    	if (BaseActivity.mStars >= 1) {
     		headerAppName.setTextColor(getResources().getColor(R.color.star_yellow));
     		headerUserName.setTextColor(getResources().getColor(R.color.star_yellow));
     		headerUserName.setText(getString(R.string.StarredUser));
@@ -143,12 +148,22 @@ public class ConfirmDialog extends DialogFragment
 			headerAppName.setTextColor(getResources().getColor(R.color.premium_purple));
     		headerUserName.setTextColor(getResources().getColor(R.color.premium_purple));
     		headerUserName.setText(getString(R.string.PremiumUser));
-			buyPremium.setVisibility(View.GONE);
+			mBuyPremium.setVisibility(View.GONE);
 			
 		}
-		if (BaseActivity.mStars == 1) starCounter.setImageResource(R.drawable.star1);
-		if (BaseActivity.mStars == 2) starCounter.setImageResource(R.drawable.star2);
-		if (BaseActivity.mStars == 3) starCounter.setImageResource(R.drawable.star3);
+		if (BaseActivity.mStars == 1) {
+			starCounter.setImageResource(R.drawable.star1);
+			buyNumberStars.setText("Second star" );
+		}
+		if (BaseActivity.mStars == 2) {
+			starCounter.setImageResource(R.drawable.star2);
+			buyNumberStars.setText("Third star" );
+		}
+		if (BaseActivity.mStars == 3) {
+			starCounter.setImageResource(R.drawable.star3);
+			buyYour.setText("Do an");
+			buyNumberStars.setText("Extra Donation");
+		}
 		
     	switch (SCREEN){
     	
@@ -175,7 +190,7 @@ public class ConfirmDialog extends DialogFragment
     }
     
     private int seconds(){
-    	int seconds = 20;
+    	int seconds = 21;
     	if (BaseActivity.mStars == 1) seconds = 11;
     	if (BaseActivity.mStars == 2) seconds = 6;
     	if (BaseActivity.mStars == 3 || BaseActivity.isPremium) seconds = 0;
@@ -241,10 +256,10 @@ public class ConfirmDialog extends DialogFragment
 		case R.id.btnNoInstall:
 			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
 			break;
-		case (R.id.ivBuyPremium):
+		case (R.id.rlBuyPremium):
 			donateListener.onDonateListener(BaseActivity.SKU_PREMIUM);
 			return;
-		case (R.id.ivBuyStars):
+		case (R.id.rlBuyStars):
 			int s = BaseActivity.mStars;
 			String sku = BaseActivity.SKU_EXTRA;
 			if (s == 2) sku = BaseActivity.SKU_STAR_THREE;
