@@ -108,22 +108,6 @@
 								style="@style/text_h3"
 								android:textAppearance="?android:attr/textAppearanceMedium" />
 				</RelativeLayout>
-
-				<ImageView
-						android:src="@drawable/buy_stars"
-						android:id="@+id/ivBuyStars"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginBottom="20dp"
-						android:visibility="gone" />
-
-				<ImageView
-						android:src="@drawable/upgrade_app"
-						android:id="@+id/ivBuyPremium"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginBottom="20dp"
-						android:visibility="gone" />
 		</LinearLayout>
 
 

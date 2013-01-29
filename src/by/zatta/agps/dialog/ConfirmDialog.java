@@ -161,8 +161,8 @@ public class ConfirmDialog extends DialogFragment
 		}
 		if (BaseActivity.mStars == 3) {
 			starCounter.setImageResource(R.drawable.star3);
-			buyYour.setText("Do an");
-			buyNumberStars.setText("Extra Donation");
+			buyYour.setText("Do an extra");
+			buyNumberStars.setText("Donation");
 		}
 		
     	switch (SCREEN){

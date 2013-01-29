@@ -1,12 +1,11 @@
 bin
 gen
 libs
-other files
 
 src/by/zatta/agps/billing
 src/com/android/vending/billing
-res/drawable-xhdpi
-res/layout/billing_activity_layout.xml
+/other files/*.png
+/other files/*.xcf
 
 .classpath
 .project
