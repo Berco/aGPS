@@ -19,7 +19,8 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper{
     String DB_PATH =null;
     private static String DB_NAME = "configurations.db";
-    private SQLiteDatabase myDataBase; 
+    private SQLiteDatabase myDataBase;
+    private int mAppCode;
     private final Context myContext;
  
     public DatabaseHelper(Context context, int appCode) {
@@ -27,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     	Log.i("Constructing", "databaseHelper");
         this.myContext = context;
         DB_PATH="/data/data/"+context.getPackageName()+"/"+"databases/";
+        mAppCode = appCode;
     }
         
     /**
@@ -69,6 +71,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     private void copyDataBase() throws IOException{
+    	File f = new File(DB_PATH+DB_NAME);
+    	f.delete();
+    	Log.d("Database", "copyDataBase");
     	try {
 			InputStream myInput = myContext.getResources().getAssets().open("fix_base/"+DB_NAME);
 			String outFileName = DB_PATH + DB_NAME;
@@ -90,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String myPath = DB_PATH + DB_NAME;
         Log.i("opening database", "start opening");
     	myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+    	myDataBase.execSQL("PRAGMA user_version="+Integer.toString(mAppCode)+";");	
     	Log.i("opened database version",Integer.toString(myDataBase.getVersion()));
     }
  
@@ -107,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try{
+			Log.i("database", "upgrading old=" + Integer.toString(oldVersion)+"->" + "new="+Integer.toString(newVersion) );
 			List<ConfItem> sectionItems = new ArrayList<ConfItem>();
 			Cursor c = db.query("items", new String[]{"ITEMS", "CUSTOM"}, null, null, null, null, null);
 			if(c.moveToPosition(0)) {
@@ -114,14 +121,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 					sectionItems.add(new ConfItem(c.getString(0), null, null, null, c.getString(1)));
 				} while (c.moveToNext());
 			}
-			c.close();        
+			c.close(); 
+			
 			try { copyDataBase(); } catch (IOException e) { }
-        
+			db.close();
+			openDataBase();
+			
 			for (int i = 0; i < sectionItems.size(); i++){
-				db.execSQL("UPDATE items SET CUSTOM='"+sectionItems.get(i).getSetting()+"' WHERE ITEMS='"+sectionItems.get(i).getLabel()+"'");
+				myDataBase.execSQL("UPDATE items SET CUSTOM='"+sectionItems.get(i).getSetting()+"' WHERE ITEMS='"+sectionItems.get(i).getLabel()+"'");
 			}
+			
 			// testing line:
-			//db.execSQL("UPDATE items SET CUSTOM='"+"VODAFONE NL"+"' WHERE ITEMS='"+"CURRENT_CARRIER"+"'");
+			//myDataBase.execSQL("UPDATE items SET CUSTOM='"+"VODAFONE NL"+"' WHERE ITEMS='"+"CURRENT_CARRIER"+"'");
 		}catch (Exception e){
 			Log.i("database", "upgrade old=" + Integer.toString(oldVersion)+"->" + "new="+Integer.toString(newVersion)+" failed." );
 		}
@@ -149,6 +160,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		c.moveToFirst();
 		return c.getString(1);
 		
+	}
+	
+	public String getColumnNameFor(String profile){
+		int colNum=0;
+		String colName = "GOOGLE";
+        Cursor c=myDataBase.query("items", null, null, null, null,null, null);       
+        if (c.moveToFirst()) {
+        	for (int i = 0; i < c.getColumnCount(); i++){
+        		if (c.getString(i).equals(profile)) colNum=i;
+        		}
+        }
+		c = myDataBase.rawQuery("PRAGMA table_info(items)", null);
+		int counter=0;
+		if ( c.moveToFirst() ) {
+		    do {
+		    	if (counter == colNum) colName = c.getString(1);
+		    	counter++;
+		    } while (c.moveToNext());
+		}
+		c.close();
+		return colName;
 	}
 	
 	public void updateItemCustomItem(String label, String setting){

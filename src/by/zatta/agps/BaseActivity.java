@@ -174,6 +174,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
             if (inventory.hasPurchase(SKU_STAR_THREE)) mStars=3;
             if (isPremium) mStars=3;
             
+            
             invalidateOptionsMenu();
             Log.d(TAG, "User is " + (isPremium ? "PREMIUM" : "NOT PREMIUM") + " and has " + Integer.toString(mStars) + " stars.");
 
@@ -254,6 +255,19 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 					os.close();
 					os = null;
 					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/totalscript.sh");
+				} catch (IOException e) {}
+			}
+			File j = new File(data_storage_root+"/busybox");
+			if (!j.exists() || j.exists()){
+				try {
+					is = getResources().getAssets().open("scripts/busybox");
+					os = new FileOutputStream(data_storage_root+"/busybox");
+					IOUtils.copy(is, os);
+					is.close();
+					os.flush();
+					os.close();
+					os = null;
+					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/busybox");
 				} catch (IOException e) {}
 			}
 			return null;

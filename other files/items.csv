@@ -1,0 +1,45 @@
+ITEMS|SECTION|TYPE|DISCRIPTION|Google|Google Alt|Google No SSL|Google Alt No SSL|ASUS Transformer Prime TF200|ASUS Transformer Prime TF300|ASUS Transformer TF100|Acer Iconia 500|Samsung Galaxy S3 V.1|Samsung Galaxy S3 V.2|{null}
+DEFAULT_AGPS_ENABLE|daemon|bool|“NOT GOING TO GO INTO DETAIL HERE.  THESE  NEED TO BE CALLED FIRST IN GPS DAEMON  STARTUP.  RELATES TO AGPS AND SUPL.”|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|{null}
+DEFAULT_USER_PLANE|daemon|bool|“NOT GOING TO GO INTO DETAIL HERE.  THESE  NEED TO BE CALLED FIRST IN GPS DAEMON  STARTUP.  RELATES TO AGPS AND SUPL.”|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|TRUE|{null}
+DEFAULT_SSL_ENABLE|daemon|bool|“NOT GOING TO GO INTO DETAIL HERE.  THESE  NEED TO BE CALLED FIRST IN GPS DAEMON  STARTUP.  RELATES TO AGPS AND SUPL.”|FALSE|FALSE|FALSE|FALSE|FALSE|FALSE|FALSE|FALSE|FALSE|FALSE|{null}
+INTERMEDIATE_POS|thres|integer|“INTERMEDIATEPOS RELATES TO USING GPS DATA  FROM SATS THAT ARE NOT FULLY LOCKED. THE ACCURACY VARIABLE IS A THRESHOLD MAX  ON DEVIATIONS FROM THE ASSUMED LOCATION  WHERE THE DEVICE WILL DISCARD DATA.  THIS VARIABLE IS  0 IN ALTERNATE BUILDS”|1|0|1|0|1|1|1|1|1|1|{null}
+ACCURACY_THRES|thres|integer|“INTERMEDIATEPOS RELATES TO USING GPS DATA  FROM SATS THAT ARE NOT FULLY LOCKED. THE ACCURACY VARIABLE IS A THRESHOLD MAX  ON DEVIATIONS FROM THE ASSUMED LOCATION  WHERE THE DEVICE WILL DISCARD DATA.  THIS VARIABLE IS  0 IN ALTERNATE BUILDS”|3000|3000|3000|3000|3500|3500|3500|3000|3000|3000|{null}
+QOS_ACCURACY|qos|integer|“THIS IS QUALITY OF SERVICE INFORMATION FOR  PROCESSING THE GPS DATA.  MOST SHOULD BE  SELF-EXPLANATORY.  GPS DATA OUTSIDE THE  ACCURACY AND THRESHOLD RANGE WILL NOT BE  USED WHEN POSITIONING DATA.”|50|50|50|50|50|50|50|50|{null}|{null}|{null}
+QOS_TIME_OUT_AGPS|qos|integer|“THIS IS QUALITY OF SERVICE INFORMATION FOR  PROCESSING THE GPS DATA.  MOST SHOULD BE  SELF-EXPLANATORY.  GPS DATA OUTSIDE THE  ACCURACY AND THRESHOLD RANGE WILL NOT BE  USED WHEN POSITIONING DATA.”|95|95|95|95|95|95|95|95|{null}|{null}|{null}
+QOS_TIME_OUT_STANDALONE|qos|integer|“THIS IS QUALITY OF SERVICE INFORMATION FOR  PROCESSING THE GPS DATA.  MOST SHOULD BE  SELF-EXPLANATORY.  GPS DATA OUTSIDE THE  ACCURACY AND THRESHOLD RANGE WILL NOT BE  USED WHEN POSITIONING DATA.”|80|80|80|80|80|80|80|80|{null}|{null}|{null}
+QosHorizontalThreshold|qos|integer|“THIS IS QUALITY OF SERVICE INFORMATION FOR  PROCESSING THE GPS DATA.  MOST SHOULD BE  SELF-EXPLANATORY.  GPS DATA OUTSIDE THE  ACCURACY AND THRESHOLD RANGE WILL NOT BE  USED WHEN POSITIONING DATA.”|1000|1000|1000|1000|1000|1000|1000|1000|{null}|{null}|{null}
+QosVerticalThreshold|qos|integer|“THIS IS QUALITY OF SERVICE INFORMATION FOR  PROCESSING THE GPS DATA.  MOST SHOULD BE  SELF-EXPLANATORY.  GPS DATA OUTSIDE THE  ACCURACY AND THRESHOLD RANGE WILL NOT BE  USED WHEN POSITIONING DATA.”|500|500|500|500|500|500|500|500|{null}|{null}|{null}
+AssistMethodType|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|1|1|1|1|1|1|1|1|1|1|{null}
+AgpsUse|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|1|1|1|1|1|1|1|1|1|1|{null}
+AgpsServerType|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|1|1|1|1|1|1|1|1|1|1|{null}
+AgpsServerIp|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|3232235555|3232235555|3232235555|3232235555|3232235555|3232235555|3232235555|3232235555|3232235555|3232235555|{null}
+AgpsMtConf|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|0|0|0|0|0|0|0|0|0|0|{null}
+AgpsMtResponseType|assist|integer|“THESE VARIABLES RELATE TO AGPS. IT SAYS TO  USE AGPS.  THIS WILL NOT BE USED IF YOUR  ROM HAS AGPS DISABLED IN THE CODE.  THE SERVER IP IS FOR AN INTERNAL IP FOR  ACCESSING THE AGPS DAEMONS DATA WHEN IT  IS OPERATIONAL.”|1|1|1|1|1|1|1|1|1|1|{null}
+SUPL_HOST|supl|text|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|supl.google.com|supl.google.com|supl.google.com|supl.google.com|supl.google.com|supl.google.com|supl.google.com|supl.google.com|{null}|supl.google.com|{null}
+SUPL_PORT|supl|integer|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|7276|7276|7276|7276|7276|7276|7276|7276|{null}|7276|{null}
+SUPL_SECURE_PORT|supl|integer|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|7275|7275|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+SUPL_NO_SECURE_PORT|supl|integer|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|3425|3425|3425|3425|3425|3425|3425|3425|{null}|3425|{null}
+SUPL_TLS_HOST|supl|text|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|FQDN|FQDN|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+SUPL_TLS_CERT|supl|text|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|/etc/SuplRootCert|/etc/SuplRootCert|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}
+REPORT_POSITION_USE_SUPL_REFLOC|supl|integer|“THIS SUPL DATA IS TO MATCH THE SUPLROOTCERT  IF IT IS REQUIRED BY THE SUPL SERVER.”|1|1|1|1|1|1|1|1|{null}|1|{null}
+CURRENT_CARRIER|carrier|text|“Carrier tags used univesrally in GPS configs”|common|common|common|common|common|common|common|common|{null}|{null}|{null}
+PHONE_TYPE|carrier|text|“Carrier tags used univesrally in GPS configs”|UMTS|UMTS|UMTS|UMTS|UMTS|UMTS|UMTS|UMTS|{null}|{null}|{null}
+DEBUG_LEVEL|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|4|4|{null}
+SUPL_VER|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0x10000|0x10000|{null}
+ERR_ESTIMATE|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|0|{null}
+CAPABILITIES|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0x16|0x16|{null}
+GYRO_BIAS_RANDOM_WALK|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0,00001|0,00001|{null}
+SENSOR_ACCEL_BATCHES_PER_SEC|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|3|3|{null}
+SENSOR_ACCEL_SAMPLES_PER_BATCH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|5|5|{null}
+SENSOR_GYRO_BATCHES_PER_SEC|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|3|3|{null}
+SENSOR_GYRO_SAMPLES_PER_BATCH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|5|5|{null}
+SENSOR_ACCEL_BATCHES_PER_SEC_HIGH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|4|{null}|{null}
+SENSOR_ACCEL_SAMPLES_PER_BATCH_HIGH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|25|{null}|{null}
+SENSOR_GYRO_BATCHES_PER_SEC_HIGH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|4|{null}|{null}
+SENSOR_GYRO_SAMPLES_PER_BATCH_HIGH|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|25|{null}|{null}
+SENSOR_CONTROL_MODE|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|0|{null}
+SENSOR_USAGE|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|0|{null}
+SENSOR_PROVIDER|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|2|2|{null}
+QUIPC_ENABLED|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|0|{null}
+ENABLE_WIPER|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|{null}|{null}
+LPP_PROFILE|s3|integer|“Specific Samsung Galaxy S3 items”|{null}|{null}|{null}|{null}|{null}|{null}|{null}|{null}|0|{null}|{null}

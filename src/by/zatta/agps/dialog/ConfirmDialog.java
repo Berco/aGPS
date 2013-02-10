@@ -114,6 +114,12 @@ public class ConfirmDialog extends DialogFragment
         YESNOREBOOT.setOnClickListener(this);
         NO.setOnClickListener(this); 
         
+        //  [ -L \"/data/data\" ] && echo nofix
+        // "/data/data/by.zatta.agps/files/totalscript.sh install no_reboot "
+        
+        ShellProvider.INSTANCE.getCommandOutput("[ -e \"/system/etc/gps/gpsconfig.xml\" ] && echo TRUE config xml is there");
+        ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh configexists 50");
+        
     	if (isForConfirmation)
     		try { showTimer(seconds() * 1000); } catch (NumberFormatException e) { }
     	else{

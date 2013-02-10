@@ -53,7 +53,7 @@
 				<ImageView
 						android:src="@drawable/star0"
 						android:id="@+id/ivStars"
-						android:layout_width="wrap_content"
+						android:layout_width="150dp"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="20dp" />
 

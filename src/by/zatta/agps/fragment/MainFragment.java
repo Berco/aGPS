@@ -171,7 +171,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	
 	public List<ConfItem> getItemGroup(ConfItem item){
 		List<ConfItem> sectionItems = new ArrayList<ConfItem>();
-		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "").replace(" ", "");
+		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString());
 		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
         if(c.moveToPosition(1)) {
@@ -221,7 +221,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	
 	private List<ConfItem> getFromProfileSpinner(){
 		List<ConfItem> itemsList = new ArrayList<ConfItem>();
-		String profile = mSpProfile.getSelectedItem().toString().toUpperCase().replace(".", "").replace(" ", "");
+		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString());
 		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
 		if(c.moveToPosition(1)) {
@@ -259,7 +259,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			myDbHelper.updateItemCustomItem(item.getLabel(), item.getSetting());
 		
 		fillProfileSpinner();
-		mSpProfile.setSelection(4);
+		mSpProfile.setSelection(10);
 	
 	Toast.makeText(getActivity().getBaseContext(), "Updated custom profile", Toast.LENGTH_LONG).show();
 	}
