@@ -15,6 +15,8 @@
     <string name="btnNoInstall">Cancel</string>
 	<string name="btnYesNoReboot">Create files \n Don\'t reboot \n</string>
 	<string name="btnYesAndReboot">Create files \n And reboot \n</string>
+	
+	<string name="SliderTitle">GPSCONFIG.XML</string>
     
 
 </resources>

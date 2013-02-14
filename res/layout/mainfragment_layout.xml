@@ -6,23 +6,27 @@
 		android:orientation="vertical"
 		android:paddingLeft="5dp"
 		android:paddingTop="5dp">
-		
-    	<LinearLayout
+
+		<LinearLayout
+		    	android:id="@+id/llConfigXml"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical">
+				android:orientation="vertical"
+				android:visibility="gone">
 				<TextView
 						style="@style/text_h1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="GPSCONFIG.XML" />
-
-				<SeekBar
-				    android:id="@+id/seekBar1"
-				    android:layout_width="match_parent"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="1" />
-				
+				<TextView
+						android:id="@+id/tvPeriodicText"
+						android:layout_gravity="center_vertical"
+						android:layout_width="wrap_content"
+						android:textColor="@color/light_grey"
+						android:maxLines="1"
+						android:paddingLeft="5dp"
+						android:layout_height="wrap_content"
+						android:text="PeriodicTimeOutSec=5" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -51,38 +55,27 @@
 						android:layout_height="wrap_content"
 						android:layout_weight="1" />
 		</LinearLayout>
-		
-		<Spinner
-						android:id="@+id/spProfile"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						 />
 
-		<!-- OLD LIST
-		<ScrollView
-				android:id="@+id/scrollView1"
-				android:fadeScrollbars="false"
-				android:layout_width="fill_parent"
-				android:layout_height="0dp"
-				android:layout_weight="1">
-				<LinearLayout
-						android:id="@+id/llShowConf"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical" />
-		</ScrollView>
-		-->
+		<Spinner
+				android:id="@+id/spProfile"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+		<!-- OLD LIST <ScrollView android:id="@+id/scrollView1" android:fadeScrollbars="false" 
+				android:layout_width="fill_parent" android:layout_height="0dp" android:layout_weight="1"> 
+				<LinearLayout android:id="@+id/llShowConf" android:layout_width="match_parent" 
+				android:layout_height="wrap_content" android:orientation="vertical" /> </ScrollView> -->
 
 		<ListView
-		    android:id="@android:id/list"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:drawSelectorOnTop="false"
-        	android:fastScrollEnabled="true"
-        	android:divider="@color/white"
-        	android:paddingLeft="5dp"
-		    android:layout_weight="1" >
-		</ListView>
+				android:id="@android:id/list"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawSelectorOnTop="false"
+				android:fastScrollEnabled="true"
+				android:divider="@color/white"
+				android:paddingLeft="5dp"
+				android:layout_weight="1" />
+
 
 		<LinearLayout
 				android:orientation="vertical"

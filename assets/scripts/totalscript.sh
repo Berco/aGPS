@@ -31,14 +31,22 @@ install()
 	fi	
 }
 
-configexists()
+changeconfig()
 {	
 	# [ -e "/system/etc/gps/gpsconfig.xml" ] && echo TRUE config xml is there
 	if [ -e "/system/etc/gps/gpsconfig.xml" ]; then
+		$BB echo "changing PeriodicTimeOutSec in config.xml to $1"
 		$BB mount | $BB grep "/system" | $BB awk '{system("$BB mount -o rw,remount -t "$5" "$1" "$3"")}'
 		$BB sed -i 's/PeriodicTimeOutSec.*/PeriodicTimeOutSec="'$1'"/' /system/etc/gps/gpsconfig.xml
 		$BB grep -n "PeriodicTimeOutSec" /system/etc/gps/gpsconfig.xml		
 		$BB mount | $BB grep "/system" | $BB awk '{system("$BB mount -o ro,remount -t "$5" "$1" "$3"")}'
+	fi
+}
+
+configexists()
+{	
+	if [ -e "/system/etc/gps/gpsconfig.xml" ]; then
+		$BB grep "PeriodicTimeOutSec" /system/etc/gps/gpsconfig.xml
 	fi
 }
 
@@ -52,6 +60,7 @@ do
   case "$i" in
 	install) install $2 $3;;
 	backup) backup;;
-	configexists) configexists $2;;
+	changeconfig) changeconfig $2;;
+	configexists) configexists;;
   esac
 done

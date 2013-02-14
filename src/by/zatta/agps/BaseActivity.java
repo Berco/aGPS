@@ -16,6 +16,7 @@ import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.ConfirmDialog;
 import by.zatta.agps.dialog.ChangeItemDialog.OnChangedListListener;
 import by.zatta.agps.dialog.ConfirmDialog.OnDonateListener;
+import by.zatta.agps.dialog.SliderDialog.OnPeriodicChangeListener;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
 import by.zatta.agps.model.ConfItem;
@@ -38,8 +39,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener{
+public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener{
 	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
 	public static int mStars;
@@ -90,12 +92,18 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 	public void onChangedListListener(List<ConfItem> items) {
 		Fragment list = getFragmentManager().findFragmentByTag("main");
     	((MainFragment) list).resortList(items);
-		
 	}
+    
+    @Override
+	public void onPeriodicListener(String time) {
+    	Toast.makeText(this, time, Toast.LENGTH_LONG).show();
+    	Fragment list = getFragmentManager().findFragmentByTag("main");
+    	((MainFragment) list).updatePeriodicTimeOut(time);
+	}
+    
     @Override
 	public void onDonateListener(String sku) {
-    	mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener);
-		
+    	mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener);	
 	}
     
     @Override
@@ -135,7 +143,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
     	FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		if (item.getTitle().equals("star")){			
-    			DialogFragment newFragment = ConfirmDialog.newInstance(new ArrayList<ConfItem>(), false);
+    			DialogFragment newFragment = ConfirmDialog.newInstance(new ArrayList<ConfItem>(), "just billing", false);
     			newFragment.show(ft, "dialog");    		
     	}else{
     		
@@ -172,6 +180,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
             if (inventory.hasPurchase(SKU_STAR_ONE)) mStars=1;
             if (inventory.hasPurchase(SKU_STAR_TWO)) mStars=2;
             if (inventory.hasPurchase(SKU_STAR_THREE)) mStars=3;
+            isPremium = true;
             if (isPremium) mStars=3;
             
             

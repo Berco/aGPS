@@ -11,10 +11,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,19 +50,21 @@ public class ConfirmDialog extends DialogFragment
 	private final int SCREEN_CONFIRM=2;
 	private LinearLayout parent;
 	private List<ConfItem> items;
+	private String periodicTime;
 	private CountDownTimer timer;
 	private Boolean isForConfirmation;
+	private String script;
 	
 	OnDonateListener donateListener;
 	
-	public static ConfirmDialog newInstance(List<ConfItem> list, Boolean forConfirmation) {
+	public static ConfirmDialog newInstance(List<ConfItem> list, String periodicTime, Boolean forConfirmation) {
         ConfirmDialog f = new ConfirmDialog();
         
         Bundle args = new Bundle();
         args.putParcelableArrayList("lijst", (ArrayList<? extends Parcelable>) list);
+        args.putString("tijd", periodicTime);
         args.putBoolean("confirmation", forConfirmation);
         f.setArguments(args);
-        
         return f;
     }
 	@Override
@@ -80,6 +84,7 @@ public class ConfirmDialog extends DialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         items = getArguments().getParcelableArrayList("lijst");
+        periodicTime = getArguments().getString("tijd");
         isForConfirmation = getArguments().getBoolean("confirmation", false);
         setStyle(DialogFragment.STYLE_NORMAL, 0);
         setRetainInstance(false);
@@ -114,13 +119,9 @@ public class ConfirmDialog extends DialogFragment
         YESNOREBOOT.setOnClickListener(this);
         NO.setOnClickListener(this); 
         
-        //  [ -L \"/data/data\" ] && echo nofix
-        // "/data/data/by.zatta.agps/files/totalscript.sh install no_reboot "
-        
-        ShellProvider.INSTANCE.getCommandOutput("[ -e \"/system/etc/gps/gpsconfig.xml\" ] && echo TRUE config xml is there");
-        ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh configexists 50");
-        
-    	if (isForConfirmation)
+        script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
+       
+        if (isForConfirmation)
     		try { showTimer(seconds() * 1000); } catch (NumberFormatException e) { }
     	else{
     		getDialog().setTitle(getString(R.string.DonateTitle));
@@ -134,7 +135,6 @@ public class ConfirmDialog extends DialogFragment
     
 	@Override
 	public void onDestroyView() {
-		Log.d(TAG, "destroyed");
 		if (timer != null) timer.cancel();
 		super.onDestroyView();
 	}
@@ -275,22 +275,28 @@ public class ConfirmDialog extends DialogFragment
 			return;
 		case R.id.btnYesAndReboot:
 			Toast.makeText(getActivity().getBaseContext(), "Installing and Rebooting", Toast.LENGTH_LONG).show();
-			try {		
-				String mSSL = create_conf();
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install reboot " + mSSL);
-			} catch (Exception e) {	}
-				
+			install("reboot");
 			break;
 		case R.id.btnYesNoReboot:
-			Toast.makeText(getActivity().getBaseContext(), "Installing without Rebooting", Toast.LENGTH_LONG).show();
-			try {
-				String mSSL = create_conf();
-				ShellProvider.INSTANCE.getCommandOutput("/data/data/by.zatta.agps/files/totalscript.sh install no_reboot " + mSSL);
-			} catch (Exception e) {	}
-			
+			Toast.makeText(getActivity().getBaseContext(), "Installing without Reboot", Toast.LENGTH_LONG).show();
+			install("no_reboot");
 			break;
 		}
 		dismiss();
+	}
+	
+	private void install(String reboot_mode){
+		try {
+			String mSSL = create_conf();
+			if (!periodicTime.contentEquals("none")){
+				SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+				Editor editor = getPrefs.edit();
+				editor.putString("TIME", periodicTime);
+				editor.commit();
+				ShellProvider.INSTANCE.getCommandOutput(script + "changeconfig " + periodicTime);
+			}
+			ShellProvider.INSTANCE.getCommandOutput(script + "install "+ reboot_mode + " "+ mSSL);
+		} catch (Exception e) {	}
 	}
 
 	private String create_conf() {

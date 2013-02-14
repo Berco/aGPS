@@ -7,10 +7,12 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,13 +21,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.DatabaseHelper;
+import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.ChangeItemDialog;
 import by.zatta.agps.dialog.ConfirmDialog;
+import by.zatta.agps.dialog.SliderDialog;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.model.ConfItemListAdapter;
 
@@ -38,6 +44,9 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	private Spinner mSpProfile;
 	DatabaseHelper myDbHelper;
 	private ListView mList;
+	private LinearLayout mLinLayConfigXml;
+	private TextView mPeriodicText;
+	private String TIME="none";
 	private ConfItemListAdapter mConfAdapter;
 	
 	@Override
@@ -58,6 +67,10 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		mSpPool.setOnItemSelectedListener(this);
 		mSpProfile = (Spinner)v.findViewById(R.id.spProfile);
 		mSpProfile.setOnItemSelectedListener(this);
+		mLinLayConfigXml = (LinearLayout) v.findViewById(R.id.llConfigXml);
+		mLinLayConfigXml.setOnClickListener(this);
+		mPeriodicText = (TextView) v.findViewById(R.id.tvPeriodicText);
+		
 		myDbHelper = new DatabaseHelper(getActivity().getBaseContext(),myAppCode());
 		try { 
 			myDbHelper.createDataBase();
@@ -88,6 +101,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			mConfAdapter = new ConfItemListAdapter(getActivity());
 			setListAdapter(mConfAdapter);
 		}
+		checkForConfig();
 		fillRegionSpinner();
 		fillPoolSpinner("Global");
 		fillProfileSpinner();
@@ -103,12 +117,27 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 			if (prev != null) ft.remove(prev);
 			ft.addToBackStack(null);
-			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase(), true);
+			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase(), TIME , true);
 			newFragment.show(ft, "dialog");
 			break;
-		case R.id.scrollView1:
-			Toast.makeText(getActivity().getBaseContext(), "scroll!!", Toast.LENGTH_SHORT).show();
+		case R.id.llConfigXml:
+			Fragment previ = getFragmentManager().findFragmentByTag("dialog");
+			if (previ != null) ft.remove(previ);
+			ft.addToBackStack(null);
+			DialogFragment newSlider = SliderDialog.newInstance(TIME);
+			newSlider.show(ft, "dialog");
 			break;
+		}
+	}
+	
+	private void checkForConfig() {
+		String script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
+		String check = ShellProvider.INSTANCE.getCommandOutput(script+"configexists");
+		if (!check.contentEquals("")){
+			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+	        TIME = getPrefs.getString("TIME", "5");
+			mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
+			mLinLayConfigXml.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -262,5 +291,11 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		mSpProfile.setSelection(10);
 	
 	Toast.makeText(getActivity().getBaseContext(), "Updated custom profile", Toast.LENGTH_LONG).show();
+	}
+
+	public void updatePeriodicTimeOut(String time) {
+		TIME = time;
+		mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
+		
 	}
 }
