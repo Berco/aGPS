@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         	Log.i("Database existed", "getWritebleDatabase top be called");
             this.getWritableDatabase();
         }else{
-            //By calling this method an empty database will be created into the                     default system path
+            //By calling this method an empty database will be created into the default system path
             //of the application so we will be able to overwrite that database with our database.
         	Log.i("Database did not exist", "getReadableDatabase top be called");
         	this.getReadableDatabase();
@@ -145,10 +145,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		return myDataBase.query(table, columns, selection, null, null, null, null);
 		
 	}
-
-	public Cursor getRegions(){
-		return myDataBase.rawQuery("SELECT DISTINCT CONTINENT FROM pools", null);
-		
+	
+	public List<String> getRegionsAltSecond(){
+		List<String> regions = new ArrayList<String>();
+		String array[] = { "CONTINENT" }; 
+		String region = "";
+		Cursor c = myDataBase.query("pools", array, null, null, null, null, null);
+		/* These two ways of getting distinct values worked on Android 4.2 but fail on 4.0 S)
+		 * return myDataBase.query(true, "pools", array, null, null, null, null, null, null);
+		 * return myDataBase.rawQuery("SELECT DISTINCT CONTINENT FROM pools", null);
+		 */
+		if(c.moveToPosition(1)) {
+        	do {
+        		if (!region.equals(c.getString(0))) regions.add(c.getString(0));
+        		region = c.getString(0);
+        	} while (c.moveToNext());
+        }
+		return regions;
 	}
 	
 	public Cursor getCountries(String continent){

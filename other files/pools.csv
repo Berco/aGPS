@@ -1,0 +1,87 @@
+CONTINENT|POOL|COUNTRY
+Global|ntp.derekgordon.com|Derek Gordon
+Global|pool.ntp.org|General
+Africa|ao.pool.ntp.org|Angola
+Africa|mg.pool.ntp.org|Madagascar
+Africa|za.pool.ntp.org|South Africa
+Africa|tz.pool.ntp.org|Tanzania
+Africa|ug.pool.ntp.org|Uganda
+Asia|bd.pool.ntp.org|Bangladesh
+Asia|kh.pool.ntp.org|Cambodia
+Asia|cn.pool.ntp.org|China
+Asia|hk.pool.ntp.org|Hong Kong
+Asia|in.pool.ntp.org|India
+Asia|id.pool.ntp.org|Indonesia
+Asia|ir.pool.ntp.org|Iran
+Asia|iq.pool.ntp.org|Iraq
+Asia|il.pool.ntp.org|Israel
+Asia|jp.pool.ntp.org|Japan
+Asia|kz.pool.ntp.org|Kazakhstan
+Asia|kr.pool.ntp.org|Korea
+Asia|kg.pool.ntp.org|Kyrgyzstan
+Asia|my.pool.ntp.org|Malaysia
+Asia|om.pool.ntp.org|Oman
+Asia|pk.pool.ntp.org|Pakistan
+Asia|ph.pool.ntp.org|Philippines
+Asia|qa.pool.ntp.org|Qatar
+Asia|sa.pool.ntp.org|Saudi Arabia
+Asia|sg.pool.ntp.org|Singapore
+Asia|lk.pool.ntp.org|Sri Lanka
+Asia|tw.pool.ntp.org|Taiwan
+Asia|th.pool.ntp.org|Thailand
+Asia|tr.pool.ntp.org|Turkey
+Asia|ae.pool.ntp.org|United Arab Emirates
+Asia|uz.pool.ntp.org|Uzbekistan
+Asia|vn.pool.ntp.org|Vietnam
+Europe|am.pool.ntp.org|Armenia
+Europe|at.pool.ntp.org|Austria
+Europe|by.pool.ntp.org|Belarus
+Europe|be.pool.ntp.org|Belgium
+Europe|ba.pool.ntp.org|Bosnia and Herzegovina
+Europe|bg.pool.ntp.org|Bulgaria
+Europe|hr.pool.ntp.org|Croatia
+Europe|cz.pool.ntp.org|Czech Replublic
+Europe|dk.pool.ntp.org|Denmark
+Europe|ee.pool.ntp.org|Estonia
+Europe|ie.pool.ntp.org|Federation
+Europe|fi.pool.ntp.org|Finland
+Europe|fr.pool.ntp.org|France
+Europe|de.pool.ntp.org|Germany
+Europe|gr.pool.ntp.org|Greece
+Europe|hu.pool.ntp.org|Hungary
+Europe|it.pool.ntp.org|Italy
+Europe|lv.pool.ntp.org|Latvia
+Europe|lt.pool.ntp.org|Lithuania
+Europe|lu.pool.ntp.org|Luxembourg
+Europe|mk.pool.ntp.org|Macedonia
+Europe|md.pool.ntp.org|Moldova
+Europe|nl.pool.ntp.org|Netherlands
+Europe|no.pool.ntp.org|Norway
+Europe|pl.pool.ntp.org|Poland
+Europe|pt.pool.ntp.org|Portugal
+Europe|rs.pool.ntp.org|Republic of Serbia
+Europe|ro.pool.ntp.org|Romania
+Europe|ru.pool.ntp.org|Russian
+Europe|sk.pool.ntp.org|Slovakia
+Europe|si.pool.ntp.org|Slovenia
+Europe|es.pool.ntp.org|Spain
+Europe|se.pool.ntp.org|Sweden
+Europe|ch.pool.ntp.org|Switzerland
+Europe|ua.pool.ntp.org|Ukraine
+Europe|uk.pool.ntp.org|United Kingdom
+Europe|yu.pool.ntp.org|Yugoslavia
+North America|bs.pool.ntp.org|Bahamas
+North America|ca.pool.ntp.org|Canada
+North America|cr.pool.ntp.org|Costa Rica
+North America|sv.pool.ntp.org|El Salvador
+North America|gt.pool.ntp.org|Guatemala
+North America|mx.pool.ntp.org|Mexico
+North America|pa.pool.ntp.org|Panama
+North America|us.pool.ntp.org|United States
+Oceania|au.pool.ntp.org|Australia
+Oceania|nc.pool.ntp.org|New Caledonia
+Oceania|nz.pool.ntp.org|New Zealand
+South America|ar.pool.ntp.org|Argentina
+South America|br.pool.ntp.org|Brazil
+South America|cl.pool.ntp.org|Chile
+South America|ve.pool.ntp.org|Venezuela
