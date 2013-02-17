@@ -146,7 +146,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		
 	}
 	
-	public List<String> getRegionsAltSecond(){
+	public List<String> getRegions(){
 		List<String> regions = new ArrayList<String>();
 		String array[] = { "CONTINENT" }; 
 		String region = "";

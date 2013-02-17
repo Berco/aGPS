@@ -6,9 +6,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
+import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.AboutDialog;
 
 public class PrefFragment extends PreferenceFragment {
@@ -34,6 +37,14 @@ public class PrefFragment extends PreferenceFragment {
 			aboutFragment.show(ft, "dialog");
 			return true;
 		}
+		
+		if (pref.getKey().contentEquals("restore_key")){
+			Toast.makeText(getActivity().getApplicationContext(), "RESTORE", Toast.LENGTH_LONG).show();
+			String script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
+			String external_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
+			ShellProvider.INSTANCE.getCommandOutput(script +  "restore " + external_storage);
+		}
+		
 		return false;
 	}
 	

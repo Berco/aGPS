@@ -30,11 +30,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -44,10 +46,12 @@ import android.widget.Toast;
 public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener{
 	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
+	public static boolean isUpdate = false;
 	public static int mStars;
 	public static boolean isPremium;
 	IabHelper mHelper;
 	static final int RC_REQUEST = 10001;
+	private String version;
 	public static final String SKU_PREMIUM = "premium";
 	public static final String SKU_EXTRA = "extra_donation_two";
 	public static final String SKU_STAR_ONE = "first_star";
@@ -57,21 +61,24 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String version = myAppVersion();
+        version = myAppVersion();
         this.setTitle(getString(R.string.app_name) + " " + version);
         
+        SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String language = getPrefs.getString("languagePref", "unknown");
+        String oldVersion = getPrefs.getString("oldVersion", "0.0");
+        if (!oldVersion.equals(version)) isUpdate = true;
+        if (!language.equals("unknown")) makeLocale(language);
+        DEBUG = getPrefs.getBoolean("enableDebugging", true);
+        
         ShellProvider.INSTANCE.isSuAvailable();
-        new PlantFiles().execute();
+        // if (isUpdate) 
+        	new PlantFiles().execute();
+        
         mHelper = new IabHelper(this);
         mHelper.enableDebugLogging(false);
         Log.d(TAG, "Starting setup.");
         mHelper.startSetup(setupListener);
-               
-        SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String language = getPrefs.getString("languagePref", "unknown");
-        if (!language.equals("unknown")) makeLocale(language);
-        
-        DEBUG = getPrefs.getBoolean("enableDebugging", true);
         
         FragmentManager fm = getFragmentManager();
 
@@ -237,6 +244,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 		protected Void doInBackground(Void... arg0) {
 					
 			String data_storage_root = getBaseContext().getFilesDir().toString();
+			String external_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
 			
 			InputStream is= null;
 			OutputStream os = null;
@@ -264,6 +272,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 					os.close();
 					os = null;
 					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/totalscript.sh");
+					ShellProvider.INSTANCE.getCommandOutput(data_storage_root+"/totalscript.sh backup " + external_storage);
 				} catch (IOException e) {}
 			}
 			File j = new File(data_storage_root+"/busybox");
@@ -279,6 +288,11 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/busybox");
 				} catch (IOException e) {}
 			}
+			
+		    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		    Editor editor = getPrefs.edit();
+		    editor.putString("oldVersion", version);
+		    editor.commit();
 			return null;
 		}
 		

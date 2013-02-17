@@ -52,14 +52,25 @@ configexists()
 
 backup()
 {
-	echo "backup"
+	[ -d "$1/TopNTP" ] || $BB mkdir "$1/TopNTP"
+	[ -e "$1/TopNTP/gps.conf.bak" ] || $BB cp /system/etc/gps.conf $1/TopNTP/gps.conf.bak
+	[ -e "$1/TopNTP/gpsconfig.xml" ] || $BB cp /system/etc/gps/gpsconfig.xml $1/TopNTP/gpsconfig.xml.bak
+}
+
+restore()
+{
+	$BB mount | $BB grep "/system" | $BB awk '{system("$BB mount -o rw,remount -t "$5" "$1" "$3"")}'
+	[ -e "$1/TopNTP/gps.conf.bak" ] && $BB cp $1/TopNTP/gps.conf.bak /system/etc/gps.conf
+	[ -e "$1/TopNTP/gpsconfig.xml" ] && $BB cp $1/TopNTP/gpsconfig.xml.bak /system/etc/gps/gpsconfig.xml
+	$BB mount | $BB grep "/system" | $BB awk '{system("$BB mount -o ro,remount -t "$5" "$1" "$3"")}'
 }
 
 for i
 do
   case "$i" in
 	install) install $2 $3;;
-	backup) backup;;
+	backup) backup $2;;
+	restore) restore $2;;
 	changeconfig) changeconfig $2;;
 	configexists) configexists;;
   esac

@@ -31,5 +31,18 @@
 								android:data="http://forum.xda-developers.com/sitesearch.php?q=%22aGPS%20Patch%22%2B%22GET%20BACK%22" />
 				</Preference>
 		</PreferenceScreen>
+		
+		<Preference
+		android:title="Restore backupped files"
+		android:summary="go back to your ROM's default"
+		android:key="restore_key">
+		</Preference>
+		
+		<CheckBoxPreference
+		android:title="Always show the welcome screen"
+		android:summary="show on all app launches"
+		android:defaultValue="true"
+		android:key="showFirstUse">
+		</CheckBoxPreference>
 
 </PreferenceScreen>

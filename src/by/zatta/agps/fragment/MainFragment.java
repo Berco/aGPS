@@ -172,14 +172,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         mSpPool.setAdapter(dataAdapter);
 	}
 	public void fillRegionSpinner(){
-        List<String> labels = myDbHelper.getRegionsAltSecond();//new ArrayList<String>();
-//        c= myDbHelper.getRegionsAlt();
-//        if(c.moveToPosition(1)) {
-//        	do {
-//        		labels.add(c.getString(0));
-//        	} while (c.moveToNext());
-//        }
-//        c.close();
+        List<String> labels = myDbHelper.getRegions();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpRegion.setAdapter(dataAdapter);
@@ -296,6 +289,5 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	public void updatePeriodicTimeOut(String time) {
 		TIME = time;
 		mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
-		
 	}
 }
