@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:padding="4dip"
+    android:gravity="center_horizontal"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent">
+    
+<ScrollView
+    	android:id="@+id/scrollView1"
+        android:fadeScrollbars="false"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+	<LinearLayout
+    	android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical" >
+	    <RelativeLayout
+    	    android:layout_width="match_parent"
+        	android:layout_height="wrap_content" >
+
+        		<ImageView
+            	android:id="@+id/ivGICMp"
+            	android:layout_width="48dip"
+            	android:layout_height="48dip"
+            	android:src="@drawable/ic_launcher"
+           		android:layout_alignParentLeft="true"
+            	android:padding="5dip" />
+
+        		<ImageView
+            	android:id="@+id/ivCM"
+            	android:layout_width="88dip"
+            	android:layout_height="48dip"
+            	android:src="@drawable/zatta"
+            	android:layout_alignParentRight="true"
+            	android:padding="5dip" />
+	    </RelativeLayout>
+    
+        <TextView
+       		android:id="@+id/tvAbout"
+       		android:layout_width="wrap_content"
+       		android:layout_height="wrap_content"
+       		android:layout_margin="10dip"
+       		android:text="tvAbout" />
+    	
+	</LinearLayout>
+</ScrollView>    
+    	
+<LinearLayout
+   	android:orientation="vertical" 		
+	android:layout_width="match_parent" 
+    android:layout_height="wrap_content"
+	android:divider="?android:attr/dividerHorizontal"
+	android:showDividers="middle" >
+	<View
+    	android:layout_width="match_parent"
+    	android:layout_height="5dip" />
+	<LinearLayout
+    	style="?android:attr/buttonBarStyle"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+	    	<Button
+	        	android:id="@+id/btnDismiss"
+	        	style="?android:attr/buttonBarButtonStyle"
+	        	android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:text="Dismiss" />
+	    	<Button
+	        	android:id="@+id/btnDontShowAgain"
+	        	style="?android:attr/buttonBarButtonStyle"
+	        	android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:text="Don\'t show \n again" />
+	</LinearLayout>
+</LinearLayout>
+
+</LinearLayout>

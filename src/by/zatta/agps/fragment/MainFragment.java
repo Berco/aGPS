@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.SharedPreferences;
@@ -26,11 +25,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import by.zatta.agps.BaseActivity;
 import by.zatta.agps.R;
 import by.zatta.agps.assist.DatabaseHelper;
 import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.ChangeItemDialog;
+import by.zatta.agps.dialog.ChangelogDialog;
 import by.zatta.agps.dialog.ConfirmDialog;
+import by.zatta.agps.dialog.FirstUseDialog;
 import by.zatta.agps.dialog.SliderDialog;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.model.ConfItemListAdapter;
@@ -100,6 +102,13 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		if ( mConfAdapter == null){
 			mConfAdapter = new ConfItemListAdapter(getActivity());
 			setListAdapter(mConfAdapter);
+			
+			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+			Boolean firstUse = getPrefs.getBoolean("showFirstUse", true);
+			if (BaseActivity.isUpdate) 
+				showChangelog();
+			if (firstUse) 
+				showFirstUse();
 		}
 		checkForConfig();
 		fillRegionSpinner();
@@ -114,15 +123,11 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		switch(v.getId()){
 		case R.id.btnInstall:
-			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-			if (prev != null) ft.remove(prev);
 			ft.addToBackStack(null);
 			DialogFragment newFragment = ConfirmDialog.newInstance(getItemsFromDatabase(), TIME , true);
 			newFragment.show(ft, "dialog");
 			break;
 		case R.id.llConfigXml:
-			Fragment previ = getFragmentManager().findFragmentByTag("dialog");
-			if (previ != null) ft.remove(previ);
 			ft.addToBackStack(null);
 			DialogFragment newSlider = SliderDialog.newInstance(TIME);
 			newSlider.show(ft, "dialog");
@@ -146,8 +151,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		ConfItem item = (ConfItem) getListAdapter().getItem(position);
 		if (id > 4){
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-			if (prev != null) ft.remove(prev);
 			ft.addToBackStack(null);
 			DialogFragment newFragment = ChangeItemDialog.newInstance(getItemGroup(item));
 			newFragment.show(ft, "dialog");
@@ -156,6 +159,19 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		}
 	}
 	
+	public void showFirstUse(){	
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.addToBackStack(null);
+		DialogFragment newFragment = FirstUseDialog.newInstance();
+		newFragment.show(ft, "dialog");
+	}
+	
+	public void showChangelog(){	
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.addToBackStack(null);
+		DialogFragment newFragment = ChangelogDialog.newInstance();
+		newFragment.show(ft, "dialog");
+	}
 
 	public void fillPoolSpinner(String continent){
         List<String> labels = new ArrayList<String>();

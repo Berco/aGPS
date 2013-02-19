@@ -187,9 +187,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
             if (inventory.hasPurchase(SKU_STAR_ONE)) mStars=1;
             if (inventory.hasPurchase(SKU_STAR_TWO)) mStars=2;
             if (inventory.hasPurchase(SKU_STAR_THREE)) mStars=3;
-            isPremium = true;
-            if (isPremium) mStars=3;
-            
+            if (isPremium) mStars=3;            
             
             invalidateOptionsMenu();
             Log.d(TAG, "User is " + (isPremium ? "PREMIUM" : "NOT PREMIUM") + " and has " + Integer.toString(mStars) + " stars.");
