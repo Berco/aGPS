@@ -66,7 +66,7 @@
 						android:background="@drawable/donate_button">
 						<TextView
 								android:id="@+id/tvBuyYour"
-								android:text="Buy your"
+								android:text="@string/BuyYour"
 								android:layout_alignParentTop="true"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
 								style="@style/text_h3" />
 						<TextView
 								android:id="@+id/tvNumberedStar"
-								android:text="First star"
+								android:text="@string/FirstStar"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:layout_marginLeft="10dp"
@@ -92,7 +92,7 @@
 						android:background="@drawable/donate_button">
 						<TextView
 								android:id="@+id/tvBecomeA"
-								android:text="Become a"
+								android:text="@string/BecomeA"
 								android:layout_alignParentTop="true"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
 								style="@style/text_h3" />
 						<TextView
 								android:id="@+id/tvPremiumUser"
-								android:text="Premium user"
+								android:text="@string/PremiumUser"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:layout_marginLeft="10dp"

@@ -299,7 +299,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		fillProfileSpinner();
 		mSpProfile.setSelection(10);
 	
-	Toast.makeText(getActivity().getBaseContext(), "Updated custom profile", Toast.LENGTH_LONG).show();
+	Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastUpdated), Toast.LENGTH_LONG).show();
 	}
 
 	public void updatePeriodicTimeOut(String time) {

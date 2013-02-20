@@ -10,7 +10,7 @@
 		<TextView
 								android:id="@+id/tvConfigExplanation"
 								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
+								android:layout_height="0dip"
 								android:layout_weight="1"
 								android:layout_gravity="center_vertical|center_horizontal"
 								style="@style/text_h1"
@@ -42,8 +42,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="10dip"
-						android:text="Tweak"
-						android:textSize="30px" />
+						android:text="@string/SliderTweak" />
 				<TextView
 						android:id="@+id/TextViewH"
 						android:layout_below="@id/sbDPIslider"
@@ -51,15 +50,8 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginRight="10dip"
-						android:text="Default"
-						android:textSize="30px" />
-
+						android:text="@string/SliderDefault" />
 		</RelativeLayout>
-
-
-
-
-
 
 		<LinearLayout
 	    android:orientation="vertical" 		
@@ -84,7 +76,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Cancel" />
+		        android:text="@string/CancelButton" />
 		    
 		    <Button
 		        android:id="@+id/btnDoChangeConfig"
@@ -92,7 +84,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Apply" />
+		        android:text="@string/ApplyButton" />
 
 		</LinearLayout>
 

@@ -4,19 +4,83 @@
     <string name="menu_settings">Settings</string>
     <string name="AboutTitle">About this app</string>
     
+    <!-- MainFragment -->
+    <string name="gpsConfig">gpsconfig.xml tweak</string>
+    <string name="regularConfig">gps.conf tweak</string>
+    <string name="installButton">Install</string>
+    <string name="toastUpdated">Updated custom profile</string>
+    
+    <!-- PrefFragment -->
+    <string name="moreScreenTitle">More information</string>
+    <string name="moreScreenSummary">find out everything about the patch</string>
+    <string name="AboutPrefTitle">More about this app</string>
+    <string name="AboutPrefSummary">a summary about the ntp server</string>
+    <string name="VisitDGcomTitle">Visit derekgordon.com</string>
+    <string name="VisitDVcomSummary">in depth information about the patch</string>
+    <string name="VisitXdaTitle">Visit XDA</string>
+    <string name="VisitXdaSummary">device threads for the old patch</string>
+    <string name="RestoreTitle">Restore your backup</string>
+    <string name="RestoreSummary">back to your ROM default files</string>
+    <string name="toastRestore">Restoring your backup.\nNeeds a reboot to take effect!</string>
+    <string name="PrefWelcomeTitle">Always welcome me</string>
+    <string name="PrefWelcomeSummary">Show the welcome at all app launches</string>
+    
+    <!-- FirstUseDialogFragment -->
+    <string name="WelcomeDialogTitle">Welcome</string>
+    <string name="ChangelogDialogTitle">Changelog</string>
+    <string name="DismissButton">Dismiss</string>
+    <string name="DontShowAgainButton">Don\'t show \n again</string>
+        
+    <!--  ChangeItemDialog -->
+    <string name="ChangeItemDialogTitle">Change items</string>
+    <string name="CancelButton">Cancel</string>
+    <string name="ApplyButton">Apply</string>
+    
+    <!-- SliderDialog -->
+    <string name="SliderTweak">Tweak</string>
+    <string name="SliderDefault">Default</string>
+    
+    <!-- ConfirmDialog -->
+    
     <string name="ConfirmTitle">Create / update files</string>
     <string name="DonateTitle">Donate</string>
+    
+    <string name="BuyYour">Buy your</string>
+    <string name="BecomeA">Become a</string>
+    <string name="DoAnExtra">Do an extra</string>
+    <string name="Donation">donation</string>
+    
+    <string name="FirstStar">First star</string>
+    <string name="SecondStar">Second star</string>
+    <string name="ThirdStar">Third star</string>
+    
     <string name="CommonUser">Common user</string>
     <string name="StarredUser">Starred user</string>
     <string name="PremiumUser">Premium user</string>
+    
     <string name="Waiting">Waiting time: \u0020</string>
     <string name="seconds">\u0020 seconds</string>
     
+    <string name="CanAndWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure?</string>
+    <string name="CanAndNotWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure you don\'t want to use Derek Gordon\'s server?</string>
+    <string name="NotCanButWant">You are about to patch your GPS configuration using Derek Gordon\'s server. Please consider a donation. \n Are you sure about your patch?</string>
+    <string name="NotCanAndNotWant">You are about to patch your GPS configuration. \n Are you sure?</string>
+    
     <string name="btnNoInstall">Cancel</string>
 	<string name="btnYesNoReboot">Create files \n Don\'t reboot \n</string>
+	<string name="toastInstallNoReboot">Installing without Reboot</string>
 	<string name="btnYesAndReboot">Create files \n And reboot \n</string>
+	<string name="toastInstallAndReboot">Installing and Rebooting</string>
 	
-	<string name="SliderTitle">GPSCONFIG.XML</string>
+	
+	
+	<!-- Section discriptions -->
+    <string name="daemon">Not going to go into detail here.These need to be called first in GPS daemon startup. Relates to aGPS and SUPL.</string>
+	<string name="thres">INTERMEDIATEPOS relates to using GPS data from sats that are not fully locked. The accuracy variable is a threshold max on deviations from the assumed location where the device will discard data.</string>
+    <string name="qos">This is quality of service information for processing the GPS data. Most should be self-explanatory. GPS data outside the accuracy and threshold range will not be used when positioning data.</string>
+    <string name="assist">These variables relate to aGPS. It says to use aGPS. This will not be used if your ROM has aGPS disabled in the code. The server IP is for an internal IP for accessing the aGPS daemons data when it is operational.</string>
+	<string name="supl">This SUPL data is to match the SuplRootCert if it is required by the SUPL server.</string>
+   	<string name="carrier">Carrier tags used universally in GPS configs</string>
+	<string name="s3_specific">These items are specifically for the Samsung Galaxy S3.</string>
     
-
 </resources>

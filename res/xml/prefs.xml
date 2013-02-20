@@ -4,27 +4,24 @@
 		android:key="agps_preferences">
 
 		<PreferenceScreen
-				android:title="More information"
-				android:summary="find out about the app and patch"
+				android:title="@string/moreScreenTitle"
+				android:summary="@string/moreScreenSummary"
 				android:key="screen_preference">
 				<Preference
-						android:title="About this app"
-						android:summary="all you need to know"
+						android:title="@string/AboutPrefTitle"
+						android:summary="@string/AboutPrefSummary"
 						android:key="about_app_key" />
-
-
 				<Preference
-						android:title="Visit derekgordon.com"
-						android:summary="in depth information about the patch"
+						android:title="@string/VisitDGcomTitle"
+						android:summary="@string/VisitDVcomSummary"
 						android:key="vist_dg">
 						<intent
 								android:action="android.intent.action.VIEW"
 								android:data="http://derekgordon.com/android-how-tos/a-gps-worldwide-patch" />
 				</Preference>
-
 				<Preference
-						android:title="Visit XDA"
-						android:summary="device threads for the old patch"
+						android:title="@string/VisitXdaTitle"
+						android:summary="@string/VisitXdaSummary"
 						android:key="visit_xda">
 						<intent
 								android:action="android.intent.action.VIEW"
@@ -33,14 +30,14 @@
 		</PreferenceScreen>
 		
 		<Preference
-		android:title="Restore backupped files"
-		android:summary="go back to your ROM's default"
+		android:title="@string/RestoreTitle"
+		android:summary="@string/RestoreSummary"
 		android:key="restore_key">
 		</Preference>
 		
 		<CheckBoxPreference
-		android:title="Always show the welcome screen"
-		android:summary="show on all app launches"
+		android:title="@string/PrefWelcomeTitle"
+		android:summary="@string/PrefWelcomeSummary"
 		android:defaultValue="true"
 		android:key="showFirstUse">
 		</CheckBoxPreference>

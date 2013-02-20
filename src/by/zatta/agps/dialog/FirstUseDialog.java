@@ -35,7 +35,7 @@ public class FirstUseDialog extends DialogFragment implements View.OnClickListen
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	getDialog().setTitle("Welcome");
+    	getDialog().setTitle(getString(R.string.WelcomeDialogTitle));
         View v = inflater.inflate(R.layout.firstusedialog_layout, container, false);
         
         TextView tv = (TextView) v.findViewById(R.id.tvAbout);

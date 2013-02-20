@@ -159,16 +159,16 @@ public class ConfirmDialog extends DialogFragment
 		}
 		if (BaseActivity.mStars == 1) {
 			starCounter.setImageResource(R.drawable.star1);
-			buyNumberStars.setText("Second star" );
+			buyNumberStars.setText(getString(R.string.SecondStar));
 		}
 		if (BaseActivity.mStars == 2) {
 			starCounter.setImageResource(R.drawable.star2);
-			buyNumberStars.setText("Third star" );
+			buyNumberStars.setText(getString(R.string.ThirdStar));
 		}
 		if (BaseActivity.mStars == 3) {
 			starCounter.setImageResource(R.drawable.star3);
-			buyYour.setText("Do an extra");
-			buyNumberStars.setText("Donation");
+			buyYour.setText(getString(R.string.DoAnExtra));
+			buyNumberStars.setText(getString(R.string.Donation));
 		}
 		
     	switch (SCREEN){
@@ -232,24 +232,19 @@ public class ConfirmDialog extends DialogFragment
 		YESANDREBOOT.setVisibility(View.VISIBLE);
 		YESNOREBOOT.setVisibility(View.VISIBLE);
     	if (can && want) {
-    		text  = "Thanks for supporting us! Enjoy your GPS!";
+    		text  = getString(R.string.CanAndWant);
     		tvTB.setTextColor(getResources().getColor(R.color.green));
     	}
-    	if (can && !want) {
-    		text  = "Thanks for supporting us! You forgot to select Derek Gordon's server!";
+    	else if (can && !want) {
+    		text  = getString(R.string.CanAndNotWant);
     		tvTB.setTextColor(getResources().getColor(R.color.green));
     	}
-    	if (!can && !want) {
-    		text  = "You can use the standard NTP servers but why not donate and get acces to the " +
-    				"best of the best ntp server, maintained by Derek Gordon? For more information, please " +
-    				"read the \"about\" (check the settings for this app)";
+    	else if (!can && !want) {
+    		text  = getString(R.string.NotCanAndNotWant);
     		tvTB.setTextColor(getResources().getColor(R.color.ICS_blue));
     	}
-    	
-    	if (!can && want) {
-    		text  = "No donator, sorry, you can not use the top notch DG server. Please " +
-    				"read the about. Donate to get acces or feel free to use one of the local " +
-    				"ntp servers and the standard google xtra.bin servers.";
+    	else {   //(!can && want)
+    		text  = getString(R.string.NotCanButWant);
     		tvTB.setTextColor(getResources().getColor(R.color.red));
     	}
 		tvTB.setText(text);
@@ -260,7 +255,6 @@ public class ConfirmDialog extends DialogFragment
 		
 		switch (v.getId()){
 		case R.id.btnNoInstall:
-			Toast.makeText(getActivity().getBaseContext(), "Canceled", Toast.LENGTH_LONG).show();
 			break;
 		case (R.id.rlBuyPremium):
 			donateListener.onDonateListener(BaseActivity.SKU_PREMIUM);
@@ -274,11 +268,11 @@ public class ConfirmDialog extends DialogFragment
 			donateListener.onDonateListener(sku);
 			return;
 		case R.id.btnYesAndReboot:
-			Toast.makeText(getActivity().getBaseContext(), "Installing and Rebooting", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastInstallAndReboot), Toast.LENGTH_LONG).show();
 			install("reboot");
 			break;
 		case R.id.btnYesNoReboot:
-			Toast.makeText(getActivity().getBaseContext(), "Installing without Reboot", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastInstallNoReboot), Toast.LENGTH_LONG).show();
 			install("no_reboot");
 			break;
 		}

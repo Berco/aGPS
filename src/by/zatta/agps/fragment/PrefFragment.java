@@ -39,7 +39,7 @@ public class PrefFragment extends PreferenceFragment {
 		}
 		
 		if (pref.getKey().contentEquals("restore_key")){
-			Toast.makeText(getActivity().getApplicationContext(), "RESTORE", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toastRestore), Toast.LENGTH_LONG).show();
 			String script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
 			String external_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
 			ShellProvider.INSTANCE.getCommandOutput(script +  "restore " + external_storage);

@@ -17,7 +17,7 @@
 						style="@style/text_h1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="GPSCONFIG.XML" />
+						android:text="@string/gpsConfig" />
 				<TextView
 						android:id="@+id/tvPeriodicText"
 						android:layout_gravity="center_vertical"
@@ -25,8 +25,7 @@
 						android:textColor="@color/light_grey"
 						android:maxLines="1"
 						android:paddingLeft="5dp"
-						android:layout_height="wrap_content"
-						android:text="PeriodicTimeOutSec=5" />
+						android:layout_height="wrap_content" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -37,7 +36,7 @@
 						style="@style/text_h1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="GPS.CONF TWEAKS" />
+						android:text="@string/regularConfig" />
 		</LinearLayout>
 
 		<LinearLayout
@@ -69,7 +68,7 @@
 		<ListView
 				android:id="@android:id/list"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="0dip"
 				android:drawSelectorOnTop="false"
 				android:fastScrollEnabled="true"
 				android:divider="@color/white"
@@ -97,7 +96,7 @@
 								android:layout_width="0dp"
 								android:layout_height="wrap_content"
 								android:layout_weight="1"
-								android:text="Install aGPS fix" />
+								android:text="@string/installButton" />
 				</LinearLayout>
 		</LinearLayout>
 

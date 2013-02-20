@@ -63,7 +63,7 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	getDialog().setTitle("Make changes");
+    	getDialog().setTitle(getString(R.string.ChangeItemDialogTitle));
         View v = inflater.inflate(R.layout.change_item_dialog_layout, container, false);
         TextView tv = (TextView) v.findViewById(R.id.tvGroupDiscribtion);
         mLinLay = (LinearLayout) v.findViewById(R.id.llButtons);
@@ -71,8 +71,8 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
         mBtnApply = (Button) v.findViewById(R.id.btnDoChange);
         mBtnCancel.setOnClickListener(this);
         mBtnApply.setOnClickListener(this);
-         
-        tv.setText(items.get(0).getDiscription());
+        
+        tv.setText(findDiscription());
         
         for (ConfItem item : items){
         	createRelText(item);
@@ -110,6 +110,12 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 		mLinLayChild.addView(aV);
 		
 		mLinLay.addView(mLinLayChild);
+	}
+	
+	private String findDiscription(){
+		String section = items.get(0).getSection();
+		int resID = getActivity().getBaseContext().getResources().getIdentifier(section, "string", getActivity().getPackageName());
+		return getActivity().getBaseContext().getResources().getString(resID);
 	}
 	
 	private View getAppropriateView(ConfItem item){

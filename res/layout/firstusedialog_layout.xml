@@ -41,8 +41,7 @@
        		android:id="@+id/tvAbout"
        		android:layout_width="wrap_content"
        		android:layout_height="wrap_content"
-       		android:layout_margin="10dip"
-       		android:text="tvAbout" />
+       		android:layout_margin="10dip" />
     	
 	</LinearLayout>
 </ScrollView>    
@@ -67,14 +66,14 @@
 	        	android:layout_width="0dp"
 	        	android:layout_height="wrap_content"
 	        	android:layout_weight="1"
-	        	android:text="Dismiss" />
+	        	android:text="@string/DismissButton" />
 	    	<Button
 	        	android:id="@+id/btnDontShowAgain"
 	        	style="?android:attr/buttonBarButtonStyle"
 	        	android:layout_width="0dp"
 	        	android:layout_height="wrap_content"
 	        	android:layout_weight="1"
-	        	android:text="Don\'t show \n again" />
+	        	android:text="@string/DontShowAgainButton" />
 	</LinearLayout>
 </LinearLayout>
 
