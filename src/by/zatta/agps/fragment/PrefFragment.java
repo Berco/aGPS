@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -40,9 +39,9 @@ public class PrefFragment extends PreferenceFragment {
 		
 		if (pref.getKey().contentEquals("restore_key")){
 			Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toastRestore), Toast.LENGTH_LONG).show();
-			String script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
-			String external_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
-			ShellProvider.INSTANCE.getCommandOutput(script +  "restore " + external_storage);
+			ShellProvider.INSTANCE.mountRW(true);
+			ShellProvider.INSTANCE.restore();
+			ShellProvider.INSTANCE.mountRW(false);
 		}
 		
 		return false;

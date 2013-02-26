@@ -110,7 +110,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			if (firstUse) 
 				showFirstUse();
 		}
-		checkForConfig();
 		fillRegionSpinner();
 		fillPoolSpinner("Global");
 		fillProfileSpinner();
@@ -132,17 +131,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			DialogFragment newSlider = SliderDialog.newInstance(TIME);
 			newSlider.show(ft, "dialog");
 			break;
-		}
-	}
-	
-	private void checkForConfig() {
-		String script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
-		String check = ShellProvider.INSTANCE.getCommandOutput(script+"configexists");
-		if (!check.contentEquals("")){
-			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-	        TIME = getPrefs.getString("TIME", "5");
-			mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
-			mLinLayConfigXml.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -305,5 +293,16 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	public void updatePeriodicTimeOut(String time) {
 		TIME = time;
 		mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
+	}
+
+	public void showContent() {
+		Toast.makeText(getActivity().getBaseContext(), "HOERA !!", Toast.LENGTH_LONG).show();
+		if (ShellProvider.INSTANCE.isConfigPresent()){
+			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+	        TIME = getPrefs.getString("TIME", "5");
+			mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
+			mLinLayConfigXml.setVisibility(View.VISIBLE);
+		}
+		
 	}
 }

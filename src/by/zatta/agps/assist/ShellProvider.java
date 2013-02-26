@@ -107,11 +107,6 @@ public enum ShellProvider {
 							if (!line.equals(""))
 								sb.append(line + " ");
 						}
-						/*
-						 * try { Thread.sleep(200); } catch
-						 * (InterruptedException e) { // TODO Auto-generated
-						 * catch block e.printStackTrace(); }
-						 */
 						output_queue.put(sb.toString());
 					
 				}
@@ -141,11 +136,9 @@ public enum ShellProvider {
 				if (process != null)
 					process.exitValue();
 					init();
-				if (BaseActivity.DEBUG)
-					Log.w(TAG,
-							"No active shell process, initializing...");
 				if (process != null)
 					process.exitValue();
+				
 
 			} catch (IllegalThreadStateException e) {
 				if (BaseActivity.DEBUG)
@@ -199,6 +192,61 @@ public enum ShellProvider {
 
 	public synchronized boolean isSuAvailable() {
 		return getCommandOutput("id").contains("uid=0");
+	}
+	
+	public synchronized void lockToMyBusybox(String storage_root){
+		getCommandOutput("export BB=\"/data/data/by.zatta.agps/files/busybox\"");
+		getCommandOutput("export SR=\""+storage_root+"\"");
+	}
+	
+	public synchronized void mountRW(Boolean rw){
+		if (rw)
+			getCommandOutput("$BB mount | $BB grep \"/system\" | $BB awk '{system(\"$BB mount -o rw,remount -t \"$5\" \"$1\" \"$3\"\")}'");
+		else
+			getCommandOutput("$BB mount | $BB grep \"/system\" | $BB awk '{system(\"$BB mount -o ro,remount -t \"$5\" \"$1\" \"$3\"\")}'");
+		
+	}
+	
+	public synchronized void backup(){
+		getCommandOutput("$BB test -d \"$SR/TopNTP\" || $BB mkdir \"$SR/TopNTP\"");
+		getCommandOutput("$BB test -e \"$SR/TopNTP/gps.conf.bak\" || $BB cp /system/etc/gps.conf $SR/TopNTP/gps.conf.bak");
+		getCommandOutput("$BB test -e \"$SR/TopNTP/gpsconfig.xml\" || $BB cp /system/etc/gps/gpsconfig.xml $SR/TopNTP/gpsconfig.xml.bak");
+	}
+	
+	public synchronized void restore(){
+		getCommandOutput("$BB test -e \"$SR/TopNTP/gps.conf.bak\" && $BB rm /system/etc/gps.conf && $BB cp $SR/TopNTP/gps.conf.bak /system/etc/gps.conf && $BB chmod 644 /system/etc/gps.conf");
+		getCommandOutput("$BB test -e \"$SR/TopNTP/gpsconfig.xml.bak\" && $BB rm /system/etc/gps/gpsconfig.xml && $BB cp $SR/TopNTP/gpsconfig.xml.bak /system/etc/gps/gpsconfig.xml && $BB chmod 644 /system/etc/gps/gpsconfig.xml");
+		
+	}
+	
+	public synchronized void reboot(Boolean reboot){
+		if (reboot) getCommandOutput("$BB reboot");
+	}
+	
+	public synchronized void copyConf(){
+		getCommandOutput("$BB rm /system/etc/gps.conf");
+		getCommandOutput("$BB cat /data/data/by.zatta.agps/files/gps.conf > /system/etc/gps.conf");
+		getCommandOutput("$BB chmod 644 /system/etc/gps.conf");
+	}
+	
+	public synchronized void copySSL(Boolean mSSL){
+		getCommandOutput("$BB rm /system/etc/SuplRootCert");
+		if (mSSL){
+			getCommandOutput("$BB cat /data/data/by.zatta.agps/files/SuplRootCert > /system/etc/SuplRootCert");
+			getCommandOutput("chmod 644 /system/etc/SuplRootCert");
+		}
+	}
+	
+	public synchronized boolean isConfigPresent() {
+		getCommandOutput("$BB test -e \"/system/etc/gps/gpsconfig.xml\" && $BB grep -n \"PeriodicTimeOutSec\" /system/etc/gps/gpsconfig.xml");	
+		return getCommandOutput("$BB test -e \"/system/etc/gps/gpsconfig.xml\" && echo TRUE").contains("TRUE");
 
+	}
+	
+	public synchronized void updateXML(String periodicTimeOut){
+		if (isConfigPresent()){
+			getCommandOutput("$BB sed -i 's/PeriodicTimeOutSec.*/PeriodicTimeOutSec=\"'"+periodicTimeOut+"'\"/' /system/etc/gps/gpsconfig.xml");
+			getCommandOutput("$BB grep -n \"PeriodicTimeOutSec\" /system/etc/gps/gpsconfig.xml");		
+		}
 	}
 }

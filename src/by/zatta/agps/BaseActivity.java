@@ -24,11 +24,14 @@ import by.zatta.agps.billing.IabHelper;
 import by.zatta.agps.billing.IabResult;
 import by.zatta.agps.billing.Inventory;
 import by.zatta.agps.billing.Purchase;
+import by.zatta.agps.assist.PreCheckLoader;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
@@ -43,7 +46,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener{
+public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, LoaderManager.LoaderCallbacks<Boolean>{
 	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
 	public static boolean isUpdate = false;
@@ -51,7 +54,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 	public static boolean isPremium;
 	IabHelper mHelper;
 	static final int RC_REQUEST = 10001;
-	private String version;
+	public static String version;
 	public static final String SKU_PREMIUM = "premium";
 	public static final String SKU_EXTRA = "extra_donation_two";
 	public static final String SKU_STAR_ONE = "first_star";
@@ -70,23 +73,35 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
         if (!oldVersion.equals(version)) isUpdate = true;
         if (!language.equals("unknown")) makeLocale(language);
         DEBUG = getPrefs.getBoolean("enableDebugging", true);
-        
-        ShellProvider.INSTANCE.isSuAvailable();
-        // if (isUpdate) 
-        	new PlantFiles().execute();
+    
+        FragmentManager fm = getFragmentManager();
+    	if (fm.findFragmentById(android.R.id.content) == null) {
+            MainFragment main = new MainFragment();
+            fm.beginTransaction().add(android.R.id.content, main, "main").commit();
+            getLoaderManager().initLoader(0, null, this);
+        }
         
         mHelper = new IabHelper(this);
         mHelper.enableDebugLogging(false);
-        Log.d(TAG, "Starting setup.");
         mHelper.startSetup(setupListener);
         
-        FragmentManager fm = getFragmentManager();
-
-        if (fm.findFragmentById(android.R.id.content) == null) {
-            MainFragment main = new MainFragment();
-            fm.beginTransaction().add(android.R.id.content, main, "main").commit();
-        }
     }
+    @Override
+	public PreCheckLoader onCreateLoader(int arg0, Bundle arg1) {
+    	return new PreCheckLoader(this);
+	}
+    
+    @Override
+	public void onLoaderReset(Loader<Boolean> arg0) {
+		// TODO Auto-generated method stub
+	}
+    @Override
+	public void onLoadFinished(Loader<Boolean> arg0, Boolean arg1) {
+    	Fragment list = getFragmentManager().findFragmentByTag("main");
+    	((MainFragment) list).showContent();
+    	
+	}
+
     
     @Override
     public void onDestroy() {
@@ -234,66 +249,5 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
             Log.d(TAG, "End consumption flow.");
         }
     };
-    
-    
-    private class PlantFiles extends AsyncTask<Void, Void, Void> {
-    	
-		@Override
-		protected Void doInBackground(Void... arg0) {
-					
-			String data_storage_root = getBaseContext().getFilesDir().toString();
-			String external_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
-			
-			InputStream is= null;
-			OutputStream os = null;
-						
-			File h = new File(data_storage_root+"/SuplRootCert");
-			if (!h.exists() || h.exists()){
-				try {
-					is = getResources().getAssets().open("fix_base/SuplRootCert");
-					os = new FileOutputStream(data_storage_root+"/SuplRootCert");
-					IOUtils.copy(is, os);
-					is.close();
-					os.flush();
-					os.close();
-					os = null;
-				} catch (IOException e) {}
-			}
-			File i = new File(data_storage_root+"/totalscript.sh");
-			if (!i.exists() || i.exists()){
-				try {
-					is = getResources().getAssets().open("scripts/totalscript.sh");
-					os = new FileOutputStream(data_storage_root+"/totalscript.sh");
-					IOUtils.copy(is, os);
-					is.close();
-					os.flush();
-					os.close();
-					os = null;
-					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/totalscript.sh");
-					ShellProvider.INSTANCE.getCommandOutput(data_storage_root+"/totalscript.sh backup " + external_storage);
-				} catch (IOException e) {}
-			}
-			File j = new File(data_storage_root+"/busybox");
-			if (!j.exists() || j.exists()){
-				try {
-					is = getResources().getAssets().open("scripts/busybox");
-					os = new FileOutputStream(data_storage_root+"/busybox");
-					IOUtils.copy(is, os);
-					is.close();
-					os.flush();
-					os.close();
-					os = null;
-					ShellProvider.INSTANCE.getCommandOutput("chmod 740 "+data_storage_root+"/busybox");
-				} catch (IOException e) {}
-			}
-			
-		    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		    Editor editor = getPrefs.edit();
-		    editor.putString("oldVersion", version);
-		    editor.commit();
-			return null;
-		}
-		
-	}
-
+   
 }

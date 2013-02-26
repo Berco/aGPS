@@ -53,7 +53,6 @@ public class ConfirmDialog extends DialogFragment
 	private String periodicTime;
 	private CountDownTimer timer;
 	private Boolean isForConfirmation;
-	private String script;
 	
 	OnDonateListener donateListener;
 	
@@ -119,16 +118,12 @@ public class ConfirmDialog extends DialogFragment
         YESNOREBOOT.setOnClickListener(this);
         NO.setOnClickListener(this); 
         
-        script = getActivity().getBaseContext().getFilesDir().toString()+"/totalscript.sh ";
-       
         if (isForConfirmation)
     		try { showTimer(seconds() * 1000); } catch (NumberFormatException e) { }
     	else{
     		getDialog().setTitle(getString(R.string.DonateTitle));
     		setScreen(SCREEN_BILLING);
-    	}
-    		
-    		
+    	}	
     		
 		return v;
     }
@@ -269,31 +264,35 @@ public class ConfirmDialog extends DialogFragment
 			return;
 		case R.id.btnYesAndReboot:
 			Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastInstallAndReboot), Toast.LENGTH_LONG).show();
-			install("reboot");
+			install(true);
 			break;
 		case R.id.btnYesNoReboot:
 			Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastInstallNoReboot), Toast.LENGTH_LONG).show();
-			install("no_reboot");
+			install(false);
 			break;
 		}
 		dismiss();
 	}
 	
-	private void install(String reboot_mode){
+	private void install(Boolean reboot){
 		try {
-			String mSSL = create_conf();
+			Boolean mSSL = create_conf();
+			ShellProvider.INSTANCE.mountRW(true);
+			ShellProvider.INSTANCE.copyConf();
+			ShellProvider.INSTANCE.copySSL(mSSL);
 			if (!periodicTime.contentEquals("none")){
 				SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 				Editor editor = getPrefs.edit();
 				editor.putString("TIME", periodicTime);
 				editor.commit();
-				ShellProvider.INSTANCE.getCommandOutput(script + "changeconfig " + periodicTime);
+				ShellProvider.INSTANCE.updateXML(periodicTime);
 			}
-			ShellProvider.INSTANCE.getCommandOutput(script + "install "+ reboot_mode + " "+ mSSL);
+			ShellProvider.INSTANCE.mountRW(false);
+			ShellProvider.INSTANCE.reboot(reboot);
 		} catch (Exception e) {	}
 	}
 
-	private String create_conf() {
+	private Boolean create_conf() {
 		String mSSL = "no_ssl";
 		try
 	    {
@@ -320,7 +319,7 @@ public class ConfirmDialog extends DialogFragment
 	        if (BaseActivity.DEBUG)
 	        	System.out.println("Wrote file:" + conf.getName() );
 	    }catch(IOException e){}
-		return mSSL;
+		return mSSL.equals("ssl");
 	}
 	
 }
