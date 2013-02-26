@@ -1,6 +1,7 @@
 bin
 gen
 libs
+.settings
 
 src/by/zatta/agps/billing
 src/com/android/vending/billing
