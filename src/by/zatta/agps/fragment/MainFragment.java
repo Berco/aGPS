@@ -48,6 +48,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	private ListView mList;
 	private LinearLayout mLinLayConfigXml;
 	private LinearLayout mLinLayPreCheck;
+	private Boolean showPreCheck=true;
 	private TextView mPeriodicText;
 	private String TIME="none";
 	private ConfItemListAdapter mConfAdapter;
@@ -80,7 +81,6 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			myDbHelper.createDataBase();
         	myDbHelper.openDataBase();
         }catch(Exception e){ }
-		
 		return v;
 	}
 	
@@ -116,7 +116,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		fillPoolSpinner("Global");
 		fillProfileSpinner();
 		getItemsFromDatabase();
-
+		if(!showPreCheck) showContent();
 	}
 
 	@Override
@@ -304,6 +304,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
 			mLinLayConfigXml.setVisibility(View.VISIBLE);
 		}
+		showPreCheck=false;
 		mLinLayPreCheck.setVisibility(View.GONE);
 		
 	}
