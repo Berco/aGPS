@@ -1,18 +1,10 @@
 package by.zatta.agps;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.io.IOUtils;
-
 import by.zatta.agps.R;
-import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.ConfirmDialog;
 import by.zatta.agps.dialog.ChangeItemDialog.OnChangedListListener;
 import by.zatta.agps.dialog.ConfirmDialog.OnDonateListener;
@@ -33,13 +25,10 @@ import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuInflater;

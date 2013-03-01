@@ -6,6 +6,25 @@
 		android:orientation="vertical"
 		android:paddingLeft="5dp"
 		android:paddingTop="5dp">
+		
+ 	   <LinearLayout
+			android:id="@+id/llLoadingPreCheck"
+			android:orientation="vertical"
+			android:gravity="center"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:visibility="visible">
+			<ProgressBar
+				android:id="@+id/pbPreCheck"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center" />
+			<TextView
+		    android:id="@+id/tvPreCheck"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:text="@string/SettingUp" />
+    	</LinearLayout>
 
 		<LinearLayout
 		    	android:id="@+id/llConfigXml"

@@ -47,6 +47,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	DatabaseHelper myDbHelper;
 	private ListView mList;
 	private LinearLayout mLinLayConfigXml;
+	private LinearLayout mLinLayPreCheck;
 	private TextView mPeriodicText;
 	private String TIME="none";
 	private ConfItemListAdapter mConfAdapter;
@@ -72,6 +73,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		mLinLayConfigXml = (LinearLayout) v.findViewById(R.id.llConfigXml);
 		mLinLayConfigXml.setOnClickListener(this);
 		mPeriodicText = (TextView) v.findViewById(R.id.tvPeriodicText);
+		mLinLayPreCheck = (LinearLayout) v.findViewById(R.id.llLoadingPreCheck);
 		
 		myDbHelper = new DatabaseHelper(getActivity().getBaseContext(),myAppCode());
 		try { 
@@ -296,13 +298,13 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	}
 
 	public void showContent() {
-		Toast.makeText(getActivity().getBaseContext(), "HOERA !!", Toast.LENGTH_LONG).show();
 		if (ShellProvider.INSTANCE.isConfigPresent()){
 			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 	        TIME = getPrefs.getString("TIME", "5");
 			mPeriodicText.setText("PeriodicTimeOutSec="+TIME);
 			mLinLayConfigXml.setVisibility(View.VISIBLE);
 		}
+		mLinLayPreCheck.setVisibility(View.GONE);
 		
 	}
 }

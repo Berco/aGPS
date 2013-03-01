@@ -9,6 +9,7 @@
     <string name="regularConfig">gps.conf tweak</string>
     <string name="installButton">Install</string>
     <string name="toastUpdated">Updated custom profile</string>
+    <string name="SettingUp">Setting up</string>
     
     <!-- PrefFragment -->
     <string name="moreScreenTitle">More information</string>
