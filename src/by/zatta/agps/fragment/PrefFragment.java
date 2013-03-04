@@ -1,25 +1,126 @@
 package by.zatta.agps.fragment;
 
 import by.zatta.agps.R;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.widget.Toast;
 import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.AboutDialog;
 
 public class PrefFragment extends PreferenceFragment {
-	    
+	
+	OnLanguageListener languageListener;
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            languageListener = (OnLanguageListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnLanguageListener");
+        }
+    }
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.prefs);
+        
+        //addPreferencesFromResource(R.xml.prefs);
+        //Context context = this.getPreferenceScreen().getContext();
+        
+        Context context = this.getActivity().getLayoutInflater().getContext();
+        setPreferenceScreen(createPreferenceHierarchy(context));
     }
+	
+	private PreferenceScreen createPreferenceHierarchy(Context mContext) {
+        PreferenceScreen root = getPreferenceManager().createPreferenceScreen(mContext);
+		root.setKey("agps_preferences");
+		
+		PreferenceCategory launchPrefCat = new PreferenceCategory(mContext);
+        launchPrefCat.setTitle(R.string.moreScreenTitle);
+        root.addPreference(launchPrefCat);
+		
+        Preference infoScreenPref = getPreferenceManager().createPreferenceScreen(mContext);
+		infoScreenPref.setTitle(R.string.AboutPrefTitle);
+        infoScreenPref.setSummary(R.string.AboutPrefSummary);
+        infoScreenPref.setKey("about_app_key");
+        launchPrefCat.addPreference(infoScreenPref);
+        
+        Preference XdaPref = getPreferenceManager().createPreferenceScreen(mContext);
+        XdaPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
+        		.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .setData(Uri.parse("http://forum.xda-developers.com/sitesearch.php?q=%22aGPS%20Patch%22%2B%22GET%20BACK%22")));
+        XdaPref.setTitle(R.string.VisitXdaTitle);
+        XdaPref.setSummary(R.string.VisitXdaSummary);
+        XdaPref.setKey("visit_xda");        
+        launchPrefCat.addPreference(XdaPref);
+        
+        Preference DgPref = getPreferenceManager().createPreferenceScreen(mContext);
+        DgPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
+        		.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .setData(Uri.parse("http://derekgordon.com/android-how-tos/a-gps-worldwide-patch")));
+        DgPref.setTitle(R.string.VisitDGcomTitle);
+        DgPref.setSummary(R.string.VisitDVcomSummary);
+        DgPref.setKey("vist_dg");        
+        launchPrefCat.addPreference(DgPref);
+        
+        PreferenceCategory settingsPrefCat = new PreferenceCategory(mContext);
+        settingsPrefCat.setTitle(R.string.SettingsCategory);
+        root.addPreference(settingsPrefCat);
+        
+        Preference restorePref = getPreferenceManager().createPreferenceScreen(mContext);
+		restorePref.setTitle(R.string.RestoreTitle);
+        restorePref.setSummary(R.string.RestoreSummary);
+        restorePref.setKey("restore_key");
+        settingsPrefCat.addPreference(restorePref);
+        
+        CheckBoxPreference welcomeCheckBoxPref = new CheckBoxPreference(mContext);
+        welcomeCheckBoxPref.setTitle(R.string.PrefWelcomeTitle);
+        welcomeCheckBoxPref.setSummary(R.string.PrefWelcomeSummary);
+        welcomeCheckBoxPref.setKey("showFirstUse");
+        settingsPrefCat.addPreference(welcomeCheckBoxPref);
+        
+        ListPreference listPref = new ListPreference(mContext);
+        listPref.setEntries(R.array.languages);
+        listPref.setEntryValues(R.array.languages_short);
+        listPref.setDialogTitle(R.string.LanguagePrefTitle);
+        listPref.setKey("languagePref");
+        listPref.setTitle(R.string.LanguagePrefTitle);
+        listPref.setSummary(R.string.LanguagePrefSummary);
+        settingsPrefCat.addPreference(listPref);
+        
+        CheckBoxPreference addonCheckBoxPref = new CheckBoxPreference(mContext);
+        addonCheckBoxPref.setTitle(R.string.AddonScriptPrefTitle);
+        addonCheckBoxPref.setSummary(R.string.AddonScriptPrefSummary);
+        addonCheckBoxPref.setKey("enableAddonScript");
+        addonCheckBoxPref.setChecked(true);
+        if (ShellProvider.INSTANCE.isAddonable())
+        	settingsPrefCat.addPreference(addonCheckBoxPref);
+        
+        CheckBoxPreference debugCheckBoxPref = new CheckBoxPreference(mContext);
+        debugCheckBoxPref.setTitle(R.string.DebugPrefTitle);
+        debugCheckBoxPref.setSummary(R.string.DebugPrefSummary);
+        debugCheckBoxPref.setKey("enableDebugging");
+        debugCheckBoxPref.setChecked(true);
+        settingsPrefCat.addPreference(debugCheckBoxPref);
+        
+        return root;
+	}
+	
 	
 	@Override
 	public boolean onPreferenceTreeClick(PreferenceScreen screen,
@@ -44,7 +145,21 @@ public class PrefFragment extends PreferenceFragment {
 			ShellProvider.INSTANCE.mountRW(false);
 		}
 		
+		if (pref.getKey().contentEquals("languagePref")){
+			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					languageListener.onLanguageListener(newValue.toString());
+					return true;
+				}	
+			});			
+		}
+		
 		return false;
+	}
+	
+	public interface OnLanguageListener{
+		public void onLanguageListener(String language);
 	}
 	
 }

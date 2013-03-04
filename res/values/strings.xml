@@ -20,11 +20,18 @@
     <string name="VisitDVcomSummary">in depth information about the patch</string>
     <string name="VisitXdaTitle">Visit XDA</string>
     <string name="VisitXdaSummary">device threads for the old patch</string>
+    <string name="SettingsCategory">Settings</string>
     <string name="RestoreTitle">Restore your backup</string>
     <string name="RestoreSummary">back to your ROM default files</string>
     <string name="toastRestore">Restoring your backup.\nNeeds a reboot to take effect!</string>
     <string name="PrefWelcomeTitle">Always welcome me</string>
     <string name="PrefWelcomeSummary">Show the welcome at all app launches</string>
+    <string name="LanguagePrefTitle">Language</string>
+    <string name="LanguagePrefSummary">Choose for this app</string>
+    <string name="DebugPrefTitle">Debugging enabled</string>
+    <string name="DebugPrefSummary">Write more info to logcat</string>
+    <string name="AddonScriptPrefTitle">Use addon.d script</string>
+    <string name="AddonScriptPrefSummary">Survive ROM flashes</string>
     
     <!-- FirstUseDialogFragment -->
     <string name="WelcomeDialogTitle">Welcome</string>

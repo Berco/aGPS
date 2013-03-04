@@ -11,6 +11,7 @@ import by.zatta.agps.dialog.ConfirmDialog.OnDonateListener;
 import by.zatta.agps.dialog.SliderDialog.OnPeriodicChangeListener;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
+import by.zatta.agps.fragment.PrefFragment.OnLanguageListener;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.billing.IabHelper;
 import by.zatta.agps.billing.IabResult;
@@ -35,7 +36,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, LoaderManager.LoaderCallbacks<Boolean>{
+public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, OnLanguageListener, LoaderManager.LoaderCallbacks<Boolean>{
 	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
 	public static boolean isUpdate = false;
@@ -118,6 +119,18 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 	}
     
     @Override
+	public void onLanguageListener(String language) {
+    	Log.w(TAG, language + " Listenener");
+    	makeLocale(language);
+    	FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		fm.popBackStack();		
+		ft.replace(android.R.id.content, new PrefFragment(), "prefs");
+		ft.addToBackStack(null);
+		ft.commit();
+	}
+    
+    @Override
 	public boolean onCreateOptionsMenu(android.view.Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater blowUp = getMenuInflater();
@@ -130,6 +143,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 	}
     
     public void makeLocale(String language){
+    	Log.w(TAG, language + " makeLocale");
         Locale locale = new Locale(language); 
         Locale.setDefault(locale);
         Configuration config = new Configuration();

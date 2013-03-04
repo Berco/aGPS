@@ -1,0 +1,92 @@
+<resources>
+
+    <string name="app_name">TopNTP</string>
+    <string name="menu_settings">Instellingen</string>
+    <string name="AboutTitle">Over deze app</string>
+    
+    <!-- MainFragment -->
+    <string name="gpsConfig">gpsconfig.xml tweak</string>
+    <string name="regularConfig">gps.conf tweak</string>
+    <string name="installButton">Installeren</string>
+    <string name="toastUpdated">Custom profiel geupdated</string>
+    <string name="SettingUp">Initieren</string>
+    
+    <!-- PrefFragment -->
+    <string name="moreScreenTitle">Meer informatie</string>
+    <string name="moreScreenSummary">kom alles te weten over de patch</string>
+    <string name="AboutPrefTitle">Meer over deze app</string>
+    <string name="AboutPrefSummary">korte uiteenzetting over de ntp server</string>
+    <string name="VisitDGcomTitle">Bezoek derekgordon.com</string>
+    <string name="VisitDVcomSummary">diepere informatie over de patch</string>
+    <string name="VisitXdaTitle">Bezoek XDA</string>
+    <string name="VisitXdaSummary">Oude berichten over de patch</string>
+    <string name="SettingsCategory">Instellingen</string>
+    <string name="RestoreTitle">Herstel de backup</string>
+    <string name="RestoreSummary">terug naar jouw ROM\'s bestanden</string>
+    <string name="toastRestore">Jouw backup is hersteld.\nEen herstart is vereist</string>
+    <string name="PrefWelcomeTitle">Verwelkom me altijd</string>
+    <string name="PrefWelcomeSummary">Laat het welkomst scherm iedere keer zien</string>
+    <string name="LanguagePrefTitle">Language</string>
+    <string name="LanguagePrefSummary">Choose for this app</string>
+    <string name="DebugPrefTitle">Debugging ingeschakeld</string>
+    <string name="DebugPrefSummary">Schrijf meer informatie naar de logcat</string>
+    <string name="AddonScriptPrefTitle">Gebruik addon.d script</string>
+    <string name="AddonScriptPrefSummary">Overleef ROMs flashen</string>
+    
+    <!-- FirstUseDialogFragment -->
+    <string name="WelcomeDialogTitle">Welkom</string>
+    <string name="ChangelogDialogTitle">Changelog</string>
+    <string name="DismissButton">Ga verder</string>
+    <string name="DontShowAgainButton">Niet weer \n laten zien</string>
+        
+    <!--  ChangeItemDialog -->
+    <string name="ChangeItemDialogTitle">Verander items</string>
+    <string name="CancelButton">Anuleer</string>
+    <string name="ApplyButton">Toepassen</string>
+    
+    <!-- SliderDialog -->
+    <string name="SliderTweak">Tweak</string>
+    <string name="SliderDefault">Standaard</string>
+    
+    <!-- ConfirmDialog -->
+    
+    <string name="ConfirmTitle">Creeer / update bestanden</string>
+    <string name="DonateTitle">Doneer</string>
+    
+    <string name="BuyYour">Koop je</string>
+    <string name="BecomeA">Wordt een</string>
+    <string name="DoAnExtra">Doe een extra</string>
+    <string name="Donation">donatie</string>
+    
+    <string name="FirstStar">Eerste star</string>
+    <string name="SecondStar">Tweede star</string>
+    <string name="ThirdStar">Derde star</string>
+    
+    <string name="CommonUser">Common user</string>
+    <string name="StarredUser">Starred user</string>
+    <string name="PremiumUser">Premium user</string>
+    
+    <string name="Waiting">Wacht tijd: \u0020</string>
+    <string name="seconds">\u0020 seconden</string>
+    
+    <string name="CanAndWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure?</string>
+    <string name="CanAndNotWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure you don\'t want to use Derek Gordon\'s server?</string>
+    <string name="NotCanButWant">You are about to patch your GPS configuration using Derek Gordon\'s server. Please consider a donation. \n Are you sure about your patch?</string>
+    <string name="NotCanAndNotWant">You are about to patch your GPS configuration. \n Are you sure?</string>
+    
+    <string name="btnNoInstall">Anuleer</string>
+	<string name="btnYesNoReboot">Maak bestanden \n Zonder herstart \n</string>
+	<string name="toastInstallNoReboot">Installeren zonder herstart</string>
+	<string name="btnYesAndReboot">Maak bestanden \n en herstart \n</string>
+	<string name="toastInstallAndReboot">Installeren en herstarten</string>
+	
+	<!-- Section discriptions -->
+    <string name="daemon">Not going to go into detail here.These need to be called first in GPS daemon startup. Relates to aGPS and SUPL.</string>
+	<string name="thres">INTERMEDIATEPOS relates to using GPS data from sats that are not fully locked. The accuracy variable is a threshold max on deviations from the assumed location where the device will discard data.</string>
+    <string name="qos">This is quality of service information for processing the GPS data. Most should be self-explanatory. GPS data outside the accuracy and threshold range will not be used when positioning data.</string>
+    <string name="assist">These variables relate to aGPS. It says to use aGPS. This will not be used if your ROM has aGPS disabled in the code. The server IP is for an internal IP for accessing the aGPS daemons data when it is operational.</string>
+	<string name="supl">This SUPL data is to match the SuplRootCert if it is required by the SUPL server.</string>
+   	<string name="carrier">Carrier tags used universally in GPS configs</string>
+	<string name="s3_specific">These items are specifically for the Samsung Galaxy S3.</string>
+    
+</resources>

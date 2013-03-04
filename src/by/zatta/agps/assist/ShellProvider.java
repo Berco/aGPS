@@ -243,6 +243,10 @@ public enum ShellProvider {
 
 	}
 	
+	public synchronized boolean isAddonable() {
+		return getCommandOutput("$BB test -d \"/system/addon.d\" && echo TRUE").contains("TRUE");
+	}
+	
 	public synchronized void updateXML(String periodicTimeOut){
 		if (isConfigPresent()){
 			getCommandOutput("$BB sed -i 's/PeriodicTimeOutSec.*/PeriodicTimeOutSec=\"'"+periodicTimeOut+"'\"/' /system/etc/gps/gpsconfig.xml");
