@@ -32,7 +32,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -60,7 +59,8 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
         SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String language = getPrefs.getString("languagePref", "unknown");
         String oldVersion = getPrefs.getString("oldVersion", "0.0");
-        if (!oldVersion.equals(version)) isUpdate = true;
+        if (!oldVersion.equals(version)) 
+        	isUpdate = true;
         if (!language.equals("unknown")) makeLocale(language);
         DEBUG = getPrefs.getBoolean("enableDebugging", true);
     
@@ -133,12 +133,16 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
     @Override
 	public boolean onCreateOptionsMenu(android.view.Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		MenuInflater blowUp = getMenuInflater();
-		MenuItem item = menu.add("Star");
-		item.setTitle("star");
-		item.setIcon(mStars > 0 ? R.drawable.star : R.drawable.star_empty);
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		blowUp.inflate(R.menu.leftclick_optionchooser, menu);
+		MenuItem star = menu.add("Star");
+		star.setTitle("star");
+		star.setIcon(mStars > 0 ? R.drawable.star : R.drawable.star_empty);
+		star.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		
+		MenuItem prefs = menu.add("Settings");
+		prefs.setTitle("settings");
+		prefs.setIcon(R.drawable.settings);
+		prefs.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		
 		return true;
 	}
     

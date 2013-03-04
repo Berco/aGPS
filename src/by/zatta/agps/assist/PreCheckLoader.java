@@ -16,8 +16,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
     public class PreCheckLoader extends AsyncTaskLoader<Boolean> {
+    	private static final String TAG = "PreCheckLoader";
     	Context mContext;
 
         public PreCheckLoader(Context context) {
@@ -34,7 +36,7 @@ import android.preference.PreferenceManager;
 				OutputStream os = null;
 						
 				File h = new File(data_storage_root+"/SuplRootCert");
-				if (!h.exists() || h.exists()){
+					if (h.exists()) h.setWritable(true, true);
 					try {
 						is = mContext.getResources().getAssets().open("fix_base/SuplRootCert");
 						os = new FileOutputStream(data_storage_root+"/SuplRootCert");
@@ -43,11 +45,16 @@ import android.preference.PreferenceManager;
 						os.flush();
 						os.close();
 						os = null;
-					} catch (IOException e) {}
-				}
+						Log.d(TAG, "success copying certificate");
+					} catch (IOException e) {
+						Log.w(TAG, "failed copying certificate");
+					}
+					h.setExecutable(false, true);
+					h.setReadable(true, true);
+					h.setWritable(false, true);
 			
 				File j = new File(data_storage_root+"/busybox");
-				if (!j.exists() || j.exists()){
+					if (j.exists()) j.setWritable(true, true);
 					try {
 						is = mContext.getResources().getAssets().open("scripts/busybox");
 						os = new FileOutputStream(data_storage_root+"/busybox");
@@ -56,11 +63,14 @@ import android.preference.PreferenceManager;
 						os.flush();
 						os.close();
 						os = null;
-					} catch (IOException e) {}
+						Log.d(TAG, "succes copying busybox");
+					} catch (IOException e) {
+						Log.w(TAG, "failed copying busybox");
+					}
 					j.setExecutable(true, true);
-					j.setReadable(true, true);
+					j.setReadable(false, true);
 					j.setWritable(false, true);
-				}
+				
 				ShellProvider.INSTANCE.backup();
 			
 		    	SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
