@@ -70,6 +70,24 @@ import android.util.Log;
 					j.setExecutable(true, true);
 					j.setReadable(false, true);
 					j.setWritable(false, true);
+					
+					File l = new File(data_storage_root+"/67-topntp.sh");
+					if (l.exists()) l.setWritable(true, true);
+					try {
+						is = mContext.getResources().getAssets().open("scripts/67-topntp.sh");
+						os = new FileOutputStream(data_storage_root+"/67-topntp.sh");
+						IOUtils.copy(is, os);
+						is.close();
+						os.flush();
+						os.close();
+						os = null;
+						Log.d(TAG, "succes copying 67-topntp.sh");
+					} catch (IOException e) {
+						Log.w(TAG, "failed copying 67-topntp.sh");
+					}
+					l.setExecutable(false, true);
+					l.setReadable(true, true);
+					l.setWritable(false, true);
 				
 				ShellProvider.INSTANCE.backup();
 			

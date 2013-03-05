@@ -276,17 +276,21 @@ public class ConfirmDialog extends DialogFragment
 	
 	private void install(Boolean reboot){
 		try {
+			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+			
 			Boolean mSSL = create_conf();
 			ShellProvider.INSTANCE.mountRW(true);
 			ShellProvider.INSTANCE.copyConf();
 			ShellProvider.INSTANCE.copySSL(mSSL);
 			if (!periodicTime.contentEquals("none")){
-				SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 				Editor editor = getPrefs.edit();
 				editor.putString("TIME", periodicTime);
 				editor.commit();
 				ShellProvider.INSTANCE.updateXML(periodicTime);
 			}
+			if (getPrefs.getBoolean("enableAddonScript", true))
+				ShellProvider.INSTANCE.copyAddon();
+			
 			ShellProvider.INSTANCE.mountRW(false);
 			ShellProvider.INSTANCE.reboot(reboot);
 		} catch (Exception e) {	}
@@ -321,6 +325,7 @@ public class ConfirmDialog extends DialogFragment
 	    }catch(IOException e){}
 		return mSSL.equals("ssl");
 	}
+	
 	
 }
 

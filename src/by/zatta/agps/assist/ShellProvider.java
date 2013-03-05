@@ -229,6 +229,19 @@ public enum ShellProvider {
 		getCommandOutput("$BB chmod 644 /system/etc/gps.conf");
 	}
 	
+	public synchronized void copyAddon(){
+		if (isAddonable()){
+			getCommandOutput("$BB cat /data/data/by.zatta.agps/files/67-topntp.sh > /system/addon.d/67-topntp.sh");
+			getCommandOutput("$BB chmod 755 /system/addon.d/67-topntp.sh");
+		}
+	}
+	
+	public synchronized void removeAddon(){
+		if (isAddonable()){
+			getCommandOutput("$BB test -f \"/system/addon.d/67-topntp.sh\" && $BB rm /system/addon.d/67-topntp.sh");
+		}
+	}
+	
 	public synchronized void copySSL(Boolean mSSL){
 		getCommandOutput("$BB rm /system/etc/SuplRootCert");
 		if (mSSL){

@@ -17,12 +17,15 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.util.Log;
 import android.widget.Toast;
 import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.AboutDialog;
+import by.zatta.agps.dialog.ConfirmDialog;
 
 public class PrefFragment extends PreferenceFragment {
 	
+	private static final String TAG = "PrefFragment";
 	OnLanguageListener languageListener;
 	
 	@Override
@@ -143,6 +146,7 @@ public class PrefFragment extends PreferenceFragment {
 			ShellProvider.INSTANCE.mountRW(true);
 			ShellProvider.INSTANCE.restore();
 			ShellProvider.INSTANCE.mountRW(false);
+			return true;
 		}
 		
 		if (pref.getKey().contentEquals("languagePref")){
@@ -153,6 +157,19 @@ public class PrefFragment extends PreferenceFragment {
 					return true;
 				}	
 			});			
+		}
+		
+		if (pref.getKey().contentEquals("enableAddonScript")){
+			ShellProvider.INSTANCE.mountRW(true);
+			if (pref.getSharedPreferences().getBoolean("enableAddonScript", true)){
+				Log.w(TAG, "enabled addon.d support");
+				ShellProvider.INSTANCE.copyAddon();
+			} else {
+				Log.w(TAG, "disabled addon.d support");
+				ShellProvider.INSTANCE.removeAddon();
+			}
+			ShellProvider.INSTANCE.mountRW(false);
+			return true;
 		}
 		
 		return false;
