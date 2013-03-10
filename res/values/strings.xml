@@ -2,7 +2,7 @@
 
     <string name="app_name">TopNTP</string>
     <string name="menu_settings">Settings</string>
-    <string name="AboutTitle">About this app</string>
+    <string name="AboutTitle">About</string>
     
     <!-- MainFragment -->
     <string name="gpsConfig">gpsconfig.xml tweak</string>
@@ -70,8 +70,8 @@
     <string name="seconds">\u0020 seconds</string>
     
     <string name="CanAndWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure?</string>
-    <string name="CanAndNotWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure you don\'t want to use Derek Gordon\'s server?</string>
-    <string name="NotCanButWant">You are about to patch your GPS configuration using Derek Gordon\'s server. Please consider a donation. \n Are you sure about your patch?</string>
+    <string name="CanAndNotWant">Thanks for donating! You are about to patch your gps configuration. \n Are you sure you don\'t want to use Derek Gordon\'s servers?</string>
+    <string name="NotCanButWant">You are about to patch your GPS configuration using Derek Gordon\'s servers. Please consider a donation. \n Are you sure about your patch?</string>
     <string name="NotCanAndNotWant">You are about to patch your GPS configuration. \n Are you sure?</string>
     
     <string name="btnNoInstall">Cancel</string>
