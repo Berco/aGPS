@@ -1,10 +1,10 @@
-ITEM|SECTION|TYPE|Google|AT and T|Tmobile|Sony Ericson|LG|
-SUPL_HOST|supl|text|supl.google.com|FQDN|10.176.29.225|supl.sonyericsson.com|lge.glpals.com|
-SUPL_PORT|supl|integer|7276|7276|7275|7275|7275|
-SUPL_SECURE_PORT|supl|integer|7275|7275|{null}|{null}|{null}|
-SUPL_NO_SECURE_PORT|supl|integer|3425|3425|{null}|{null}|{null}|
-SUPL_TLS_HOST|supl|text|FQDN|FQDN|lbs.geo.t-mobile.com|FQDN|FQDN|
-SUPL_TLS_CERT|supl|text|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert|
-REPORT_POSITION_USE_SUPL_REFLOC|supl|integer|1|1|1|1|1|
-POSITION_MODE|supl|text|{null}|{null}|{null}|GPS_POSITION_MODE_MS_BASED|GPS_POSITION_MODE_MS_BASED|
-SLP_MODE|supl|integer|{null}|{null}|{null}|0|0|
+ITEMS|SECTION|TYPE|Google|AT and T|Tmobile|Sony Ericson|LG
+SUPL_HOST|supl|text|supl.google.com|FQDN|10.176.29.225|supl.sonyericsson.com|lge.glpals.com
+SUPL_PORT|supl|integer|7276|7276|7275|7275|7275
+SUPL_SECURE_PORT|supl|integer|7275|7275|{null}|{null}|{null}
+SUPL_NO_SECURE_PORT|supl|integer|3425|3425|{null}|{null}|{null}
+SUPL_TLS_HOST|supl|text|FQDN|FQDN|lbs.geo.t-mobile.com|FQDN|FQDN
+SUPL_TLS_CERT|supl|text|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert|/etc/SuplRootCert
+REPORT_POSITION_USE_SUPL_REFLOC|supl|integer|1|1|1|1|1
+POSITION_MODE|supl|text|{null}|{null}|{null}|GPS_POSITION_MODE_MS_BASED|GPS_POSITION_MODE_MS_BASED
+SLP_MODE|supl|integer|{null}|{null}|{null}|0|0
