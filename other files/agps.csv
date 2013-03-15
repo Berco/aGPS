@@ -1,0 +1,5 @@
+ITEMS|SECTION|DEREK|GOOGLE
+XTRA_SERVER_3|agps|http://xtra2.gpsonextra.net/xtra.bin|http://xtra4.gpsonextra.net/xtra.bin
+XTRA_SERVER_2|agps|http://xtra3.gpsonextra.net/xtra.bin|http://xtra2.gpsonextra.net/xtra.bin
+XTRA_SERVER_1|agps|http://derekgordon.com/gps-files/bin/xtra.bin|http://xtra3.gpsonextra.net/xtra.bin
+AGPS|agps|http://derekgordon.com/gps-files/bin/xtra.bin|http://xtra3.gpsonextra.net/xtra.bin
