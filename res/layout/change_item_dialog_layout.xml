@@ -39,11 +39,12 @@
 		</ScrollView>
 		
 		<LinearLayout
-	    android:orientation="vertical" 		
+		android:orientation="vertical" 		
     	android:layout_width="match_parent" 
     	android:layout_height="wrap_content"
 	    android:divider="?android:attr/dividerHorizontal"
-	    android:showDividers="middle" >
+	    android:showDividers="middle"
+	    >"
 
 		<View
 		    android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="@string/CancelButton" />
+		        android:text="@android:string/ok" />
 		    
 		    <Button
 		        android:id="@+id/btnDoChange"
@@ -69,6 +70,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
+		        android:visibility="gone"
 		        android:text="@string/ApplyButton" />
 
 		</LinearLayout>

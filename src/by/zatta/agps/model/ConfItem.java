@@ -7,14 +7,12 @@ public class ConfItem implements Parcelable{
     private String mLabel;
     private String mSection;
     private String mType;
-    private String mDiscription;
     private String mSetting;
     
-    public ConfItem(String label, String section, String type, String discription, String setting) {
+    public ConfItem(String label, String section, String type, String setting) {
     	mLabel = label;
     	mSection = section;
     	mType = type;
-    	mDiscription = discription;
     	mSetting = setting;
     }
     
@@ -26,10 +24,7 @@ public class ConfItem implements Parcelable{
 
     public void setType(String type){ mType = type; }
     public String getType(){ return mType; }
-    
-    public void setDiscription(String discription){ mDiscription = discription; }
-    public String getDiscription(){ return mDiscription; }    
-    
+        
     public void setSetting(String setting){ mSetting = setting; }
     public String getSetting(){ return mSetting; }
     
@@ -55,7 +50,6 @@ public class ConfItem implements Parcelable{
 		dest.writeString(mLabel);
 		dest.writeString(mSection);
 		dest.writeString(mType);
-		dest.writeString(mDiscription);
 		dest.writeString(mSetting);
 	}
 
@@ -63,7 +57,6 @@ public class ConfItem implements Parcelable{
 		mLabel = in.readString();
 		mSection = in.readString();
 		mType = in.readString();
-		mDiscription = in.readString();
  		mSetting = in.readString();
 	}
      

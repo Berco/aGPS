@@ -118,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			Cursor c = db.query("items", new String[]{"ITEMS", "CUSTOM"}, null, null, null, null, null);
 			if(c.moveToPosition(0)) {
 				do {
-					sectionItems.add(new ConfItem(c.getString(0), null, null, null, c.getString(1)));
+					sectionItems.add(new ConfItem(c.getString(0), null, null, c.getString(1)));
 				} while (c.moveToNext());
 			}
 			c.close(); 
@@ -146,6 +146,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		
 	}
 	
+	public List<String> getPools(String continent){
+		List<String> labels = new ArrayList<String>();
+        Cursor c= getCountries(continent);
+        if (c.moveToFirst()) {
+            do {
+                labels.add(c.getString(2));
+                
+            } while (c.moveToNext());
+        }
+        c.close();    
+		return labels;
+	}
+	
 	public List<String> getRegions(){
 		List<String> regions = new ArrayList<String>();
 		String array[] = { "CONTINENT" }; 
@@ -163,6 +176,30 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 		return regions;
 	}
+	public List<String> getProfiles(){
+		List<String> labels = new ArrayList<String>();
+        Cursor c=myDataBase.query("items", null, null, null, null,null, null);       
+        if (c.moveToFirst()) {
+        	for (int i = 3; i < c.getColumnCount(); i++){
+        		if (!c.getString(i).equals("{null}")) labels.add(c.getString(i));
+        		}
+        }
+        c.close(); 
+        
+		return labels;
+	}
+	
+	public List<String> getSupls() {
+		List<String> labels = new ArrayList<String>();
+        Cursor c=myDataBase.query("supl", null, null, null, null,null, null);       
+        if (c.moveToFirst()) {
+        	for (int i = 3; i < c.getColumnCount(); i++){
+        		if (!c.getString(i).equals("{null}")) labels.add(c.getString(i));
+        		}
+        }
+        c.close(); 
+		return labels;
+	}
 	
 	public Cursor getCountries(String continent){
 		return myDataBase.rawQuery("SELECT * FROM pools WHERE CONTINENT='"+continent+"'", null);
@@ -175,16 +212,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		
 	}
 	
-	public String getColumnNameFor(String profile){
+	public String getColumnNameFor(String profile, String table){
 		int colNum=0;
 		String colName = "GOOGLE";
-        Cursor c=myDataBase.query("items", null, null, null, null,null, null);       
+        Cursor c=myDataBase.query(table, null, null, null, null,null, null);       
         if (c.moveToFirst()) {
         	for (int i = 0; i < c.getColumnCount(); i++){
         		if (c.getString(i).equals(profile)) colNum=i;
         		}
         }
-		c = myDataBase.rawQuery("PRAGMA table_info(items)", null);
+		c = myDataBase.rawQuery("PRAGMA table_info("+ table + ")", null);
 		int counter=0;
 		if ( c.moveToFirst() ) {
 		    do {
@@ -201,4 +238,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		
 	}
 	
+	public void resetCustomProfile(){
+		myDataBase.execSQL("UPDATE items SET CUSTOM='{null}'");
+		
+	}
 }

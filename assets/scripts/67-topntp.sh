@@ -8,6 +8,7 @@ list_files() {
 cat <<EOF
 etc/gps.conf
 etc/gps/gpsconfig.xml
+etc/SuplRootCert
 EOF
 }
 

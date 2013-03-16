@@ -242,10 +242,14 @@ public enum ShellProvider {
 		}
 	}
 	
-	public synchronized void copySSL(Boolean mSSL){
+	public synchronized void copySSL(String mSSL){
 		getCommandOutput("$BB rm /system/etc/SuplRootCert");
-		if (mSSL){
+		if (mSSL.contains("generic")){
 			getCommandOutput("$BB cat /data/data/by.zatta.agps/files/SuplRootCert > /system/etc/SuplRootCert");
+			getCommandOutput("chmod 644 /system/etc/SuplRootCert");
+		}
+		if (mSSL.contains("tmo")){
+			getCommandOutput("$BB cat /data/data/by.zatta.agps/files/SuplRootCertTmo > /system/etc/SuplRootCert");
 			getCommandOutput("chmod 644 /system/etc/SuplRootCert");
 		}
 	}

@@ -24,6 +24,9 @@
     <string name="RestoreTitle">Restore your backup</string>
     <string name="RestoreSummary">back to your ROM default files</string>
     <string name="toastRestore">Restoring your backup.\nNeeds a reboot to take effect!</string>
+    <string name="ResetCustomTitle">Reset your custom profile</string>
+    <string name="ResetCustomSummary">start all over again setting this up</string>
+    <string name="toastReset">Resetted your custom profile.</string>
     <string name="PrefWelcomeTitle">Always welcome me</string>
     <string name="PrefWelcomeSummary">Show the welcome at all app launches</string>
     <string name="LanguagePrefTitle">Language</string>
@@ -83,12 +86,42 @@
 	
 	
 	<!-- Section discriptions -->
-    <string name="daemon">Not going to go into detail here.These need to be called first in GPS daemon startup. Relates to aGPS and SUPL.</string>
-	<string name="thres">INTERMEDIATEPOS relates to using GPS data from sats that are not fully locked. The accuracy variable is a threshold max on deviations from the assumed location where the device will discard data.</string>
-    <string name="qos">This is quality of service information for processing the GPS data. Most should be self-explanatory. GPS data outside the accuracy and threshold range will not be used when positioning data.</string>
-    <string name="assist">These variables relate to aGPS. It says to use aGPS. This will not be used if your ROM has aGPS disabled in the code. The server IP is for an internal IP for accessing the aGPS daemons data when it is operational.</string>
-	<string name="supl">This SUPL data is to match the SuplRootCert if it is required by the SUPL server.</string>
-   	<string name="carrier">Carrier tags used universally in GPS configs</string>
-	<string name="s3_specific">These items are specifically for the Samsung Galaxy S3.</string>
+	<string name="server">
+	    NTP stands for Network Protocol and povides a time-hack to devices that have syncing made readily possible. 
+	    Many XDA patches misinterpret what NTP is and its importance. 
+	    NTP packets have built-in mechanisms for transmission loss. 
+	    NTP packets are very small. Lastly, NTP matters for parsing the XTRA.BIN. 
+	    But it only matters when your device has it time extremely offset compared to reality. 
+	    Thus, I build this patch for worldwide operation. 
+	    Rarely would local NTP servers be required.</string>
+	<string name="agps">
+	    AGPS and XTRA tell the AGPS daemon where it may locate the aGPS data. 
+	    The data operates as an almanac with the location of GPS satellites stored within in. 
+	    This data is only valid for 24 hours. It will be downloaded and cached. 
+	    It is no longer kept in the /data partition permanently. 
+	    There is no point to keep it there! My server processes the XTRA.BIN every 30 minutes. 
+	    Typically it updates every hour when new data is overloaded.</string>
+    <string name="daemon">
+        Not going to go into detail here.
+        These need to be called first in GPS daemon startup. 
+        Relates to aGPS and SUPL.</string>
+	<string name="thres">
+	    INTERMEDIATEPOS relates to using GPS data from sats that are not fully locked. 
+	    The accuracy variable is a threshold max on deviations from the assumed location 
+	    where the device will discard data.</string>
+    <string name="qos">
+        This is quality of service information for processing the GPS data. 
+        Most should be self-explanatory. 
+        GPS data outside the accuracy and threshold range will not be used when positioning data.</string>
+    <string name="assist">
+        These variables relate to aGPS. It says to use aGPS. 
+        This will not be used if your ROM has aGPS disabled in the code. 
+        The server IP is for an internal IP for accessing the aGPS daemons data when it is operational.</string>
+	<string name="supl">
+	    This SUPL data is to match the SuplRootCert if it is required by the SUPL server.</string>
+   	<string name="carrier">
+   	    Carrier tags used universally in GPS configs</string>
+	<string name="s3_specific">
+	    These items are specifically for the Samsung Galaxy S3 Touchwizz roms.</string>
     
 </resources>

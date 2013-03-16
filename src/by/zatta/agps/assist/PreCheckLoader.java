@@ -45,13 +45,31 @@ import android.util.Log;
 						os.flush();
 						os.close();
 						os = null;
-						Log.d(TAG, "success copying certificate");
+						Log.d(TAG, "success copying certificate generic");
 					} catch (IOException e) {
-						Log.w(TAG, "failed copying certificate");
+						Log.w(TAG, "failed copying certificate generic");
 					}
 					h.setExecutable(false, true);
 					h.setReadable(true, true);
 					h.setWritable(false, true);
+				
+				File i = new File(data_storage_root+"/SuplRootCertTmo");
+					if (i.exists()) i.setWritable(true, true);
+					try {
+						is = mContext.getResources().getAssets().open("fix_base/SuplRootCertTmo");
+						os = new FileOutputStream(data_storage_root+"/SuplRootCertTmo");
+						IOUtils.copy(is, os);
+						is.close();
+						os.flush();
+						os.close();
+						os = null;
+						Log.d(TAG, "success copying certificate tmo");
+					} catch (IOException e) {
+						Log.w(TAG, "failed copying certificate tmo");
+					}
+					i.setExecutable(false, true);
+					i.setReadable(true, true);
+					i.setWritable(false, true);
 			
 				File j = new File(data_storage_root+"/busybox");
 					if (j.exists()) j.setWritable(true, true);
@@ -71,7 +89,7 @@ import android.util.Log;
 					j.setReadable(false, true);
 					j.setWritable(false, true);
 					
-					File l = new File(data_storage_root+"/67-topntp.sh");
+				File l = new File(data_storage_root+"/67-topntp.sh");
 					if (l.exists()) l.setWritable(true, true);
 					try {
 						is = mContext.getResources().getAssets().open("scripts/67-topntp.sh");

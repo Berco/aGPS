@@ -44,6 +44,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	private Spinner mSpRegion;
 	private Spinner mSpPool;
 	private Spinner mSpProfile;
+	private Spinner mSpSupl;
 	DatabaseHelper myDbHelper;
 	private ListView mList;
 	private LinearLayout mLinLayConfigXml;
@@ -71,6 +72,8 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		mSpPool.setOnItemSelectedListener(this);
 		mSpProfile = (Spinner)v.findViewById(R.id.spProfile);
 		mSpProfile.setOnItemSelectedListener(this);
+		mSpSupl = (Spinner)v.findViewById(R.id.spSupl);
+		mSpSupl.setOnItemSelectedListener(this);
 		mLinLayConfigXml = (LinearLayout) v.findViewById(R.id.llConfigXml);
 		mLinLayConfigXml.setOnClickListener(this);
 		mPeriodicText = (TextView) v.findViewById(R.id.tvPeriodicText);
@@ -115,6 +118,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		fillRegionSpinner();
 		fillPoolSpinner("Global");
 		fillProfileSpinner();
+		fillSuplSpinner();
 		getItemsFromDatabase();
 		if(!showPreCheck) showContent();
 	}
@@ -138,15 +142,15 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		ConfItem item = (ConfItem) getListAdapter().getItem(position);
-		if (id > 4){
-			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			ft.addToBackStack(null);
-			DialogFragment newFragment = ChangeItemDialog.newInstance(getItemGroup(item));
-			newFragment.show(ft, "dialog");
-		} else {
-			Toast.makeText(getActivity().getBaseContext(), item.toString(), Toast.LENGTH_SHORT).show();
-		}
+		ConfItem item;
+		 if (id > 4) item = (ConfItem) getListAdapter().getItem(position);
+		 else if (id <= 4 && id > 0) item = (ConfItem) getListAdapter().getItem(2);
+		 else item = (ConfItem) getListAdapter().getItem(0);
+			
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				ft.addToBackStack(null);
+				DialogFragment newFragment = ChangeItemDialog.newInstance(getItemGroup(item));
+				newFragment.show(ft, "dialog");
 	}
 	
 	public void showFirstUse(){	
@@ -162,17 +166,10 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		DialogFragment newFragment = ChangelogDialog.newInstance();
 		newFragment.show(ft, "dialog");
 	}
-
-	public void fillPoolSpinner(String continent){
-        List<String> labels = new ArrayList<String>();
-        c= myDbHelper.getCountries(continent);
-        if (c.moveToFirst()) {
-            do {
-                labels.add(c.getString(2));
-                
-            } while (c.moveToNext());
-        }
-        c.close();        
+	
+	// Four methods to fill the spinners
+	public void fillPoolSpinner(String continent){  
+        List<String> labels = myDbHelper.getPools(continent);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpPool.setAdapter(dataAdapter);
@@ -184,47 +181,54 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         mSpRegion.setAdapter(dataAdapter);
 	}
 	public void fillProfileSpinner(){
-        List<String> labels = new ArrayList<String>();
-        c=myDbHelper.query("items", null, null, null, null,null, null);       
-        if (c.moveToFirst()) {
-        	for (int i = 4; i < c.getColumnCount(); i++){
-        		if (!c.getString(i).equals("{null}")) labels.add(c.getString(i));
-        		}
-        }
-        c.close(); 
+		List<String> labels = myDbHelper.getProfiles();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpProfile.setAdapter(dataAdapter);
 	}
+	public void fillSuplSpinner(){
+        List<String> labels = myDbHelper.getSupls();
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_item, labels);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpSupl.setAdapter(dataAdapter);
+	}
 	
+	// method to pass get a list for the ChangeItemDialogFragment
 	public List<ConfItem> getItemGroup(ConfItem item){
 		List<ConfItem> sectionItems = new ArrayList<ConfItem>();
-		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString());
-		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
+		if (item.getSection().contains("supl") || item.getSection().contains("server") || item.getSection().contains("agps")) {
+			sectionItems.add(item);
+			return sectionItems;
+		}
+			
+		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString(), "items");
+		String array[] = { "ITEMS","SECTION","TYPE",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
         if(c.moveToPosition(1)) {
         	do {
         		if (!c.getString(0).equals("{null}") && 
-        			!c.getString(4).equals("{null}") &&
+        			!c.getString(3).equals("{null}") &&
         			c.getString(1).equals(item.getSection()))
-        			sectionItems.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+        			sectionItems.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3)));
         	} while (c.moveToNext());
         }
         c.close();
 		return sectionItems;
 	}
 	
-	
+	// Getting it all together
 	public List<ConfItem> getItemsFromDatabase(){
         List<ConfItem>confItems = getFromProfileSpinner();
+        for (ConfItem supl : getFromSuplSpinner())
+        	confItems.add(10, supl);
         for (ConfItem agps : getAgpsFromDatabase())
         	confItems.add(0, agps);
-        
         confItems.add(0, getFromPoolSpinner());
        	mConfAdapter.setData(confItems);
         return confItems;
 	}
 	
+	// called from getItemsFromDatabase()
 	private List<ConfItem> getAgpsFromDatabase(){
 		List<ConfItem> ntpItems = new ArrayList<ConfItem>();
 		String agpsType =  "GOOGLE";
@@ -235,33 +239,50 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
         if(c.moveToPosition(1)) {
         	do {
         		if (!c.getString(0).equals("{null}") && !c.getString(1).equals("{null}"))
-        			ntpItems.add(new ConfItem(c.getString(0),null,null,null, c.getString(1)));
+        			ntpItems.add(new ConfItem(c.getString(0),"agps","text", c.getString(1)));
         	} while (c.moveToNext());
         }
         c.close();
 		return ntpItems;
 	}
 	
+	// called from getItemsFromDatabase()
 	private ConfItem getFromPoolSpinner(){
-        ConfItem item = new ConfItem("NTP_SERVER", null, null,null,myDbHelper.getPoolfromSpinner(mSpPool.getSelectedItem().toString()));
+        ConfItem item = new ConfItem("NTP_SERVER", "server", "text" ,myDbHelper.getPoolfromSpinner(mSpPool.getSelectedItem().toString()));
         return item;
 	}
 	
+	// called from getItemsFromDatabase()
 	private List<ConfItem> getFromProfileSpinner(){
 		List<ConfItem> itemsList = new ArrayList<ConfItem>();
-		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString());
-		String array[] = { "ITEMS","SECTION","TYPE","DISCRIPTION",profile }; 
+		String profile = myDbHelper.getColumnNameFor(mSpProfile.getSelectedItem().toString(), "items");
+		String array[] = { "ITEMS","SECTION","TYPE",profile }; 
 		c=myDbHelper.query("items", array, null, null, null,null, null);
 		if(c.moveToPosition(1)) {
 			do {
-				if (!c.getString(0).equals("{null}") && !c.getString(4).equals("{null}"))
-					itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+				if (!c.getString(0).equals("{null}") && !c.getString(3).equals("{null}"))
+					itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3)));
 			} while (c.moveToNext());
 		}
 		c.close();
 		return itemsList;
 	}
 	
+	// called from getItemsFromDatabase()
+	private List<ConfItem> getFromSuplSpinner(){
+		List<ConfItem> itemsList = new ArrayList<ConfItem>();
+		String profile = myDbHelper.getColumnNameFor(mSpSupl.getSelectedItem().toString(), "supl");
+		String array[] = { "ITEMS","SECTION","TYPE",profile }; 
+		c=myDbHelper.query("supl", array, null, null, null,null, null);
+		if(c.moveToPosition(1)) {
+			do {
+				if (!c.getString(0).equals("{null}") && !c.getString(3).equals("{null}"))
+					itemsList.add(new ConfItem(c.getString(0), c.getString(1), c.getString(2), c.getString(3)));
+			} while (c.moveToNext());
+		}
+		c.close();
+		return itemsList;
+	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long arg3) {
@@ -273,6 +294,9 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 	        getItemsFromDatabase();
 			break;
 		case R.id.spProfile:
+			getItemsFromDatabase();
+			break;
+		case R.id.spSupl:
 			getItemsFromDatabase();
 			break;
 		}		
@@ -287,7 +311,7 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 			myDbHelper.updateItemCustomItem(item.getLabel(), item.getSetting());
 		
 		fillProfileSpinner();
-		mSpProfile.setSelection(10);
+		mSpProfile.setSelection(6);
 	
 	Toast.makeText(getActivity().getBaseContext(), getString(R.string.toastUpdated), Toast.LENGTH_LONG).show();
 	}
@@ -306,6 +330,10 @@ public class MainFragment extends ListFragment implements OnClickListener, OnIte
 		}
 		showPreCheck=false;
 		mLinLayPreCheck.setVisibility(View.GONE);
-		
+	}
+
+	public void onResetCustomProfile() {
+		myDbHelper.resetCustomProfile();
+		mSpProfile.setSelection(0);
 	}
 }

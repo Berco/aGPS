@@ -12,6 +12,7 @@ import by.zatta.agps.dialog.SliderDialog.OnPeriodicChangeListener;
 import by.zatta.agps.fragment.MainFragment;
 import by.zatta.agps.fragment.PrefFragment;
 import by.zatta.agps.fragment.PrefFragment.OnLanguageListener;
+import by.zatta.agps.fragment.PrefFragment.OnResetListener;
 import by.zatta.agps.model.ConfItem;
 import by.zatta.agps.billing.IabHelper;
 import by.zatta.agps.billing.IabResult;
@@ -33,9 +34,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, OnLanguageListener, LoaderManager.LoaderCallbacks<Boolean>{
+public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, OnLanguageListener, OnResetListener, LoaderManager.LoaderCallbacks<Boolean>{
 	static final String TAG = "BaseActivity";
 	public static boolean DEBUG = true;
 	public static boolean isUpdate = false;
@@ -108,7 +108,6 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
     
     @Override
 	public void onPeriodicListener(String time) {
-    	Toast.makeText(this, time, Toast.LENGTH_LONG).show();
     	Fragment list = getFragmentManager().findFragmentByTag("main");
     	((MainFragment) list).updatePeriodicTimeOut(time);
 	}
@@ -128,6 +127,12 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 		ft.replace(android.R.id.content, new PrefFragment(), "prefs");
 		ft.addToBackStack(null);
 		ft.commit();
+	}
+    
+    @Override
+	public void onResetListener() {
+    	Fragment list = getFragmentManager().findFragmentByTag("main");
+    	((MainFragment) list).onResetCustomProfile();
 	}
     
     @Override

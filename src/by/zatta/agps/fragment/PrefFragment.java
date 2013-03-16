@@ -21,29 +21,27 @@ import android.util.Log;
 import android.widget.Toast;
 import by.zatta.agps.assist.ShellProvider;
 import by.zatta.agps.dialog.AboutDialog;
-import by.zatta.agps.dialog.ConfirmDialog;
 
 public class PrefFragment extends PreferenceFragment {
 	
 	private static final String TAG = "PrefFragment";
 	OnLanguageListener languageListener;
+	OnResetListener resetListener;
 	
 	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             languageListener = (OnLanguageListener) activity;
+            resetListener = (OnResetListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnLanguageListener");
+            throw new ClassCastException(activity.toString() + " must implement correct Listener");
         }
     }
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //addPreferencesFromResource(R.xml.prefs);
-        //Context context = this.getPreferenceScreen().getContext();
         
         Context context = this.getActivity().getLayoutInflater().getContext();
         setPreferenceScreen(createPreferenceHierarchy(context));
@@ -90,6 +88,12 @@ public class PrefFragment extends PreferenceFragment {
         restorePref.setSummary(R.string.RestoreSummary);
         restorePref.setKey("restore_key");
         settingsPrefCat.addPreference(restorePref);
+        
+        Preference resetCustom = getPreferenceManager().createPreferenceScreen(mContext);
+        resetCustom.setTitle(R.string.ResetCustomTitle);
+        resetCustom.setSummary(R.string.ResetCustomSummary);
+        resetCustom.setKey("reset_custom_key");
+        settingsPrefCat.addPreference(resetCustom);
         
         CheckBoxPreference welcomeCheckBoxPref = new CheckBoxPreference(mContext);
         welcomeCheckBoxPref.setTitle(R.string.PrefWelcomeTitle);
@@ -149,6 +153,12 @@ public class PrefFragment extends PreferenceFragment {
 			return true;
 		}
 		
+		if (pref.getKey().contentEquals("reset_custom_key")){
+			Toast.makeText(getActivity().getApplicationContext(), getString(R.string.toastReset), Toast.LENGTH_LONG).show();
+			resetListener.onResetListener();
+			return true;
+		}
+		
 		if (pref.getKey().contentEquals("languagePref")){
 			pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener(){
 				@Override
@@ -172,11 +182,15 @@ public class PrefFragment extends PreferenceFragment {
 			return true;
 		}
 		
-		return false;
+		return true;
 	}
 	
 	public interface OnLanguageListener{
 		public void onLanguageListener(String language);
+	}
+	
+	public interface OnResetListener{
+		public void onResetListener();
 	}
 	
 }

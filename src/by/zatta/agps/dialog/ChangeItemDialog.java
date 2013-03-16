@@ -63,7 +63,7 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	getDialog().setTitle(getString(R.string.ChangeItemDialogTitle));
+		getDialog().setTitle(getString(R.string.moreScreenTitle));
         View v = inflater.inflate(R.layout.change_item_dialog_layout, container, false);
         TextView tv = (TextView) v.findViewById(R.id.tvGroupDiscribtion);
         mLinLay = (LinearLayout) v.findViewById(R.id.llButtons);
@@ -72,11 +72,18 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
         mBtnCancel.setOnClickListener(this);
         mBtnApply.setOnClickListener(this);
         
-        tv.setText(findDiscription());
         
-        for (ConfItem item : items){
-        	createRelText(item);
-        }
+        String section = items.get(0).getSection();
+        tv.setText(findDiscription(section));
+        
+        
+        if (!section.contains("supl") && !section.contains("server") && !section.contains("agps")) {
+        	for (ConfItem item : items){
+        		showButtons();
+            	createRelText(item);
+            }
+		}
+        
         
         if (BaseActivity.DEBUG){
 			String controle=null;
@@ -84,11 +91,17 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 	        	if (controle != null) controle = controle+item.getSetting();
 	        	else controle = item.getSetting();
 	        }
-	        Log.i("ConfDialog", controle + "changed");
+	        Log.i("ConfDialog", controle + "received in OnCreateView");
 		}
         return v;
     }
 	
+	private void showButtons() {
+		getDialog().setTitle(getString(R.string.ChangeItemDialogTitle));
+		mBtnApply.setVisibility(View.VISIBLE);
+		mBtnCancel.setText(R.string.CancelButton);
+	}
+
 	public interface OnChangedListListener{
 		public void onChangedListListener(List<ConfItem> items);
 	}
@@ -112,8 +125,7 @@ public class ChangeItemDialog extends DialogFragment implements OnClickListener{
 		mLinLay.addView(mLinLayChild);
 	}
 	
-	private String findDiscription(){
-		String section = items.get(0).getSection();
+	private String findDiscription(String section){
 		int resID = getActivity().getBaseContext().getResources().getIdentifier(section, "string", getActivity().getPackageName());
 		return getActivity().getBaseContext().getResources().getString(resID);
 	}

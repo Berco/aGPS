@@ -278,7 +278,7 @@ public class ConfirmDialog extends DialogFragment
 		try {
 			SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 			
-			Boolean mSSL = create_conf();
+			String mSSL = create_conf();
 			ShellProvider.INSTANCE.mountRW(true);
 			ShellProvider.INSTANCE.copyConf();
 			ShellProvider.INSTANCE.copySSL(mSSL);
@@ -296,7 +296,8 @@ public class ConfirmDialog extends DialogFragment
 		} catch (Exception e) {	}
 	}
 
-	private Boolean create_conf() {
+	@SuppressWarnings("resource")
+	private String create_conf() {
 		String mSSL = "no_ssl";
 		try
 	    {
@@ -315,7 +316,8 @@ public class ConfirmDialog extends DialogFragment
             is.close();
             for (ConfItem item : items) {
             	w.append(item.toString() + '\n');
-            	if (item.toString().contains("SUPL_TLS_CERT")) mSSL = "ssl";
+            	if (item.toString().contains("SUPL_TLS_CERT")) mSSL = "generic";
+            	if (item.toString().contains("t-mobile")) return "tmo";
             }
 	                	        
 	        w.flush();
@@ -323,7 +325,7 @@ public class ConfirmDialog extends DialogFragment
 	        if (BaseActivity.DEBUG)
 	        	System.out.println("Wrote file:" + conf.getName() );
 	    }catch(IOException e){}
-		return mSSL.equals("ssl");
+		return mSSL;
 	}
 	
 	
