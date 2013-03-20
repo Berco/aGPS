@@ -64,7 +64,7 @@ public class PrefFragment extends PreferenceFragment {
         Preference XdaPref = getPreferenceManager().createPreferenceScreen(mContext);
         XdaPref.setIntent(new Intent().setAction(Intent.ACTION_VIEW)
         		.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .setData(Uri.parse("http://forum.xda-developers.com/sitesearch.php?q=%22aGPS%20Patch%22%2B%22GET%20BACK%22")));
+                .setData(Uri.parse("http://forum.xda-developers.com/showthread.php?t=2198319")));
         XdaPref.setTitle(R.string.VisitXdaTitle);
         XdaPref.setSummary(R.string.VisitXdaSummary);
         XdaPref.setKey("visit_xda");        
