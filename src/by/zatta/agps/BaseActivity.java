@@ -25,6 +25,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -72,7 +73,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
         }
         
         mHelper = new IabHelper(this);
-        mHelper.enableDebugLogging(false);
+        mHelper.enableDebugLogging(true);
         mHelper.startSetup(setupListener);
         
     }
@@ -114,7 +115,7 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
     
     @Override
 	public void onDonateListener(String sku) {
-    	mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener);	
+			mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener);	
 	}
     
     @Override
@@ -195,7 +196,14 @@ public class BaseActivity extends Activity implements OnChangedListListener, OnD
 		return false;
 	}
 
-    IabHelper.OnIabSetupFinishedListener setupListener = new IabHelper.OnIabSetupFinishedListener() {
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.w(TAG, "onActivityResult");
+    	if (!mHelper.handleActivityResult(requestCode, resultCode, data))
+			super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	IabHelper.OnIabSetupFinishedListener setupListener = new IabHelper.OnIabSetupFinishedListener() {
         public void onIabSetupFinished(IabResult result) {
             Log.d(TAG, "Setup finished.");
             if (!result.isSuccess()) return;
