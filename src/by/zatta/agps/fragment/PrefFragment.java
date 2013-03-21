@@ -182,7 +182,7 @@ public class PrefFragment extends PreferenceFragment {
 			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public interface OnLanguageListener{
