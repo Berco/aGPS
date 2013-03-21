@@ -19,12 +19,15 @@
     <string name="VisitDGcomTitle">Bezoek derekgordon.com</string>
     <string name="VisitDVcomSummary">diepere informatie over de patch</string>
     <string name="VisitXdaTitle">Bezoek XDA</string>
-    <string name="VisitXdaSummary">Oude berichten over de patch</string>
+    <string name="VisitXdaSummary">topic over deze app</string>
     <string name="SettingsCategory">Instellingen</string>
     <string name="RestoreTitle">Herstel de backup</string>
     <string name="RestoreSummary">terug naar jouw ROM\'s bestanden</string>
     <string name="toastRestore">Jouw backup is hersteld.\nEen herstart is vereist</string>
-    <string name="PrefWelcomeTitle">Verwelkom me altijd</string>
+    <string name="ResetCustomTitle">Je custom profiel reseten</string>
+    <string name="ResetCustomSummary">begin overnieuw met het maken van een custom profiel</string>
+	<string name="toastReset">Je custom profiel is gereset</string>
+	<string name="PrefWelcomeTitle">Verwelkom me altijd</string>
     <string name="PrefWelcomeSummary">Laat het welkomst scherm iedere keer zien</string>
     <string name="LanguagePrefTitle">Language</string>
     <string name="LanguagePrefSummary">Choose for this app</string>
@@ -81,12 +84,42 @@
 	<string name="toastInstallAndReboot">Installeren en herstarten</string>
 	
 	<!-- Section discriptions -->
-    <string name="daemon">Not going to go into detail here.These need to be called first in GPS daemon startup. Relates to aGPS and SUPL.</string>
-	<string name="thres">INTERMEDIATEPOS relates to using GPS data from sats that are not fully locked. The accuracy variable is a threshold max on deviations from the assumed location where the device will discard data.</string>
-    <string name="qos">This is quality of service information for processing the GPS data. Most should be self-explanatory. GPS data outside the accuracy and threshold range will not be used when positioning data.</string>
-    <string name="assist">These variables relate to aGPS. It says to use aGPS. This will not be used if your ROM has aGPS disabled in the code. The server IP is for an internal IP for accessing the aGPS daemons data when it is operational.</string>
-	<string name="supl">This SUPL data is to match the SuplRootCert if it is required by the SUPL server.</string>
-   	<string name="carrier">Carrier tags used universally in GPS configs</string>
-	<string name="s3_specific">These items are specifically for the Samsung Galaxy S3.</string>
+	<string name="server">
+	    NTP staat voor Network Protocol en verzorgt een tijd correctie voor apparaten die synchroniseren kunnen.
+		Veel misverstanden bestaan over het belang en de betekenis van het NTP.
+		NTP pakketten bevatten een ingebouwd correctie systeem voor verlies tijdens versturing.
+		Ze zijn erg klein en het zijn ook van belang voor de XTRA.BIN. Ze zijn
+		met name van belang wanneer er een groot verschil zit tussen de tijd op uw apparaat en de GPS tijd.
+		De NTP pakketten van Derek Gordon zijn geschikt voor wereldwijde toepassing. Slechts zelden is een
+		lokale NTP server beter.</string>
+	<string name="agps">
+	    AGPS en XTRA bevatten informatie voor de GPS daemon voor de aGPS data.
+		Deze data bevat de almanac met de locatie van de GPS satelieten.
+		Deze informatie is slechts 24 uur accuraat en wordt gedownload naar een cache.
+		Het wordt dus niet permanent bewaard, dat heeft ook geen zin. 
+		Derek Gordon\'s server verwerkt elk half uur nieuwe data.
+		Normaal is de informatie na een uur beschikbaar.</string>
+    <string name="daemon">
+		Opstart variabelen voor de GPS daemon. 
+		Zijn gerelateerd aan 
+		de aGPS en de de SUPL server.</string>
+	<string name="thres">
+		INTERMEDIATEPOS bepaald het gebruik van data van satelieten die niet volledig gelocked zijn.
+		De accuracy variabele is een threshold max op afwijkingen vanaf de veronderstelde locatie
+		zodat de GPS data zal afwijzen.</string>
+    <string name="qos">
+		Dit is de sectie voor de Quality Of Service informatie, voor het verwerken van de GPS data.
+		Meeste variabelen spreken voor zich.
+		GPS data die buiten de gestelde Accuracy en Threshold vallen worden niet gebruikt voor het bepalen van de positie.</string>
+    <string name="assist">
+		Deze variabelen hebben te maken met de aGPS. Het stelt deze optie in gebruik.
+		Deze worden niet gebruikt als de ROM het heeft uitgeschakeld.
+		Het IP adres is voor intern gebruik om de GPS daemon te benaderen.</string>
+	<string name="supl">
+		This Deze items zijn ervoor om het SuplRootCert te laten passen bij Supl server</string>
+   	<string name="carrier">
+		Universele provider tags voor de GPS configuratie</string>
+	<string name="s3_specific">
+		Deze items zijn specifiek voor de Samsung Galaxy S3 met Touchwizz ROM</string>
     
 </resources>

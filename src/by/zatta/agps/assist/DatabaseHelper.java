@@ -118,6 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			Cursor c = db.query("items", new String[]{"ITEMS", "CUSTOM"}, null, null, null, null, null);
 			if(c.moveToPosition(0)) {
 				do {
+					if (!(c.getString(1).contains("{null}")) || !(c.getString(1).contains("CUSTOM")))
 					sectionItems.add(new ConfItem(c.getString(0), null, null, c.getString(1)));
 				} while (c.moveToNext());
 			}

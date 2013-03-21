@@ -83,8 +83,6 @@
 	<string name="btnYesAndReboot">Create files \n And reboot \n</string>
 	<string name="toastInstallAndReboot">Installing and Rebooting</string>
 	
-	
-	
 	<!-- Section discriptions -->
 	<string name="server">
 	    NTP stands for Network Protocol and povides a time-hack to devices that have syncing made readily possible. 
