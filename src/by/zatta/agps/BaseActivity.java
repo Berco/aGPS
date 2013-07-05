@@ -38,7 +38,7 @@ import android.view.MenuItem;
 
 public class BaseActivity extends Activity implements OnChangedListListener, OnDonateListener, OnPeriodicChangeListener, OnLanguageListener, OnResetListener, LoaderManager.LoaderCallbacks<Boolean>{
 	static final String TAG = "BaseActivity";
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	public static boolean isUpdate = false;
 	public static int mStars;
 	public static boolean isPremium;

@@ -242,6 +242,19 @@ public enum ShellProvider {
 		}
 	}
 	
+	public synchronized void replaceAddon(){
+		if (isAddonable()){
+			if (getCommandOutput("$BB test -f \"/system/addon.d/67-topntp.sh\" && echo TRUE").contains("TRUE")){
+				mountRW(true);
+				getCommandOutput("$BB $BB rm /system/addon.d/67-topntp.sh");
+				getCommandOutput("$BB cat /data/data/by.zatta.agps/files/67-topntp.sh > /system/addon.d/67-topntp.sh");
+				getCommandOutput("$BB chmod 755 /system/addon.d/67-topntp.sh");
+				mountRW(false);
+			}
+				
+		}
+	}
+	
 	public synchronized void copySSL(String mSSL){
 		getCommandOutput("$BB rm /system/etc/SuplRootCert");
 		if (mSSL.contains("generic")){

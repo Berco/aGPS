@@ -107,6 +107,7 @@ import android.util.Log;
 					l.setReadable(true, true);
 					l.setWritable(false, true);
 				
+				ShellProvider.INSTANCE.replaceAddon();
 				ShellProvider.INSTANCE.backup();
 			
 		    	SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);

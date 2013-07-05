@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import by.zatta.agps.R;
+
+
+
+
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Html;
