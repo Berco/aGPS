@@ -1,0 +1,125 @@
+<resources>
+
+    <string name="app_name">TopNTP</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="AboutTitle">Über</string>
+    
+    <!-- MainFragment -->
+    <string name="gpsConfig">gpsconfig.xml Justierung</string>
+    <string name="regularConfig">gps.conf Justierung</string>
+    <string name="installButton">Installieren</string>
+    <string name="toastUpdated">Aktualisiertes angepasstes Profil</string>
+    <string name="SettingUp">Stelle ein</string>
+    
+    <!-- PrefFragment -->
+    <string name="moreScreenTitle">Mehr Informationen</string>
+    <string name="moreScreenSummary">Lehrne alles über diesen Patch</string>
+    <string name="AboutPrefTitle">Mehr über diese App</string>
+    <string name="AboutPrefSummary">Eine Zusammenfassung über NTP Server</string>
+    <string name="VisitDGcomTitle">Besuche derekgordon.com</string>
+    <string name="VisitDVcomSummary">Weiterführende Informationen über diesen Patch</string>
+    <string name="VisitXdaTitle">Besuche XDA</string>
+    <string name="VisitXdaSummary">Forum-Thread für Diskussionen um diese App</string>
+    <string name="SettingsCategory">Einstellungen</string>
+    <string name="RestoreTitle">Sicherung wieder herstellen</string>
+    <string name="RestoreSummary">Zurück zu den standard-Dateien ihres ROM\'s</string>
+    <string name="toastRestore">Stelle Sicherung wieder her.\nBenötigt Reboot zum aktivieren!</string>
+    <string name="ResetCustomTitle">Anpassungsprofil zurück setzen</string>
+    <string name="ResetCustomSummary">Von Neuem mit den Einstellungen beginnen</string>
+    <string name="toastReset">Angepasstes Profil zurück gesetzt.</string>
+    <string name="PrefWelcomeTitle">Mich immer begrüßen</string>
+    <string name="PrefWelcomeSummary">Willkommensbildschirm bei allen App-Starts zeigen</string>
+    <string name="LanguagePrefTitle">Sprache</string>
+    <string name="LanguagePrefSummary">Wähle für diese App</string>
+    <string name="DebugPrefTitle">Debugging aktiviert</string>
+    <string name="DebugPrefSummary">Mehr Info in das logcat schreiben</string>
+    <string name="AddonScriptPrefTitle">Nutze addon.d Skript</string>
+    <string name="AddonScriptPrefSummary">ROM Aktualisierungen überleben</string>
+    
+    <!-- FirstUseDialogFragment -->
+    <string name="WelcomeDialogTitle">Willkommen</string>
+    <string name="ChangelogDialogTitle">Changelog</string>
+    <string name="DismissButton">Verwerfen</string>
+    <string name="DontShowAgainButton">Nicht wieder \n anzeigen</string>
+        
+    <!--  ChangeItemDialog -->
+    <string name="ChangeItemDialogTitle">Items ändern</string>
+    <string name="CancelButton">Abbrechen</string>
+    <string name="ApplyButton">Anwenden</string>
+    
+    <!-- SliderDialog -->
+    <string name="SliderTweak">Anpassung</string>
+    <string name="SliderDefault">Standard</string>
+    
+    <!-- ConfirmDialog -->
+    
+    <string name="ConfirmTitle">Dateien Erstellen / Aktualisieren</string>
+    <string name="DonateTitle">Spenden</string>
+    
+    <string name="BuyYour">Kaufen sie ihren</string>
+    <string name="BecomeA">Werden sie ein</string>
+    <string name="DoAnExtra">Leisten sie eine extra</string>
+    <string name="Donation">Spende</string>
+    
+    <string name="FirstStar">ersten Stern</string>
+    <string name="SecondStar">zweiten Stern</string>
+    <string name="ThirdStar">dritten Stern</string>
+    
+    <string name="CommonUser">Normaler Nutzer</string>
+    <string name="StarredUser">Stern Nutzer</string>
+    <string name="PremiumUser">Premium Nutzer</string>
+    
+    <string name="Waiting">Wartezeit: \u0020</string>
+    <string name="seconds">\u0020 Sekunden</string>
+    
+    <string name="CanAndWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher?</string>
+    <string name="CanAndNotWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher dass sie nicht Derek Gordon\'s Server nutzen wollen?</string>
+    <string name="NotCanButWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration mit Derek Gordon\'s Servern anzupassen. Bitte erwägen sie eine Spende. \n Wollen sie diesen Patch wirklich anwenden?</string>
+    <string name="NotCanAndNotWant">Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher?</string>
+    
+    <string name="btnNoInstall">Abbrechen</string>
+	<string name="btnYesNoReboot">Dateien erstellen \n Nicht neustarten \n</string>
+	<string name="toastInstallNoReboot">Installiere ohne Neustart</string>
+	<string name="btnYesAndReboot">Dateien erstellen \n und neu starten \n</string>
+	<string name="toastInstallAndReboot">Installiere und starte neu</string>
+
+	<!-- Section discriptions -->
+	<string name="server">
+	    NTP steht für Netzwerk Protokoll und stellt einen Zeit-Hack für Geräte zur Verfügung die Zeitsynchronisation beherrschen. 
+	    Viele XDA Patches misinterpretieren was NTP ist und seine Bedeutung. 
+	    NTP Packete haben Mechanismen zur Kompensation von Übertragungsverlusten eingebaut. 
+	    NTP Packete sind sehr klein. Letztlich ist NTP wichtig zur Analyse der XTRA.BIN. 
+	    Allerdings ist es nur dann wichtig, wenn die Gerätezeit extrem von der Umgebungszeit abweicht. 
+	    Aus diesem Grunde ist dieser Patch für weltweite Operation ausgelegt. 
+	    Höchst selten würden lokale NTP Server benötigt.</string>
+	<string name="agps">
+	    AGPS und XTRA sagen dem AGPS Daemon wo es die aGPS Daten bekommt. 
+	    Die Daten fungieren als Almanach mit den aktuellen Satellitenpositionen. 
+	    Die Daten sind jeweils nur für 24 Stunden gültig. Sie werden herunter geladen und zwischengespeichert. 
+	    Sie werden nicht mehr dauerhaft in der /data Partition gespeichert. 
+	    Es würde keinen Grund geben, sie dort zu halten! Meine Server verarbeiten die XTRA.BIN alle 30 Minuten. 
+	    Typischerweise aktualisiert es jede Stunde, wenn neue Daten überfällig sind.</string>
+    <string name="daemon">
+        Ich werde hier nicht ins Detail gehen.
+        Diese müssen immer zuerst im GPS daemon startup aufgerufen werden. 
+        bezieht sich auf aGPS und SUPL.</string>
+	<string name="thres">
+	    INTERMEDIATEPOS bezieht sich auf die Nutzung von GPS Daten von nicht vollständig gelockten Satelliten. 
+	    Die Genauigkeits-Variable ist ein Grenzwertmaximum für erlaubte Abweichungen von der angenommenen Satellitenposition,
+		bei dessen Erreichen werden die Daten durch das Gerät verworfen.</string>
+    <string name="qos">
+        Dies sind "quality of service" Informationen für das Verarbeiten der GPS Daten. 
+        Das meiste dürfte selbsterklärend sein. 
+        GPS Daten jenseits der Genauigkeits- und Grenzwertbereiche wird beim Positionieren nicht verwendet.</string>
+    <string name="assist">
+        Diese Variable bezieht sich auf aGPS. Sie besagt dass aGPS zu nutzen ist. 
+        Dies wird nicht verwendet wenn in ihrem ROM aGPS deaktiviert ist. 
+        Die Server IP ist eine intrne IP zum Zugriff auf aGPS daemon Daten wenn dieser läuft.</string>
+	<string name="supl">
+	    Diese SUPL Daten müssen mit dem SuplRootCert übereinstimmen wenn es vom SUPL Server gefordert wird.</string>
+   	<string name="carrier">
+   	    Carrier Tags die universell in GPS Konfigurationen eingesetzt werden</string>
+	<string name="s3_specific">
+	    Diese Einträge sind speziell für die Samsung Galaxy S3 Touchwizz ROMs.</string>
+    
+</resources>

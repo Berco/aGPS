@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Locale;
+
 import by.zatta.agps.R;
 import android.app.DialogFragment;
 import android.content.SharedPreferences;
@@ -54,17 +56,17 @@ public class FirstUseDialog extends DialogFragment implements View.OnClickListen
 	public String getAboutText(){
 		InputStream is= null;
 		
-//		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-//		String language = getPrefs.getString("languagePref", "unknown");
-//        Locale locale = Locale.getDefault();
-//        String myLocale = locale.getLanguage();
+		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+		String language = getPrefs.getString("languagePref", "unknown");
+        Locale locale = Locale.getDefault();
+        String myLocale = locale.getLanguage();
         String filename = "texts/first_start_en.html";
 //        if (myLocale.contains("fr") || language.contains("fr"))
 //			filename = "texts/first_start_fr.html";
 //        if (myLocale.contains("nl") || language.contains("nl"))
 //			filename = "texts/first_start_nl.html";
-//        if (myLocale.contains("de") || language.contains("de"))
-//			filename = "texts/first_start_de.html";
+        if (myLocale.contains("de") || language.contains("de"))
+			filename = "texts/first_start_de.html";
         
         String about="";
         try {

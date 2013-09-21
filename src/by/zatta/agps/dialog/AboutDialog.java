@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Locale;
+
 import by.zatta.agps.R;
 
-
-
-
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -49,7 +50,17 @@ public class AboutDialog extends DialogFragment {
 	public String getAboutText(){
 		InputStream is= null;
 		
+		SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+		String language = getPrefs.getString("languagePref", "unknown");
+        Locale locale = Locale.getDefault();
+        String myLocale = locale.getLanguage();
         String filename = "texts/background_en.html";
+        if (myLocale.contains("fr") || language.contains("fr"))
+			filename = "texts/background_fr.html";
+        if (myLocale.contains("nl") || language.contains("nl"))
+			filename = "texts/background_nl.html";
+        if (myLocale.contains("de") || language.contains("de"))
+			filename = "texts/background_de.html";
         
         String about="";
 		try {
