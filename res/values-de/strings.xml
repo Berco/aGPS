@@ -5,15 +5,15 @@
     <string name="AboutTitle">Über</string>
     
     <!-- MainFragment -->
-    <string name="gpsConfig">gpsconfig.xml Justierung</string>
-    <string name="regularConfig">gps.conf Justierung</string>
+    <string name="gpsConfig">gpsconfig.xml Anpassung</string>
+    <string name="regularConfig">gps.conf Anpassung</string>
     <string name="installButton">Installieren</string>
-    <string name="toastUpdated">Aktualisiertes angepasstes Profil</string>
+    <string name="toastUpdated">Angepasstes Profil aktualisiert</string>
     <string name="SettingUp">Stelle ein</string>
     
     <!-- PrefFragment -->
     <string name="moreScreenTitle">Mehr Informationen</string>
-    <string name="moreScreenSummary">Lehrne alles über diesen Patch</string>
+    <string name="moreScreenSummary">Lerne alles über diesen Patch</string>
     <string name="AboutPrefTitle">Mehr über diese App</string>
     <string name="AboutPrefSummary">Eine Zusammenfassung über NTP Server</string>
     <string name="VisitDGcomTitle">Besuche derekgordon.com</string>
@@ -21,18 +21,18 @@
     <string name="VisitXdaTitle">Besuche XDA</string>
     <string name="VisitXdaSummary">Forum-Thread für Diskussionen um diese App</string>
     <string name="SettingsCategory">Einstellungen</string>
-    <string name="RestoreTitle">Sicherung wieder herstellen</string>
-    <string name="RestoreSummary">Zurück zu den standard-Dateien ihres ROM\'s</string>
+    <string name="RestoreTitle">Sicherung wiederherstellen</string>
+    <string name="RestoreSummary">Zurück zu den Standard-Dateien ihres ROM\'s</string>
     <string name="toastRestore">Stelle Sicherung wieder her.\nBenötigt Reboot zum aktivieren!</string>
-    <string name="ResetCustomTitle">Anpassungsprofil zurück setzen</string>
+    <string name="ResetCustomTitle">Anpassungsprofil zurücksetzen</string>
     <string name="ResetCustomSummary">Von Neuem mit den Einstellungen beginnen</string>
     <string name="toastReset">Angepasstes Profil zurück gesetzt.</string>
-    <string name="PrefWelcomeTitle">Mich immer begrüßen</string>
+    <string name="PrefWelcomeTitle">Willkommensbildschirm immer zeigen</string>
     <string name="PrefWelcomeSummary">Willkommensbildschirm bei allen App-Starts zeigen</string>
     <string name="LanguagePrefTitle">Sprache</string>
-    <string name="LanguagePrefSummary">Wähle für diese App</string>
-    <string name="DebugPrefTitle">Debugging aktiviert</string>
-    <string name="DebugPrefSummary">Mehr Info in das logcat schreiben</string>
+    <string name="LanguagePrefSummary">Wähle die Anzeigesprache für diese App</string>
+    <string name="DebugPrefTitle">Aktiviere Debugging</string>
+    <string name="DebugPrefSummary">Ausführliche Info ins LogCat schreiben</string>
     <string name="AddonScriptPrefTitle">Nutze addon.d Skript</string>
     <string name="AddonScriptPrefSummary">ROM Aktualisierungen überleben</string>
     
@@ -43,7 +43,7 @@
     <string name="DontShowAgainButton">Nicht wieder \n anzeigen</string>
         
     <!--  ChangeItemDialog -->
-    <string name="ChangeItemDialogTitle">Items ändern</string>
+    <string name="ChangeItemDialogTitle">Einträg ändern</string>
     <string name="CancelButton">Abbrechen</string>
     <string name="ApplyButton">Anwenden</string>
     
@@ -56,8 +56,8 @@
     <string name="ConfirmTitle">Dateien Erstellen / Aktualisieren</string>
     <string name="DonateTitle">Spenden</string>
     
-    <string name="BuyYour">Kaufen sie ihren</string>
-    <string name="BecomeA">Werden sie ein</string>
+    <string name="BuyYour">Kaufen Sie Ihren</string>
+    <string name="BecomeA">Werden Sie ein</string>
     <string name="DoAnExtra">Leisten sie eine extra</string>
     <string name="Donation">Spende</string>
     
@@ -65,40 +65,40 @@
     <string name="SecondStar">zweiten Stern</string>
     <string name="ThirdStar">dritten Stern</string>
     
-    <string name="CommonUser">Normaler Nutzer</string>
+    <string name="CommonUser">Standard Nutzer</string>
     <string name="StarredUser">Stern Nutzer</string>
     <string name="PremiumUser">Premium Nutzer</string>
     
     <string name="Waiting">Wartezeit: \u0020</string>
     <string name="seconds">\u0020 Sekunden</string>
     
-    <string name="CanAndWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher?</string>
-    <string name="CanAndNotWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher dass sie nicht Derek Gordon\'s Server nutzen wollen?</string>
-    <string name="NotCanButWant">Danke für\'s Spenden! Sie sind dabei, ihre GPS Konfiguration mit Derek Gordon\'s Servern anzupassen. Bitte erwägen sie eine Spende. \n Wollen sie diesen Patch wirklich anwenden?</string>
-    <string name="NotCanAndNotWant">Sie sind dabei, ihre GPS Konfiguration anzupassen. \n Sind sie sicher?</string>
+    <string name="CanAndWant">Danke für\'s Spenden! Sie sind dabei, Ihre GPS Konfiguration anzupassen. \n Sind Sie sicher?</string>
+    <string name="CanAndNotWant">Danke für\'s Spenden! Sie sind dabei, Ihre GPS Konfiguration anzupassen. \n Sind Sie sicher dass sie Derek Gordon\'s Server nicht nutzen wollen?</string>
+    <string name="NotCanButWant">Sie sind dabei, Ihre GPS Konfiguration mit Derek Gordon\'s Servern anzupassen. Bitte erwägen sie eine Spende. \n Patch jetzt anwenden?</string>
+    <string name="NotCanAndNotWant">Sie sind dabei, Ihre GPS Konfiguration anzupassen. \n Sind Sie sicher?</string>
     
     <string name="btnNoInstall">Abbrechen</string>
-	<string name="btnYesNoReboot">Dateien erstellen \n Nicht neustarten \n</string>
+	<string name="btnYesNoReboot">Patch anwenden \n Nicht neustarten \n</string>
 	<string name="toastInstallNoReboot">Installiere ohne Neustart</string>
-	<string name="btnYesAndReboot">Dateien erstellen \n und neu starten \n</string>
+	<string name="btnYesAndReboot">Patch anwenden \n und neu starten \n</string>
 	<string name="toastInstallAndReboot">Installiere und starte neu</string>
 
 	<!-- Section discriptions -->
 	<string name="server">
-	    NTP steht für Netzwerk Protokoll und stellt einen Zeit-Hack für Geräte zur Verfügung die Zeitsynchronisation beherrschen. 
-	    Viele XDA Patches misinterpretieren was NTP ist und seine Bedeutung. 
-	    NTP Packete haben Mechanismen zur Kompensation von Übertragungsverlusten eingebaut. 
-	    NTP Packete sind sehr klein. Letztlich ist NTP wichtig zur Analyse der XTRA.BIN. 
+	    NTP steht für Netzwerk Zeit Protokoll und stellt einen Zeit-Hack für Geräte zur Verfügung die Zeitsynchronisation beherrschen. 
+	    Viele XDA Patches misinterpretieren die Bedeutung von NTP. 
+	    NTP Packete haben Mechanismen zur Kompensation von Übertragungs- und Zeitverlustn eingebaut. 
+	    NTP Packete sind sehr klein. Wichtig ist NTP letztlich zur Analyse der XTRA.BIN. 
 	    Allerdings ist es nur dann wichtig, wenn die Gerätezeit extrem von der Umgebungszeit abweicht. 
 	    Aus diesem Grunde ist dieser Patch für weltweite Operation ausgelegt. 
-	    Höchst selten würden lokale NTP Server benötigt.</string>
+	    Nur höchst selten würden lokale NTP Server benötigt.</string>
 	<string name="agps">
-	    AGPS und XTRA sagen dem AGPS Daemon wo es die aGPS Daten bekommt. 
+	    AGPS und XTRA sagen dem aGPS Daemon wo es die aGPS Daten her bekommt. 
 	    Die Daten fungieren als Almanach mit den aktuellen Satellitenpositionen. 
 	    Die Daten sind jeweils nur für 24 Stunden gültig. Sie werden herunter geladen und zwischengespeichert. 
 	    Sie werden nicht mehr dauerhaft in der /data Partition gespeichert. 
 	    Es würde keinen Grund geben, sie dort zu halten! Meine Server verarbeiten die XTRA.BIN alle 30 Minuten. 
-	    Typischerweise aktualisiert es jede Stunde, wenn neue Daten überfällig sind.</string>
+	    Typischerweise aktualisiert aGPS jede Stunde, wenn neue Daten überfällig sind.</string>
     <string name="daemon">
         Ich werde hier nicht ins Detail gehen.
         Diese müssen immer zuerst im GPS daemon startup aufgerufen werden. 
@@ -108,13 +108,13 @@
 	    Die Genauigkeits-Variable ist ein Grenzwertmaximum für erlaubte Abweichungen von der angenommenen Satellitenposition,
 		bei dessen Erreichen werden die Daten durch das Gerät verworfen.</string>
     <string name="qos">
-        Dies sind "quality of service" Informationen für das Verarbeiten der GPS Daten. 
-        Das meiste dürfte selbsterklärend sein. 
-        GPS Daten jenseits der Genauigkeits- und Grenzwertbereiche wird beim Positionieren nicht verwendet.</string>
+        Dies sind "Quality Of Service" Informationen für das Verarbeiten der GPS Daten. 
+        Das Meiste dürfte selbsterklärend sein. 
+        GPS Daten jenseits der Genauigkeits- und Grenzwertbereiche werden beim Positionieren nicht verwendet.</string>
     <string name="assist">
         Diese Variable bezieht sich auf aGPS. Sie besagt dass aGPS zu nutzen ist. 
         Dies wird nicht verwendet wenn in ihrem ROM aGPS deaktiviert ist. 
-        Die Server IP ist eine intrne IP zum Zugriff auf aGPS daemon Daten wenn dieser läuft.</string>
+        Die Server IP ist eine interne IP zum Zugriff auf aGPS daemon Daten wenn dieser läuft.</string>
 	<string name="supl">
 	    Diese SUPL Daten müssen mit dem SuplRootCert übereinstimmen wenn es vom SUPL Server gefordert wird.</string>
    	<string name="carrier">

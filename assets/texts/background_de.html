@@ -1,32 +1,30 @@
 <p><h1><i><u>Hintergrund</u></i></h1></p>
 
 <p>
-Die beste aGPS L&ouml;sung ist die angepasste Version.  In fast jedem Fall bietet sie wesentlich schnellere
-GPS Reaktionszeit und h&ouml;here Pr&auml;zision als die Standardversion dieses Patches
-und so gut wie immer einen schnelleren Lock als die standard Ger&auml;tekonfigurationen.
-Es kann gelegentlich auch zu l&auml;ngerer Batterielaufzeit f&uuml;hren weil das GPS Modul wesentlich
-weniger Last beim langen aktiven Suchen nach Satelliten erzeugt.
+Die beste aGPS L&ouml;sung ist die angepasste Version.  In fast jedem Fall bietet sie wesentlich schnellere 
+GPS Reaktionszeit und h&ouml;here Pr&auml;zision als die Standardversion dieses Patches und so gut wie immer 
+einen schnelleren Lock als die standard Ger&auml;tekonfigurationen. Es kann gelegentlich auch zu l&auml;ngerer 
+Batterielaufzeit f&uuml;hren weil das GPS Modul wesentlich weniger Last beim langen aktiven Suchen nach Satelliten erzeugt.
 </p>
 
 <p><b>Was ist anders:<br />
 1.</b><br />Die Almanach Datei wird direkt von meinem Verteilersystem bezogen.  
-Die Datei wird auf Premium-Netzwerken mit mehr als genug Bandbreitenreserve zur Verf&uuml;gung gestellt.  
+Die Datei wird auf Premium-Netzwerken mit mehr als genug Bandbreitenreserve zur Verf&uuml;gung gestellt. 
 Weiterhin werden in diesem Almanach Fehler korrigiert, anders als in dem der Ger&auml;tehersteller. 
-Die Almanach-Server der Hersteller sind permanent &uuml;berlastet, haben hohe Latenzzeiten und waren schon
-h&auml;ufig komplett unerreichbar.  Dies bedeutet, es kann Minuten dauern bis die Almanach Daten f&uuml;r die
+Die Almanach-Server der Hersteller sind permanent &uuml;berlastet, haben hohe Latenzzeiten und waren schon 
+h&auml;ufig komplett unerreichbar.  Dies bedeutet, es kann Minuten dauern bis die Almanach Daten der 
 Satelliten ankommen.  Meine Server liefern diese Daten innerhalb von Sekunden.
 </p>
 <p>
-<b>2.</b><br />Der Standard-Patch nutzt <i>NTP.ORG</i> Pool Server.  Die Menschen missverstehen das Konzept der
-NTP Zeitserver und denken h&auml;ufig f&auml;lschlicherweise, dass ortsnahe Zeitserver besser seien.
-i>NTP.ORG</i> besteht aus Servern rund um die Welt, von denen viele an Kabelmodems und Privatleitungen h&auml;ngen. 
-Das bedeutet es wird immer hohe Latenzen und Routingprobleme geben wenn sie ihre NTP synchronsiation beziehen.
-Mein NTP Pool besteht nur aus Stratum II Zeitservern.  Diese Server sind strategisch um die Welt verteilt und
-sind die selben, die auch Finanzinstitute und Regierungen nutzen um weltweite Synchronit&auml;t zu
-gew&auml;hrleisten.  
+<b>2.</b><br />Der Standard-Patch nutzt <i>NTP.ORG</i> Pool Server. Das Konzept der
+NTP Zeitserver wird h&auml;ufig missverstanden, f&auml;lschlicherweise wird dann angenommen, lokale Zeitserver seien besser. 
+<i>NTP.ORG</i> besteht aus Servern rund um die Welt, von denen viele an Kabelmodems und Privatleitungen h&auml;ngen. 
+Dies bedeutet, es wird immer hohe Latenzen und Routingprobleme geben wenn sie ihre NTP Synchronsiation beziehen. 
+Mein NTP Pool besteht nur aus Stratum II Zeitservern.  Diese Server sind strategisch um die Welt verteilt und 
+sind die selben, die auch Finanzinstitute und Regierungen nutzen um weltweite Synchronit&auml;t zu gew&auml;hrleisten.  
 </p>
 <p>
-Diese zwei Konzepte, verpackt in einen Patch, k&ouml;nnen die f&uuml;r einen GPS Lock mit wenigen Metern Pr&auml;zision
-ben&ouml;tigte Zeit um bis zu einer Minute reduzieren.  Viele Nutzer berichten von &quot;sofortigen
+Diese zwei Konzepte, verpackt in einen Patch, k&ouml;nnen die f&uuml;r einen GPS Lock mit wenigen Metern Pr&auml;zision 
+ben&ouml;tigte Zeit um bis zu eine Minute reduzieren.  Viele Nutzer berichten von &quot;sofortigen
 Locks&quot;, was sich real in ca. 3 Sekunden &uuml;bersetzt.
 </p>
