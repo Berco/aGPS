@@ -27,7 +27,7 @@
     <string name="ResetCustomTitle">Anpassungsprofil zurücksetzen</string>
     <string name="ResetCustomSummary">Von Neuem mit den Einstellungen beginnen</string>
     <string name="toastReset">Angepasstes Profil zurück gesetzt.</string>
-    <string name="PrefWelcomeTitle">Willkommensbildschirm immer zeigen</string>
+    <string name="PrefWelcomeTitle">Willkommensbildschirm</string>
     <string name="PrefWelcomeSummary">Willkommensbildschirm bei allen App-Starts zeigen</string>
     <string name="LanguagePrefTitle">Sprache</string>
     <string name="LanguagePrefSummary">Wähle die Anzeigesprache für diese App</string>
@@ -85,15 +85,15 @@
 
 	<!-- Section discriptions -->
 	<string name="server">
-	    NTP steht für Netzwerk Zeit Protokoll und stellt einen Zeit-Hack für Geräte zur Verfügung die Zeitsynchronisation beherrschen. 
+	    NTP steht für Netzwerk Zeit Protokoll und stellt einen Zeitabgleich für Geräte zur Verfügung die dies beherrschen. 
 	    Viele XDA Patches misinterpretieren die Bedeutung von NTP. 
-	    NTP Packete haben Mechanismen zur Kompensation von Übertragungs- und Zeitverlustn eingebaut. 
-	    NTP Packete sind sehr klein. Wichtig ist NTP letztlich zur Analyse der XTRA.BIN. 
+	    NTP Packete haben Mechanismen zur Kompensation von Fehlern eingebaut. 
+	    NTP Packete sind sehr klein. Wichtig ist NTP letztlich nur zur Analyse der XTRA.BIN. 
 	    Allerdings ist es nur dann wichtig, wenn die Gerätezeit extrem von der Umgebungszeit abweicht. 
 	    Aus diesem Grunde ist dieser Patch für weltweite Operation ausgelegt. 
 	    Nur höchst selten würden lokale NTP Server benötigt.</string>
 	<string name="agps">
-	    AGPS und XTRA sagen dem aGPS Daemon wo es die aGPS Daten her bekommt. 
+	    AGPS und XTRA sagen dem aGPS Daemon wo er die aGPS Daten her bekommt. 
 	    Die Daten fungieren als Almanach mit den aktuellen Satellitenpositionen. 
 	    Die Daten sind jeweils nur für 24 Stunden gültig. Sie werden herunter geladen und zwischengespeichert. 
 	    Sie werden nicht mehr dauerhaft in der /data Partition gespeichert. 
@@ -120,6 +120,6 @@
    	<string name="carrier">
    	    Carrier Tags die universell in GPS Konfigurationen eingesetzt werden</string>
 	<string name="s3_specific">
-	    Diese Einträge sind speziell für die Samsung Galaxy S3 Touchwizz ROMs.</string>
+	    Diese Einträge sind speziell für die Samsung Galaxy S3 TouchWiz ROMs.</string>
     
 </resources>
